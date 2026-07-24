@@ -40,6 +40,63 @@
     rel="stylesheet"
     href="styles.css"
   />
+
+
+  <style>
+    /* Cursor-following hero tilt */
+    .hero {
+      perspective: 1100px;
+      overflow: hidden;
+    }
+
+    .hero-tilt {
+      width: 100%;
+      transform:
+        rotateX(var(--hero-rotate-x, 0deg))
+        rotateY(var(--hero-rotate-y, 0deg));
+      transform-style: preserve-3d;
+      transform-origin: center center;
+      transition: transform 0.12s ease-out;
+      will-change: transform;
+    }
+
+    .hero-tilt .pill {
+      display: inline-block;
+      transform: translateZ(10px);
+    }
+
+    .hero-tilt h1 {
+      transform: translateZ(24px);
+    }
+
+    .hero-tilt p {
+      transform: translateZ(14px);
+    }
+
+    .hero:not(.is-tracking) .hero-tilt {
+      transition: transform 0.5s ease;
+    }
+
+    @media (hover: none), (pointer: coarse) {
+      .hero-tilt,
+      .hero-tilt .pill,
+      .hero-tilt h1,
+      .hero-tilt p {
+        transform: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-tilt,
+      .hero-tilt .pill,
+      .hero-tilt h1,
+      .hero-tilt p {
+        transform: none;
+        transition: none;
+      }
+    }
+  </style>
+
 </head>
 
 <body>
@@ -123,21 +180,25 @@
 
       <div class="container hero-content">
 
-        <span class="eyebrow pill">
-          PREMIUM ROBLOX UTILITY PLATFORM
-        </span>
+        <div class="hero-tilt">
 
-        <h1>
-          ALTER
-          <br />
-          <span>HUB</span>
-        </h1>
+          <span class="eyebrow pill">
+            PREMIUM ROBLOX UTILITY PLATFORM
+          </span>
 
-        <p>
-          A polished Roblox utility platform built around a fast interface,
-          simple access, smooth navigation, regular improvements, and support
-          for a growing collection of popular experiences.
-        </p>
+          <h1>
+            ALTER
+            <br />
+            <span>HUB</span>
+          </h1>
+
+          <p>
+            A polished Roblox utility platform built around a fast interface,
+            simple access, smooth navigation, regular improvements, and support
+            for a growing collection of popular experiences.
+          </p>
+
+        </div>
 
         <div class="hero-actions">
 
@@ -1050,6 +1111,56 @@
 
 
   <script src="script.js"></script>
+
+
+
+  <script>
+    (() => {
+      const hero = document.querySelector(".hero");
+      const heroTilt = document.querySelector(".hero-tilt");
+
+      if (!hero || !heroTilt) return;
+
+      const maximumRotation = 4;
+      let animationFrame = null;
+
+      const resetTilt = () => {
+        hero.classList.remove("is-tracking");
+        heroTilt.style.setProperty("--hero-rotate-x", "0deg");
+        heroTilt.style.setProperty("--hero-rotate-y", "0deg");
+      };
+
+      hero.addEventListener("pointermove", (event) => {
+        if (event.pointerType === "touch") return;
+
+        if (animationFrame) {
+          cancelAnimationFrame(animationFrame);
+        }
+
+        animationFrame = requestAnimationFrame(() => {
+          const bounds = hero.getBoundingClientRect();
+          const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+          const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+
+          const rotateY = x * maximumRotation * 2;
+          const rotateX = y * maximumRotation * -2;
+
+          hero.classList.add("is-tracking");
+          heroTilt.style.setProperty(
+            "--hero-rotate-x",
+            `${rotateX.toFixed(2)}deg`
+          );
+          heroTilt.style.setProperty(
+            "--hero-rotate-y",
+            `${rotateY.toFixed(2)}deg`
+          );
+        });
+      });
+
+      hero.addEventListener("pointerleave", resetTilt);
+      hero.addEventListener("pointercancel", resetTilt);
+    })();
+  </script>
 
 </body>
 </html>
