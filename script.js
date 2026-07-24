@@ -58,7 +58,7 @@ const heroSection = document.querySelector(".hero");
 const heroTilt = document.querySelector(".hero-tilt");
 
 if (heroSection && heroTilt) {
-  const maximumRotation = 6;
+  const maximumRotation = 10;
 
   heroSection.addEventListener("pointermove", (event) => {
     if (event.pointerType === "touch") return;
