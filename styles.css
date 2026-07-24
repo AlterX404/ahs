@@ -26,7 +26,14 @@
 /* Cursor-following hero tilt */
 
 .hero {
-  perspective: 1000px;
+    perspective: 450px;
+    overflow: visible;
+}
+
+.hero-tilt {
+    transform-style: preserve-3d;
+    will-change: transform;
+    transition: transform 0.04s linear;
 }
 
 .hero-tilt {
