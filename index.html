@@ -2,29 +2,59 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#050505" />
 
-  <title>AlterHub</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <meta
+    name="theme-color"
+    content="#050505"
+  />
+
+  <meta
+    name="description"
+    content="Alter Hub is a polished Roblox utility platform featuring a fast interface, simple access system, regular updates, and support for popular Roblox experiences."
+  />
+
+  <title>Alter Hub | Premium Roblox Utility Platform</title>
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  />
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  />
 
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
     rel="stylesheet"
   />
 
-  <link rel="stylesheet" href="styles.css" />
+  <link
+    rel="stylesheet"
+    href="styles.css"
+  />
 </head>
 
 <body>
+
+  <!-- NAVIGATION -->
 
   <header class="site-header">
 
     <div class="container nav-wrap">
 
-      <a class="brand" href="#home">
+      <a
+        class="brand"
+        href="#home"
+        aria-label="Alter Hub home"
+      >
         Alter<span>Hub</span>
       </a>
 
@@ -32,21 +62,41 @@
         class="menu-toggle"
         aria-label="Open navigation menu"
         aria-expanded="false"
+        aria-controls="primary-navigation"
       >
         ☰
       </button>
 
-      <nav class="nav-links" aria-label="Primary navigation">
+      <nav
+        id="primary-navigation"
+        class="nav-links"
+        aria-label="Primary navigation"
+      >
 
-        <a href="#home">Home</a>
+        <a href="#home">
+          Home
+        </a>
 
-        <a href="#games">Games</a>
+        <a href="#features">
+          Features
+        </a>
 
-        <a href="#pricing">Pricing</a>
+        <a href="#games">
+          Games
+        </a>
 
-        <a href="#faq">FAQ</a>
+        <a href="#pricing">
+          Pricing
+        </a>
 
-        <a class="discord-btn" href="#community">
+        <a href="#faq">
+          FAQ
+        </a>
+
+        <a
+          class="discord-btn"
+          href="#community"
+        >
           Discord
         </a>
 
@@ -61,14 +111,20 @@
 
     <!-- HERO SECTION -->
 
-    <section id="home" class="hero section-dark">
+    <section
+      id="home"
+      class="hero section-dark"
+    >
 
-      <div class="hero-glow"></div>
+      <div
+        class="hero-glow"
+        aria-hidden="true"
+      ></div>
 
       <div class="container hero-content">
 
         <span class="eyebrow pill">
-          PREMIUM ROBLOX SCRIPT HUB
+          PREMIUM ROBLOX UTILITY PLATFORM
         </span>
 
         <h1>
@@ -78,19 +134,25 @@
         </h1>
 
         <p>
-          A premium Roblox development platform with a modern interface,
-          smooth performance, regular updates, and support for a growing
-          collection of experiences.
+          A polished Roblox utility platform built around a fast interface,
+          simple access, smooth navigation, regular improvements, and support
+          for a growing collection of popular experiences.
         </p>
 
         <div class="hero-actions">
 
-          <a class="btn btn-primary" href="#games">
-            Explore Games
-            <span>→</span>
+          <a
+            class="btn btn-primary"
+            href="#features"
+          >
+            Explore Features
+            <span aria-hidden="true">→</span>
           </a>
 
-          <a class="btn btn-secondary" href="#pricing">
+          <a
+            class="btn btn-secondary"
+            href="#pricing"
+          >
             Get Premium
           </a>
 
@@ -101,9 +163,300 @@
     </section>
 
 
+    <!-- FEATURES SECTION -->
+
+    <section
+      id="features"
+      class="section section-dark"
+    >
+
+      <div class="container">
+
+        <div class="section-heading">
+
+          <span class="eyebrow">
+            WHAT WE OFFER
+          </span>
+
+          <h2>
+            Built for a Better
+            <span>Experience</span>
+          </h2>
+
+          <p>
+            A refined collection of platform features designed to make access,
+            navigation, customization, and community support feel simple.
+          </p>
+
+        </div>
+
+
+        <div class="feature-grid">
+
+          <article class="card">
+
+            <div
+              class="icon"
+              aria-hidden="true"
+            >
+              ⚡
+            </div>
+
+            <h3>
+              Fast Performance
+            </h3>
+
+            <p>
+              Lightweight components, responsive navigation, and optimized
+              loading help keep the platform quick and smooth.
+            </p>
+
+          </article>
+
+
+          <article class="card">
+
+            <div
+              class="icon"
+              aria-hidden="true"
+            >
+              🔑
+            </div>
+
+            <h3>
+              Improved Key System
+            </h3>
+
+            <p>
+              A streamlined verification process with clear instructions,
+              faster access, and fewer unnecessary steps.
+            </p>
+
+          </article>
+
+
+          <article class="card">
+
+            <div
+              class="icon"
+              aria-hidden="true"
+            >
+              🎨
+            </div>
+
+            <h3>
+              Modern User Interface
+            </h3>
+
+            <p>
+              A clean and responsive layout designed to remain easy to use on
+              desktop, tablet, and mobile devices.
+            </p>
+
+          </article>
+
+
+          <article class="card">
+
+            <div
+              class="icon"
+              aria-hidden="true"
+            >
+              🧭
+            </div>
+
+            <h3>
+              Simple Navigation
+            </h3>
+
+            <p>
+              Organized sections and clearly labelled controls make important
+              pages and platform options easier to find.
+            </p>
+
+          </article>
+
+
+          <article class="card">
+
+            <div
+              class="icon"
+              aria-hidden="true"
+            >
+              🛡️
+            </div>
+
+            <h3>
+              Reliable Access
+            </h3>
+
+            <p>
+              Built-in account and access checks help provide a consistent
+              experience across supported devices and environments.
+            </p>
+
+          </article>
+
+
+          <article class="card">
+
+            <div
+              class="icon"
+              aria-hidden="true"
+            >
+              ⚙️
+            </div>
+
+            <h3>
+              Flexible Settings
+            </h3>
+
+            <p>
+              Adjust interface preferences, layout options, keybinds, and other
+              supported settings to suit your workflow.
+            </p>
+
+          </article>
+
+
+          <article class="card">
+
+            <div
+              class="icon"
+              aria-hidden="true"
+            >
+              💾
+            </div>
+
+            <h3>
+              Saved Preferences
+            </h3>
+
+            <p>
+              Store supported interface and configuration choices so your
+              preferred setup is easier to restore.
+            </p>
+
+          </article>
+
+
+          <article class="card">
+
+            <div
+              class="icon"
+              aria-hidden="true"
+            >
+              🔄
+            </div>
+
+            <h3>
+              Regular Improvements
+            </h3>
+
+            <p>
+              Frequent maintenance, interface refinements, compatibility work,
+              and quality-of-life updates.
+            </p>
+
+          </article>
+
+
+          <article class="card">
+
+            <div
+              class="icon"
+              aria-hidden="true"
+            >
+              🎮
+            </div>
+
+            <h3>
+              Multi-Game Support
+            </h3>
+
+            <p>
+              Access information and platform support for a growing collection
+              of popular Roblox experiences.
+            </p>
+
+          </article>
+
+
+          <article class="card">
+
+            <div
+              class="icon"
+              aria-hidden="true"
+            >
+              📢
+            </div>
+
+            <h3>
+              Update Notifications
+            </h3>
+
+            <p>
+              Stay informed about maintenance, compatibility changes, new
+              releases, and community announcements.
+            </p>
+
+          </article>
+
+
+          <article class="card">
+
+            <div
+              class="icon"
+              aria-hidden="true"
+            >
+              💬
+            </div>
+
+            <h3>
+              Community Support
+            </h3>
+
+            <p>
+              Get assistance, report problems, suggest improvements, and speak
+              with other members through the official community.
+            </p>
+
+          </article>
+
+
+          <article class="card">
+
+            <div
+              class="icon"
+              aria-hidden="true"
+            >
+              ✨
+            </div>
+
+            <h3>
+              Quality-of-Life Tools
+            </h3>
+
+            <p>
+              Helpful interface controls and convenience options designed to
+              make the overall platform easier to use.
+            </p>
+
+          </article>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
     <!-- SUPPORTED GAMES SECTION -->
 
-    <section id="games" class="section section-alt">
+    <section
+      id="games"
+      class="section section-alt"
+    >
 
       <div class="container">
 
@@ -119,7 +472,8 @@
           </h2>
 
           <p>
-            Available for a growing selection of popular Roblox experiences.
+            Platform support is available for a growing selection of popular
+            Roblox experiences.
           </p>
 
         </div>
@@ -129,10 +483,12 @@
 
           <article class="game-card">
 
-            <h3>Blox Fruits</h3>
+            <h3>
+              Demonfall 🌑
+            </h3>
 
             <span>
-              ACTIVE DEVELOPMENT
+              ACTIVE SUPPORT
             </span>
 
           </article>
@@ -140,7 +496,22 @@
 
           <article class="game-card">
 
-            <h3>Da Hood</h3>
+            <h3>
+              Devas of Creation ⚔️
+            </h3>
+
+            <span>
+              REGULAR UPDATES
+            </span>
+
+          </article>
+
+
+          <article class="game-card">
+
+            <h3>
+              Blox Fruits 🍉
+            </h3>
 
             <span>
               COMMUNITY FAVORITE
@@ -151,7 +522,9 @@
 
           <article class="game-card">
 
-            <h3>Anime Adventures</h3>
+            <h3>
+              Jujutsu Infinite 🧿
+            </h3>
 
             <span>
               OPTIMIZED EXPERIENCE
@@ -162,29 +535,9 @@
 
           <article class="game-card">
 
-            <h3>Pet Simulator X</h3>
-
-            <span>
-              FREQUENT UPDATES
-            </span>
-
-          </article>
-
-
-          <article class="game-card">
-
-            <h3>Arsenal</h3>
-
-            <span>
-              PERFORMANCE OPTIMIZED
-            </span>
-
-          </article>
-
-
-          <article class="game-card">
-
-            <h3>Brookhaven</h3>
+            <h3>
+              Haikyuu Legends 🏐
+            </h3>
 
             <span>
               FULLY COMPATIBLE
@@ -195,10 +548,12 @@
 
           <article class="game-card">
 
-            <h3>Murder Mystery 2</h3>
+            <h3>
+              Build a Boat for Treasure ⛵💰
+            </h3>
 
             <span>
-              ENHANCED EXPERIENCE
+              ACTIVELY MAINTAINED
             </span>
 
           </article>
@@ -206,10 +561,116 @@
 
           <article class="game-card">
 
-            <h3>Jailbreak</h3>
+            <h3>
+              Criminality 🕶️
+            </h3>
 
             <span>
-              REGULARLY MAINTAINED
+              LATEST VERSION
+            </span>
+
+          </article>
+
+
+          <article class="game-card">
+
+            <h3>
+              Fisch 🐟
+            </h3>
+
+            <span>
+              PERFORMANCE OPTIMIZED
+            </span>
+
+          </article>
+
+
+          <article class="game-card">
+
+            <h3>
+              Project Delta 🎯
+            </h3>
+
+            <span>
+              STABLE RELEASE
+            </span>
+
+          </article>
+
+
+          <article class="game-card">
+
+            <h3>
+              Anime Kingdom 👑
+            </h3>
+
+            <span>
+              FREQUENT IMPROVEMENTS
+            </span>
+
+          </article>
+
+
+          <article class="game-card">
+
+            <h3>
+              Phantom Forces 🎖️
+            </h3>
+
+            <span>
+              COMMUNITY SUPPORTED
+            </span>
+
+          </article>
+
+
+          <article class="game-card">
+
+            <h3>
+              Dead Rails 🚂
+            </h3>
+
+            <span>
+              REFINED EXPERIENCE
+            </span>
+
+          </article>
+
+
+          <article class="game-card">
+
+            <h3>
+              Spiked 🏐
+            </h3>
+
+            <span>
+              QUALITY UPDATES
+            </span>
+
+          </article>
+
+
+          <article class="game-card">
+
+            <h3>
+              Blue Lock Rivals ⚽
+            </h3>
+
+            <span>
+              ACTIVELY SUPPORTED
+            </span>
+
+          </article>
+
+
+          <article class="game-card">
+
+            <h3>
+              Beaks 🐤
+            </h3>
+
+            <span>
+              GROWING SUPPORT
             </span>
 
           </article>
@@ -219,12 +680,12 @@
 
         <p class="games-note">
 
-          More games are added regularly.
+          More experiences are added regularly.
 
-          Suggest yours through our
+          Suggest one through our
 
           <a href="#community">
-            Discord
+            Discord community
           </a>.
 
         </p>
@@ -246,7 +707,7 @@
         <div class="section-heading">
 
           <span class="eyebrow">
-            UNLOCK FULL ACCESS
+            CHOOSE YOUR ACCESS
           </span>
 
           <h2>
@@ -255,7 +716,8 @@
           </h2>
 
           <p>
-            Choose between monthly access or a one-time lifetime plan.
+            Choose monthly access or make a one-time purchase for permanent
+            access.
           </p>
 
         </div>
@@ -284,11 +746,19 @@
               </li>
 
               <li>
+                Improved Key Verification
+              </li>
+
+              <li>
                 Priority Community Support
               </li>
 
               <li>
-                Regular Updates
+                Regular Platform Updates
+              </li>
+
+              <li>
+                Saved Interface Preferences
               </li>
 
             </ul>
@@ -328,11 +798,15 @@
               </li>
 
               <li>
-                Lifetime Updates
+                Lifetime Platform Updates
               </li>
 
               <li>
-                Early Access to New Releases
+                Early Access to New Interface Releases
+              </li>
+
+              <li>
+                Priority Community Support
               </li>
 
               <li>
@@ -373,7 +847,8 @@
           </span>
 
           <h2>
-            FAQ
+            Frequently Asked
+            <span>Questions</span>
           </h2>
 
         </div>
@@ -388,9 +863,9 @@
             </summary>
 
             <p>
-              Alter Hub is a Roblox development platform built around
-              a clean interface, regular updates, and support for multiple
-              experiences.
+              Alter Hub is a Roblox utility platform with a modern interface,
+              streamlined access system, regular updates, community support,
+              and compatibility information for multiple experiences.
             </p>
 
           </details>
@@ -403,8 +878,23 @@
             </summary>
 
             <p>
-              Choose a plan and continue through the official purchase or
-              community support channel.
+              Choose your preferred access plan and continue through the
+              official purchase or community support channel.
+            </p>
+
+          </details>
+
+
+          <details>
+
+            <summary>
+              How does the key system work?
+            </summary>
+
+            <p>
+              The key system provides a simple verification process. Follow
+              the instructions shown on the official access page to verify your
+              account and continue.
             </p>
 
           </details>
@@ -417,9 +907,9 @@
             </summary>
 
             <p>
-              The currently supported games are displayed in the Supported
-              Games section above. Additional experiences may be added over
-              time.
+              The currently supported experiences are displayed in the
+              Supported Games section above. More may be added through future
+              updates.
             </p>
 
           </details>
@@ -432,8 +922,9 @@
             </summary>
 
             <p>
-              Updates are released when compatibility improvements, new
-              releases, interface changes, or maintenance work is required.
+              Updates are released whenever interface improvements,
+              compatibility changes, maintenance work, or new platform
+              features are ready.
             </p>
 
           </details>
@@ -442,12 +933,42 @@
           <details>
 
             <summary>
-              How do I get Premium?
+              Can I save my settings?
             </summary>
 
             <p>
-              Select your preferred plan and use the official Discord server
-              or purchase channel to complete the process.
+              Supported preferences and interface settings can be saved,
+              helping you return to your preferred layout more easily.
+            </p>
+
+          </details>
+
+
+          <details>
+
+            <summary>
+              Does Alter Hub work on mobile?
+            </summary>
+
+            <p>
+              The website interface is designed to work across desktop, tablet,
+              and mobile screen sizes. Availability of individual platform
+              functions may depend on the supported environment.
+            </p>
+
+          </details>
+
+
+          <details>
+
+            <summary>
+              Where can I get support?
+            </summary>
+
+            <p>
+              Join the official Discord community for announcements,
+              troubleshooting assistance, purchase support, and platform
+              updates.
             </p>
 
           </details>
@@ -460,8 +981,8 @@
             </summary>
 
             <p>
-              Available payment options are shared through the official
-              purchase channel and may differ depending on your location.
+              Available payment methods are listed through the official
+              purchase channel and may vary depending on your location.
             </p>
 
           </details>
@@ -485,7 +1006,7 @@
         <div class="section-heading">
 
           <span class="eyebrow">
-            JOIN US
+            JOIN THE COMMUNITY
           </span>
 
           <h2>
@@ -494,8 +1015,8 @@
           </h2>
 
           <p>
-            Get support, receive updates, and connect with the Alter Hub
-            community.
+            Receive updates, ask questions, suggest improvements, and connect
+            with the Alter Hub community.
           </p>
 
         </div>
@@ -505,7 +1026,10 @@
 
           <article class="community-card">
 
-            <div class="community-icon">
+            <div
+              class="community-icon"
+              aria-hidden="true"
+            >
               💬
             </div>
 
@@ -514,8 +1038,8 @@
             </h3>
 
             <p>
-              Join the community for support, announcements, giveaways,
-              development news, and product updates.
+              Join for support, announcements, giveaways, community
+              discussions, compatibility news, and platform updates.
             </p>
 
             <a
@@ -532,7 +1056,10 @@
 
           <article class="community-card">
 
-            <div class="community-icon">
+            <div
+              class="community-icon"
+              aria-hidden="true"
+            >
               ▶️
             </div>
 
@@ -541,8 +1068,8 @@
             </h3>
 
             <p>
-              Watch tutorials, showcases, previews, development updates,
-              and release videos.
+              Watch interface showcases, setup tutorials, update videos,
+              product previews, and development announcements.
             </p>
 
             <a
@@ -573,12 +1100,15 @@
 
       <div>
 
-        <a class="brand" href="#home">
+        <a
+          class="brand"
+          href="#home"
+        >
           Alter<span>Hub</span>
         </a>
 
         <p>
-          A premium Roblox development experience.
+          A fast, modern, and community-focused Roblox utility platform.
         </p>
 
       </div>
@@ -588,6 +1118,10 @@
 
         <a href="#home">
           Home
+        </a>
+
+        <a href="#features">
+          Features
         </a>
 
         <a href="#games">
@@ -619,11 +1153,11 @@
 
       <div>
 
-        <a href="https://discord.com">
+        <a href="#community">
           Discord
         </a>
 
-        <a href="https://youtube.com">
+        <a href="#community">
           YouTube
         </a>
 
