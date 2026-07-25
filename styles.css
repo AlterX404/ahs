@@ -86,11 +86,6 @@
 .task.locked .task-arrow {
   opacity: 0.4;
 }
-.price {
-  display: flex;
-  align-items: baseline;
-  gap: 14px;
-}
 
 .old-price {
   color: #686868;
