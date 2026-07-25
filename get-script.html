@@ -1141,445 +1141,472 @@
   ></div>
 
 
-  <script>
+    <script>
     (() => {
-      /*
-       * Number of seconds that must pass before a task is completed.
-       * Change 8 to another number if you want a longer or shorter delay.
-       */
-      const WAIT_SECONDS = 8;
+        const WAIT_SECONDS = 8;
 
-      /*
-       * Replace this with the real destination containing your final access
-       * link or script page.
-       */
-      const FINAL_LINK =
+        const FINAL_LINK =
         "https://loot-link.com/s?vIdjVjaM";
 
-      const STORAGE_KEY =
-        "alterHubUnlockProgressV2";
+        const STORAGE_KEY =
+        "alterHubUnlockProgressV3";
 
-      const taskButtons = Array.from(
+        const taskButtons = Array.from(
         document.querySelectorAll(".task")
-      );
+        );
 
-      const progressLabel =
+        const progressLabel =
         document.getElementById("progress-label");
 
-      const progressTrack =
+        const progressTrack =
         document.querySelector(".progress-track");
 
-      const progressBar =
+        const progressBar =
         document.getElementById("progress-bar");
 
-      const finalButton =
+        const finalButton =
         document.getElementById("final-button");
 
-      const finalButtonText =
+        const finalButtonText =
         finalButton.querySelector(".final-text");
 
-      const resetButton =
+        const resetButton =
         document.getElementById("reset-button");
 
-      const toast =
+        const toast =
         document.getElementById("toast");
 
-      let toastTimer = null;
-      let countdownTimer = null;
+        let toastTimer = null;
+        let countdownTimer = null;
 
-      function createEmptyState() {
+        function createEmptyState() {
         return {
-          completed: taskButtons.map(() => false),
-          pendingUntil: taskButtons.map(() => null)
+            completed: taskButtons.map(() => false),
+            pendingUntil: taskButtons.map(() => null)
         };
-      }
+        }
 
-      function normalizeState(value) {
-        const empty = createEmptyState();
+        function normalizeState(value) {
+        const emptyState = createEmptyState();
 
         if (!value || typeof value !== "object") {
-          return empty;
+            return emptyState;
         }
 
         if (
-          Array.isArray(value.completed) &&
-          value.completed.length === taskButtons.length
+            Array.isArray(value.completed) &&
+            value.completed.length === taskButtons.length
         ) {
-          empty.completed =
+            emptyState.completed =
             value.completed.map(Boolean);
         }
 
         if (
-          Array.isArray(value.pendingUntil) &&
-          value.pendingUntil.length === taskButtons.length
+            Array.isArray(value.pendingUntil) &&
+            value.pendingUntil.length === taskButtons.length
         ) {
-          empty.pendingUntil =
+            emptyState.pendingUntil =
             value.pendingUntil.map((timestamp) => {
-              const parsedTimestamp = Number(timestamp);
+                const parsedTimestamp = Number(timestamp);
 
-              return Number.isFinite(parsedTimestamp)
+                return Number.isFinite(parsedTimestamp)
                 ? parsedTimestamp
                 : null;
             });
         }
 
-        return empty;
-      }
+        return emptyState;
+        }
 
-      function loadState() {
+        function loadState() {
         try {
-          const savedValue =
+            const savedValue =
             localStorage.getItem(STORAGE_KEY);
 
-          if (!savedValue) {
+            if (!savedValue) {
             return createEmptyState();
-          }
+            }
 
-          return normalizeState(
+            return normalizeState(
             JSON.parse(savedValue)
-          );
+            );
         } catch (error) {
-          console.warn(
+            console.warn(
             "Could not read saved progress:",
             error
-          );
+            );
 
-          return createEmptyState();
+            return createEmptyState();
         }
-      }
+        }
 
-      let state = loadState();
+        let state = loadState();
 
-      function saveState() {
+        function saveState() {
         try {
-          localStorage.setItem(
+            localStorage.setItem(
             STORAGE_KEY,
             JSON.stringify(state)
-          );
+            );
         } catch (error) {
-          console.warn(
+            console.warn(
             "Could not save progress:",
             error
-          );
+            );
         }
-      }
+        }
 
-      function showToast(message) {
+        function showToast(message) {
         window.clearTimeout(toastTimer);
 
         toast.textContent = message;
         toast.classList.add("visible");
 
         toastTimer = window.setTimeout(() => {
-          toast.classList.remove("visible");
+            toast.classList.remove("visible");
         }, 2500);
-      }
+        }
 
-      function finishExpiredTasks() {
+        function finishExpiredTasks() {
         const currentTime = Date.now();
         let stateChanged = false;
 
         state.pendingUntil.forEach(
-          (completionTime, index) => {
+            (completionTime, index) => {
             if (
-              !state.completed[index] &&
-              completionTime &&
-              currentTime >= completionTime
+                !state.completed[index] &&
+                completionTime &&
+                currentTime >= completionTime
             ) {
-              state.completed[index] = true;
-              state.pendingUntil[index] = null;
-              stateChanged = true;
+                state.completed[index] = true;
+                state.pendingUntil[index] = null;
+                stateChanged = true;
             }
-          }
+            }
         );
 
         if (stateChanged) {
-          saveState();
+            saveState();
         }
 
         return stateChanged;
-      }
+        }
 
-      function updateInterface() {
+        function getActivePendingIndex() {
+        const currentTime = Date.now();
+
+        return state.pendingUntil.findIndex(
+            (completionTime, index) =>
+            !state.completed[index] &&
+            completionTime &&
+            completionTime > currentTime
+        );
+        }
+
+        function updateInterface() {
         finishExpiredTasks();
 
         const currentTime = Date.now();
+        const activePendingIndex =
+            getActivePendingIndex();
+
         let completedCount = 0;
-        let hasPendingTask = false;
 
         taskButtons.forEach((button, index) => {
-          const status =
+            const status =
             button.querySelector(".task-status");
 
-          const isComplete =
+            const isComplete =
             Boolean(state.completed[index]);
 
-          const completionTime =
-            state.pendingUntil[index];
+            const isPending =
+            index === activePendingIndex;
 
-          const isPending =
-            !isComplete &&
-            completionTime &&
-            completionTime > currentTime;
+            const isLocked =
+            activePendingIndex !== -1 &&
+            index !== activePendingIndex &&
+            !isComplete;
 
-          button.classList.toggle(
+            button.classList.toggle(
             "complete",
             isComplete
-          );
+            );
 
-          button.classList.toggle(
+            button.classList.toggle(
             "pending",
-            Boolean(isPending)
-          );
+            isPending
+            );
 
-          if (isComplete) {
+            button.classList.toggle(
+            "locked",
+            isLocked
+            );
+
+            if (isComplete) {
             completedCount += 1;
+
             button.disabled = true;
             status.textContent = "Completed ✓";
 
             button.style.setProperty(
-              "--wait-progress",
-              "100%"
+                "--wait-progress",
+                "100%"
             );
 
             return;
-          }
+            }
 
-          if (isPending) {
-            hasPendingTask = true;
-            button.disabled = true;
+            if (isPending) {
+            const completionTime =
+                state.pendingUntil[index];
 
             const millisecondsRemaining =
-              completionTime - currentTime;
+                completionTime - currentTime;
 
             const secondsRemaining =
-              Math.max(
+                Math.max(
                 1,
                 Math.ceil(millisecondsRemaining / 1000)
-              );
+                );
 
             const totalMilliseconds =
-              WAIT_SECONDS * 1000;
+                WAIT_SECONDS * 1000;
 
             const millisecondsPassed =
-              totalMilliseconds - millisecondsRemaining;
+                totalMilliseconds - millisecondsRemaining;
 
             const waitPercentage =
-              Math.max(
+                Math.max(
                 0,
                 Math.min(
-                  100,
-                  (
+                    100,
+                    (
                     millisecondsPassed /
                     totalMilliseconds
-                  ) * 100
+                    ) * 100
                 )
-              );
+                );
+
+            button.disabled = true;
 
             status.textContent =
-              `Completing in ${secondsRemaining}s`;
+                `Completing in ${secondsRemaining}s`;
 
             button.style.setProperty(
-              "--wait-progress",
-              `${waitPercentage}%`
+                "--wait-progress",
+                `${waitPercentage}%`
             );
 
             return;
-          }
+            }
 
-          button.disabled = false;
-          status.textContent = "Open step";
+            if (isLocked) {
+            button.disabled = true;
 
-          button.style.setProperty(
+            status.textContent =
+                "Finish current step first";
+
+            button.style.setProperty(
+                "--wait-progress",
+                "0%"
+            );
+
+            return;
+            }
+
+            button.disabled = false;
+            status.textContent = "Open step";
+
+            button.style.setProperty(
             "--wait-progress",
             "0%"
-          );
+            );
         });
 
         const totalTasks =
-          taskButtons.length;
+            taskButtons.length;
 
         const percentage =
-          totalTasks === 0
+            totalTasks === 0
             ? 0
             : (
                 completedCount /
                 totalTasks
-              ) * 100;
+                ) * 100;
 
         progressLabel.textContent =
-          `Steps Completed ${completedCount}/${totalTasks}`;
+            `Steps Completed ${completedCount}/${totalTasks}`;
 
         progressBar.style.width =
-          `${percentage}%`;
+            `${percentage}%`;
 
         progressTrack.setAttribute(
-          "aria-valuemax",
-          String(totalTasks)
+            "aria-valuemax",
+            String(totalTasks)
         );
 
         progressTrack.setAttribute(
-          "aria-valuenow",
-          String(completedCount)
+            "aria-valuenow",
+            String(completedCount)
         );
 
         const allComplete =
-          totalTasks > 0 &&
-          completedCount === totalTasks;
+            totalTasks > 0 &&
+            completedCount === totalTasks;
 
         finalButton.disabled =
-          !allComplete;
+            !allComplete;
 
         finalButton.classList.toggle(
-          "unlocked",
-          allComplete
+            "unlocked",
+            allComplete
         );
 
         if (allComplete) {
-          finalButtonText.textContent =
+            finalButtonText.textContent =
             "Get Your Script";
-        } else if (hasPendingTask) {
-          finalButtonText.textContent =
-            "Waiting for Steps";
+        } else if (activePendingIndex !== -1) {
+            finalButtonText.textContent =
+            "Waiting for Current Step";
         } else {
-          finalButtonText.textContent =
+            finalButtonText.textContent =
             "Complete All Steps";
         }
-      }
+        }
 
-      function beginCountdown() {
+        function beginCountdown() {
         if (countdownTimer) {
-          window.clearInterval(
-            countdownTimer
-          );
+            window.clearInterval(countdownTimer);
         }
 
         countdownTimer =
-          window.setInterval(() => {
+            window.setInterval(() => {
             const completedBefore =
-              state.completed.filter(Boolean).length;
+                state.completed.filter(Boolean).length;
 
             updateInterface();
 
             const completedAfter =
-              state.completed.filter(Boolean).length;
+                state.completed.filter(Boolean).length;
+
+            if (completedAfter > completedBefore) {
+                showToast(
+                "Task completed. You may start the next step."
+                );
+            }
+            }, 250);
+        }
+
+        taskButtons.forEach((button, index) => {
+        button.addEventListener("click", () => {
+            const activePendingIndex =
+            getActivePendingIndex();
 
             if (
-              completedAfter >
-              completedBefore
+            activePendingIndex !== -1 &&
+            activePendingIndex !== index
             ) {
-              showToast(
-                "Task completed successfully."
-              );
-            }
-          }, 250);
-      }
+            showToast(
+                "Please wait for the current step to finish."
+            );
 
-      taskButtons.forEach((button, index) => {
-        button.addEventListener("click", () => {
-          if (
+            return;
+            }
+
+            if (
             state.completed[index] ||
             (
-              state.pendingUntil[index] &&
-              state.pendingUntil[index] >
-                Date.now()
+                state.pendingUntil[index] &&
+                state.pendingUntil[index] > Date.now()
             )
-          ) {
+            ) {
             return;
-          }
+            }
 
-          const url =
+            const url =
             button.dataset.url;
 
-          if (url) {
+            if (url) {
             window.open(
-              url,
-              "_blank",
-              "noopener,noreferrer"
+                url,
+                "_blank",
+                "noopener,noreferrer"
             );
-          }
+            }
 
-          state.pendingUntil[index] =
+            /*
+            * Clear any old pending values so only one task
+            * can ever be active at a time.
+            */
+            state.pendingUntil =
+            state.pendingUntil.map(() => null);
+
+            state.pendingUntil[index] =
             Date.now() +
             WAIT_SECONDS * 1000;
 
-          saveState();
-          updateInterface();
+            saveState();
+            updateInterface();
 
-          showToast(
+            showToast(
             `Task opened. Please wait ${WAIT_SECONDS} seconds.`
-          );
+            );
         });
-      });
+        });
 
-      finalButton.addEventListener(
+        finalButton.addEventListener(
         "click",
         () => {
-          if (finalButton.disabled) {
+            if (finalButton.disabled) {
             showToast(
-              "Complete every step before continuing."
+                "Complete every step before continuing."
             );
 
             return;
-          }
+            }
 
-          if (
-            FINAL_LINK.includes(
-              "replace-with-your-final-script-link"
-            )
-          ) {
-            showToast(
-              "Replace FINAL_LINK with your final destination."
-            );
-
-            return;
-          }
-
-          window.location.href =
+            window.location.href =
             FINAL_LINK;
         }
-      );
+        );
 
-      resetButton.addEventListener(
+        resetButton.addEventListener(
         "click",
         () => {
-          const shouldReset =
+            const shouldReset =
             window.confirm(
-              "Reset all saved progress for this page?"
+                "Reset all saved progress for this page?"
             );
 
-          if (!shouldReset) {
+            if (!shouldReset) {
             return;
-          }
+            }
 
-          state = createEmptyState();
-          saveState();
-          updateInterface();
+            state = createEmptyState();
 
-          showToast(
+            saveState();
+            updateInterface();
+
+            showToast(
             "Progress has been reset."
-          );
+            );
         }
-      );
+        );
 
-      document.addEventListener(
+        document.addEventListener(
         "visibilitychange",
-        () => {
-          updateInterface();
-        }
-      );
+        updateInterface
+        );
 
-      window.addEventListener(
+        window.addEventListener(
         "focus",
-        () => {
-          updateInterface();
-        }
-      );
+        updateInterface
+        );
 
-      updateInterface();
-      beginCountdown();
+        updateInterface();
+        beginCountdown();
     })();
-  </script>
+    </script>
 
 </body>
 </html>
