@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <meta
+    name="theme-color"
+    content="#ffffff"
+  />
+
+  <meta
+    name="description"
+    content="Complete the Alter Hub access steps to continue."
+  />
+
+  <title>Get Script | Alter Hub</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --red: #b10808;
+      --red-light: #d31818;
+      --red-dark: #830505;
+      --black: #080808;
+      --text: #121212;
+      --muted: #707070;
+      --border: #e8e8e8;
+      --soft-background: #f6f6f7;
+      --success: #16883f;
+      --container: 780px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(
+          circle at 50% 30%,
+          rgba(177, 8, 8, 0.06),
+          transparent 34%
+        ),
+        #ffffff;
+      color: var(--text);
+      font-family: "Inter", sans-serif;
+    }
+
+    button,
+    a {
+      font: inherit;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* HEADER */
+
+    .site-header {
+      width: 100%;
+      min-height: 86px;
+      display: flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.94);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.04);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(14px);
+    }
+
+    .header-inner {
+      width: min(1180px, calc(100% - 40px));
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 27px;
+      font-weight: 900;
+      letter-spacing: -1.2px;
+      color: var(--black);
+    }
+
+    .brand span {
+      color: var(--red);
+    }
+
+    .brand-icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      color: white;
+      background:
+        linear-gradient(
+          145deg,
+          var(--red-light),
+          var(--red-dark)
+        );
+      border-radius: 12px;
+      box-shadow: 0 8px 18px rgba(177, 8, 8, 0.22);
+    }
+
+    .brand-icon svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #555;
+      font-size: 14px;
+      font-weight: 700;
+      transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    .back-link:hover {
+      color: var(--red);
+      transform: translateX(-3px);
+    }
+
+    /* PAGE */
+
+    .page {
+      padding: 58px 20px 80px;
+    }
+
+    .unlock-container {
+      width: min(var(--container), 100%);
+      margin: 0 auto;
+    }
+
+    .page-heading {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 22px;
+      margin-bottom: 17px;
+      color: var(--red);
+      background: rgba(177, 8, 8, 0.08);
+      border: 1px solid rgba(177, 8, 8, 0.1);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .page-heading h1 {
+      margin-bottom: 12px;
+      color: var(--black);
+      font-size: clamp(34px, 6vw, 52px);
+      font-weight: 900;
+      letter-spacing: -2px;
+      line-height: 1.05;
+    }
+
+    .page-heading h1 span {
+      color: var(--red);
+    }
+
+    .page-heading p {
+      max-width: 590px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    /* TASKS */
+
+    .tasks {
+      display: grid;
+      gap: 13px;
+    }
+
+    .task {
+      width: 100%;
+      min-height: 72px;
+      display: grid;
+      grid-template-columns: 54px 1fr 42px;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 18px;
+      color: white;
+      text-align: left;
+      cursor: pointer;
+      background:
+        linear-gradient(
+          100deg,
+          var(--red),
+          var(--red-light)
+        );
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 17px;
+      box-shadow:
+        0 12px 25px rgba(177, 8, 8, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        opacity 0.2s ease;
+    }
+
+    .task:hover {
+      transform: translateY(-3px);
+      box-shadow:
+        0 18px 34px rgba(177, 8, 8, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.14);
+    }
+
+    .task:active {
+      transform: translateY(0) scale(0.99);
+    }
+
+    .task-icon {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      background: rgba(0, 0, 0, 0.15);
+      border-radius: 12px;
+    }
+
+    .task-icon svg {
+      width: 23px;
+      height: 23px;
+      fill: currentColor;
+    }
+
+    .task-text {
+      min-width: 0;
+      text-align: center;
+    }
+
+    .task-title {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .task-status {
+      display: block;
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .task-arrow {
+      display: grid;
+      place-items: center;
+      font-size: 25px;
+      font-weight: 900;
+      transition: transform 0.2s ease;
+    }
+
+    .task:hover .task-arrow {
+      transform: translateX(4px);
+    }
+
+    .task.complete {
+      background:
+        linear-gradient(
+          100deg,
+          #0c7633,
+          var(--success)
+        );
+      box-shadow:
+        0 12px 25px rgba(22, 136, 63, 0.17),
+        inset 0 1px 0 rgba(255, 255, 255, 0.13);
+    }
+
+    .task.complete .task-status {
+      color: rgba(255, 255, 255, 0.88);
+    }
+
+    /* PROGRESS */
+
+    .progress-section {
+      margin-top: 31px;
+      text-align: center;
+    }
+
+    .progress-label {
+      margin-bottom: 11px;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .progress-track {
+      width: 74%;
+      height: 10px;
+      margin: 0 auto;
+      overflow: hidden;
+      background: #e5e7eb;
+      border-radius: 999px;
+    }
+
+    .progress-bar {
+      width: 0;
+      height: 100%;
+      background:
+        linear-gradient(
+          90deg,
+          var(--red),
+          #ef3232
+        );
+      border-radius: inherit;
+      transition: width 0.45s ease;
+    }
+
+    /* FINAL BUTTON */
+
+    .final-button {
+      width: 100%;
+      min-height: 70px;
+      display: grid;
+      grid-template-columns: 48px 1fr 38px;
+      align-items: center;
+      gap: 12px;
+      margin-top: 25px;
+      padding: 10px 18px;
+      color: white;
+      cursor: not-allowed;
+      background:
+        linear-gradient(
+          100deg,
+          #7b7b7b,
+          #a7a7a7
+        );
+      border: none;
+      border-radius: 17px;
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+      opacity: 0.58;
+      transition:
+        opacity 0.25s ease,
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
+    }
+
+    .final-button.unlocked {
+      cursor: pointer;
+      opacity: 1;
+      background:
+        linear-gradient(
+          100deg,
+          #7322c8,
+          #477bea
+        );
+      box-shadow: 0 15px 32px rgba(87, 76, 215, 0.26);
+    }
+
+    .final-button.unlocked:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 20px 38px rgba(87, 76, 215, 0.34);
+    }
+
+    .final-icon {
+      display: grid;
+      place-items: center;
+    }
+
+    .final-icon svg {
+      width: 24px;
+      height: 24px;
+      fill: currentColor;
+    }
+
+    .final-text {
+      text-align: center;
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .final-arrow {
+      font-size: 25px;
+      font-weight: 900;
+    }
+
+    /* INFO */
+
+    .information {
+      margin-top: 22px;
+      padding: 18px 20px;
+      color: #666;
+      text-align: center;
+      background: var(--soft-background);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    .reset-button {
+      margin-top: 16px;
+      color: #777;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    .reset-button:hover {
+      color: var(--red);
+    }
+
+    /* TOAST */
+
+    .toast {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 200;
+      max-width: min(350px, calc(100% - 44px));
+      padding: 14px 18px;
+      color: white;
+      pointer-events: none;
+      background: #151515;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+      opacity: 0;
+      transform: translateY(15px);
+      transition:
+        opacity 0.25s ease,
+        transform 0.25s ease;
+    }
+
+    .toast.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 650px) {
+      .site-header {
+        min-height: 72px;
+      }
+
+      .header-inner {
+        width: min(100% - 26px, 1180px);
+      }
+
+      .brand {
+        font-size: 22px;
+      }
+
+      .brand-icon {
+        width: 37px;
+        height: 37px;
+      }
+
+      .back-link span {
+        display: none;
+      }
+
+      .page {
+        padding: 43px 14px 60px;
+      }
+
+      .page-heading {
+        margin-bottom: 27px;
+      }
+
+      .page-heading h1 {
+        letter-spacing: -1.4px;
+      }
+
+      .page-heading p {
+        font-size: 13px;
+      }
+
+      .task {
+        min-height: 69px;
+        grid-template-columns: 46px 1fr 30px;
+        padding: 9px 12px;
+        border-radius: 14px;
+      }
+
+      .task-icon {
+        width: 40px;
+        height: 40px;
+      }
+
+      .task-title {
+        font-size: 14px;
+      }
+
+      .task-status {
+        font-size: 9px;
+      }
+
+      .progress-track {
+        width: 90%;
+      }
+
+      .final-button {
+        min-height: 67px;
+        grid-template-columns: 40px 1fr 28px;
+        padding: 9px 13px;
+        border-radius: 14px;
+      }
+
+      .final-text {
+        font-size: 15px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="site-header">
+
+    <div class="header-inner">
+
+      <a
+        class="brand"
+        href="index.html"
+        aria-label="Return to Alter Hub"
+      >
+
+        <span class="brand-icon" aria-hidden="true">
+
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M12.92 2.62a1 1 0 0 0-1.84 0L2.17 22h4.06l1.9-4.54h7.75L17.77 22h4.06L12.92 2.62Zm-3.35 11.4L12 8.19l2.43 5.83H9.57Z"
+            />
+          </svg>
+
+        </span>
+
+        <span>
+          Alter<span>Hub</span>
+        </span>
+
+      </a>
+
+      <a
+        class="back-link"
+        href="index.html"
+      >
+        ←
+        <span>Back to Home</span>
+      </a>
+
+    </div>
+
+  </header>
+
+
+  <main class="page">
+
+    <div class="unlock-container">
+
+      <div class="page-heading">
+
+        <span class="eyebrow">
+          Complete All Steps Below
+        </span>
+
+        <h1>
+          Unlock Your
+          <span>Access</span>
+        </h1>
+
+        <p>
+          Open each step below to complete the access process. Your progress
+          is saved automatically on this device.
+        </p>
+
+      </div>
+
+
+      <div
+        class="tasks"
+        id="tasks"
+      >
+
+        <!-- STEP 1 -->
+
+        <button
+          class="task"
+          type="button"
+          data-task="0"
+          data-url="https://www.youtube.com/@alter-x9749?sub_confirmation=1"
+        >
+
+          <span class="task-icon" aria-hidden="true">
+
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M23.5 6.2a3 3 0 0 0-2.1-2.12C19.55 3.58 12 3.58 12 3.58s-7.55 0-9.4.5A3 3 0 0 0 .5 6.2 31.9 31.9 0 0 0 0 12a31.9 31.9 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.12c1.85.5 9.4.5 9.4.5s7.55 0 9.4-.5a3 3 0 0 0 2.1-2.12A31.9 31.9 0 0 0 24 12a31.9 31.9 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.25 3.6-6.25 3.6Z"
+              />
+            </svg>
+
+          </span>
+
+          <span class="task-text">
+
+            <span class="task-title">
+              Visit Alter Hub on YouTube
+            </span>
+
+            <span class="task-status">
+              Open step
+            </span>
+
+          </span>
+
+          <span class="task-arrow" aria-hidden="true">
+            →
+          </span>
+
+        </button>
+
+
+        <!-- STEP 2 -->
+
+        <button
+          class="task"
+          type="button"
+          data-task="1"
+          data-url="https://www.youtube.com/@alter-x9749/videos"
+        >
+
+          <span class="task-icon" aria-hidden="true">
+
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M1 21h4V9H1v12Zm22-11a2 2 0 0 0-2-2h-6.31l.95-4.57.03-.32a1.5 1.5 0 0 0-.44-1.06L14.17 1 7.59 7.59A2 2 0 0 0 7 9v10a2 2 0 0 0 2 2h9a2 2 0 0 0 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2Z"
+              />
+            </svg>
+
+          </span>
+
+          <span class="task-text">
+
+            <span class="task-title">
+              View the Latest Showcase
+            </span>
+
+            <span class="task-status">
+              Open step
+            </span>
+
+          </span>
+
+          <span class="task-arrow" aria-hidden="true">
+            →
+          </span>
+
+        </button>
+
+
+        <!-- STEP 3 -->
+
+        <button
+          class="task"
+          type="button"
+          data-task="2"
+          data-url="https://www.youtube.com/@alter-x9749/videos"
+        >
+
+          <span class="task-icon" aria-hidden="true">
+
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M1 21h4V9H1v12Zm22-11a2 2 0 0 0-2-2h-6.31l.95-4.57.03-.32a1.5 1.5 0 0 0-.44-1.06L14.17 1 7.59 7.59A2 2 0 0 0 7 9v10a2 2 0 0 0 2 2h9a2 2 0 0 0 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2Z"
+              />
+            </svg>
+
+          </span>
+
+          <span class="task-text">
+
+            <span class="task-title">
+              View the Setup Guide
+            </span>
+
+            <span class="task-status">
+              Open step
+            </span>
+
+          </span>
+
+          <span class="task-arrow" aria-hidden="true">
+            →
+          </span>
+
+        </button>
+
+
+        <!-- STEP 4 -->
+
+        <button
+          class="task"
+          type="button"
+          data-task="3"
+          data-url="https://www.youtube.com/@alter-x9749/videos"
+        >
+
+          <span class="task-icon" aria-hidden="true">
+
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M1 21h4V9H1v12Zm22-11a2 2 0 0 0-2-2h-6.31l.95-4.57.03-.32a1.5 1.5 0 0 0-.44-1.06L14.17 1 7.59 7.59A2 2 0 0 0 7 9v10a2 2 0 0 0 2 2h9a2 2 0 0 0 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2Z"
+              />
+            </svg>
+
+          </span>
+
+          <span class="task-text">
+
+            <span class="task-title">
+              View the Update Video
+            </span>
+
+            <span class="task-status">
+              Open step
+            </span>
+
+          </span>
+
+          <span class="task-arrow" aria-hidden="true">
+            →
+          </span>
+
+        </button>
+
+
+        <!-- STEP 5 -->
+
+        <button
+          class="task"
+          type="button"
+          data-task="4"
+          data-url="https://discord.gg/nzyb2QxYjn"
+        >
+
+          <span class="task-icon" aria-hidden="true">
+
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M20.32 4.37A19.8 19.8 0 0 0 15.44 3l-.6 1.2a18.5 18.5 0 0 0-5.68 0L8.56 3a19.7 19.7 0 0 0-4.88 1.38C.6 8.92-.23 13.35.18 17.72a19.9 19.9 0 0 0 5.99 3.03l1.46-2a12.7 12.7 0 0 1-2.3-1.1l.57-.44c4.44 2.07 9.25 2.07 13.64 0l.58.44c-.74.44-1.52.8-2.31 1.1l1.46 2a19.8 19.8 0 0 0 5.99-3.03c.48-5.07-.82-9.46-2.94-13.35ZM8.02 15.06c-1.32 0-2.4-1.22-2.4-2.72s1.05-2.73 2.4-2.73 2.42 1.23 2.4 2.73c0 1.5-1.06 2.72-2.4 2.72Zm7.96 0c-1.32 0-2.4-1.22-2.4-2.72s1.06-2.73 2.4-2.73 2.42 1.23 2.4 2.73c0 1.5-1.05 2.72-2.4 2.72Z"
+              />
+            </svg>
+
+          </span>
+
+          <span class="task-text">
+
+            <span class="task-title">
+              Visit the Discord Community
+            </span>
+
+            <span class="task-status">
+              Open step
+            </span>
+
+          </span>
+
+          <span class="task-arrow" aria-hidden="true">
+            →
+          </span>
+
+        </button>
+
+
+        <!-- STEP 6 -->
+
+        <button
+          class="task"
+          type="button"
+          data-task="5"
+          data-url="https://alterhub.online/#games"
+        >
+
+          <span class="task-icon" aria-hidden="true">
+
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M13 3a9 9 0 1 0 8.49 12H18.3A6 6 0 1 1 13 6v3l5-4-5-4v2Z"
+              />
+            </svg>
+
+          </span>
+
+          <span class="task-text">
+
+            <span class="task-title">
+              Review Supported Experiences
+            </span>
+
+            <span class="task-status">
+              Open step
+            </span>
+
+          </span>
+
+          <span class="task-arrow" aria-hidden="true">
+            →
+          </span>
+
+        </button>
+
+      </div>
+
+
+      <section
+        class="progress-section"
+        aria-label="Unlock progress"
+      >
+
+        <p
+          class="progress-label"
+          id="progress-label"
+          aria-live="polite"
+        >
+          Steps Completed 0/6
+        </p>
+
+        <div
+          class="progress-track"
+          role="progressbar"
+          aria-valuemin="0"
+          aria-valuemax="6"
+          aria-valuenow="0"
+          aria-labelledby="progress-label"
+        >
+
+          <div
+            class="progress-bar"
+            id="progress-bar"
+          ></div>
+
+        </div>
+
+      </section>
+
+
+      <button
+        class="final-button"
+        id="final-button"
+        type="button"
+        disabled
+      >
+
+        <span class="final-icon" aria-hidden="true">
+
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M3.9 12a5 5 0 0 1 5-5H12v2H8.9a3 3 0 1 0 0 6H12v2H8.9a5 5 0 0 1-5-5Zm5-1h6.2v2H8.9v-2Zm6.2-4H12V5h3.1a7 7 0 1 1 0 14H12v-2h3.1a5 5 0 1 0 0-10Z"
+            />
+          </svg>
+
+        </span>
+
+        <span class="final-text">
+          Complete All Steps
+        </span>
+
+        <span class="final-arrow" aria-hidden="true">
+          →
+        </span>
+
+      </button>
+
+
+      <div class="information">
+
+        This page records when each task button is opened. A normal webpage
+        cannot independently verify a YouTube subscription, like, or comment
+        without authorized platform integration.
+
+        <br />
+
+        <button
+          class="reset-button"
+          id="reset-button"
+          type="button"
+        >
+          Reset saved progress
+        </button>
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <div
+    class="toast"
+    id="toast"
+    role="status"
+    aria-live="polite"
+  ></div>
+
+
+  <script>
+    (() => {
+      /*
+       * Replace this with the final page containing your script or access key.
+       */
+      const FINAL_LINK =
+        "https://example.com/replace-with-your-final-script-link";
+
+      const STORAGE_KEY = "alterHubUnlockProgressV1";
+
+      const taskButtons = Array.from(
+        document.querySelectorAll(".task")
+      );
+
+      const progressLabel =
+        document.getElementById("progress-label");
+
+      const progressTrack =
+        document.querySelector(".progress-track");
+
+      const progressBar =
+        document.getElementById("progress-bar");
+
+      const finalButton =
+        document.getElementById("final-button");
+
+      const finalButtonText =
+        finalButton.querySelector(".final-text");
+
+      const resetButton =
+        document.getElementById("reset-button");
+
+      const toast =
+        document.getElementById("toast");
+
+      let toastTimer;
+
+      function createEmptyProgress() {
+        return taskButtons.map(() => false);
+      }
+
+      function loadProgress() {
+        try {
+          const saved =
+            JSON.parse(localStorage.getItem(STORAGE_KEY));
+
+          if (
+            Array.isArray(saved) &&
+            saved.length === taskButtons.length
+          ) {
+            return saved.map(Boolean);
+          }
+        } catch (error) {
+          console.warn("Could not read saved progress:", error);
+        }
+
+        return createEmptyProgress();
+      }
+
+      let progress = loadProgress();
+
+      function saveProgress() {
+        try {
+          localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(progress)
+          );
+        } catch (error) {
+          console.warn("Could not save progress:", error);
+        }
+      }
+
+      function showToast(message) {
+        window.clearTimeout(toastTimer);
+
+        toast.textContent = message;
+        toast.classList.add("visible");
+
+        toastTimer = window.setTimeout(() => {
+          toast.classList.remove("visible");
+        }, 2400);
+      }
+
+      function updateInterface() {
+        let completed = 0;
+
+        taskButtons.forEach((button, index) => {
+          const status =
+            button.querySelector(".task-status");
+
+          const isComplete = Boolean(progress[index]);
+
+          button.classList.toggle(
+            "complete",
+            isComplete
+          );
+
+          status.textContent =
+            isComplete ? "Completed ✓" : "Open step";
+
+          if (isComplete) {
+            completed += 1;
+          }
+        });
+
+        const total = taskButtons.length;
+        const percentage =
+          total === 0 ? 0 : (completed / total) * 100;
+
+        progressLabel.textContent =
+          `Steps Completed ${completed}/${total}`;
+
+        progressBar.style.width =
+          `${percentage}%`;
+
+        progressTrack.setAttribute(
+          "aria-valuemax",
+          String(total)
+        );
+
+        progressTrack.setAttribute(
+          "aria-valuenow",
+          String(completed)
+        );
+
+        const allComplete =
+          total > 0 && completed === total;
+
+        finalButton.disabled = !allComplete;
+
+        finalButton.classList.toggle(
+          "unlocked",
+          allComplete
+        );
+
+        finalButtonText.textContent =
+          allComplete
+            ? "Get Your Script"
+            : "Complete All Steps";
+      }
+
+      taskButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const taskIndex =
+            Number(button.dataset.task);
+
+          const url =
+            button.dataset.url;
+
+          if (url) {
+            window.open(
+              url,
+              "_blank",
+              "noopener,noreferrer"
+            );
+          }
+
+          if (
+            Number.isInteger(taskIndex) &&
+            taskIndex >= 0 &&
+            taskIndex < progress.length
+          ) {
+            progress[taskIndex] = true;
+            saveProgress();
+            updateInterface();
+
+            showToast(
+              "Step marked as completed."
+            );
+          }
+        });
+      });
+
+      finalButton.addEventListener("click", () => {
+        if (finalButton.disabled) {
+          showToast(
+            "Complete every step before continuing."
+          );
+
+          return;
+        }
+
+        if (
+          FINAL_LINK.includes(
+            "replace-with-your-final-script-link"
+          )
+        ) {
+          showToast(
+            "Replace FINAL_LINK in the HTML with your final destination."
+          );
+
+          return;
+        }
+
+        window.location.href = FINAL_LINK;
+      });
+
+      resetButton.addEventListener("click", () => {
+        const shouldReset = window.confirm(
+          "Reset all saved progress for this page?"
+        );
+
+        if (!shouldReset) return;
+
+        progress = createEmptyProgress();
+        saveProgress();
+        updateInterface();
+
+        showToast("Progress has been reset.");
+      });
+
+      updateInterface();
+    })();
+  </script>
+
+</body>
+</html>
