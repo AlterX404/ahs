@@ -86,11 +86,3 @@
 .task.locked .task-arrow {
   opacity: 0.4;
 }
-
-.old-price {
-  color: #686868;
-  font-size: 24px;
-  text-decoration: line-through !important;
-  text-decoration-color: #8d1515;
-  text-decoration-thickness: 2px;
-}
