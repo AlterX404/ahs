@@ -94,3 +94,5 @@ if (heroSection && heroTilt) {
     heroTilt.style.setProperty("--hero-rotate-y", "0deg");
   });
 }
+const FINAL_LINK =
+  "https://sub4unlock.com/S/Z4d18";
