@@ -740,42 +740,6 @@
 
 
 
-
-
-    /* Cursor-following movement for all headings */
-
-    .heading-tilt-target {
-    perspective: 500px;
-    }
-
-    .heading-tilt-inner {
-    display: inline-block;
-    transform:
-        rotateX(var(--heading-rotate-x, 0deg))
-        rotateY(var(--heading-rotate-y, 0deg));
-    transform-origin: center center;
-    transform-style: preserve-3d;
-    transition: transform 0.08s ease-out;
-    will-change: transform;
-    }
-
-    .heading-tilt-target:not(.heading-is-tracking)
-    .heading-tilt-inner {
-    transition: transform 0.45s ease;
-    }
-
-    @media (hover: none), (pointer: coarse) {
-    .heading-tilt-inner {
-        transform: none;
-    }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-    .heading-tilt-inner {
-        transform: none;
-        transition: none;
-    }
-    }
   </style>
 </head>
 
