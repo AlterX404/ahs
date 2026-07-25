@@ -40,6 +40,10 @@
     rel="stylesheet"
     href="premium.css"
   >
+
+  <script 
+  src="https://www.paypal.com/sdk/js?client-id=BAA_xc_bFzIU_CVMLm-rNFQ84VC1RJQ1DUoSxTb-uGuL0mvIGsz8gGP1G6H9npeJEdSm4GgQNKdZTnd8J4&components=hosted-buttons&disable-funding=venmo&currency=USD">
+  </script>
 </head>
 
 <body>
@@ -619,6 +623,12 @@
             </span>
 
             <div>
+              <div id="paypal-container-E6G8XUCHW7SU8"></div>
+              <script>
+                 paypal.HostedButtons({
+                    hostedButtonId: "E6G8XUCHW7SU8",
+                 }).render("#paypal-container-E6G8XUCHW7SU8")
+              </script>
 
               <strong id="provider-name">
                 PayPal &amp; Cards
