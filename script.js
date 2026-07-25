@@ -96,4 +96,3 @@ if (heroSection && heroTilt) {
 }
 const FINAL_LINK =
   "https://loot-link.com/s?vIdjVjaM";
-
