@@ -119,7 +119,10 @@ const featureTwo =
 const featureThree =
   document.querySelector("#feature-three");
 
-
+const descriptionAnimationItems =
+  document.querySelectorAll(
+    ".product-heading > *, .feature-strip > div"
+  );
 /* CREATE CHECKOUT LINK */
 
 function getCheckoutUrl() {
@@ -228,34 +231,22 @@ function updateCheckout() {
 
 planButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    const newPlan =
-      button.dataset.plan;
+    const newPlan = button.dataset.plan;
 
-    if (!plans[newPlan]) {
+    if (newPlan === selectedPlan) {
       return;
     }
 
     selectedPlan = newPlan;
 
-    /*
-      Changes the URL to:
-
-      premium.html#monthly
-      premium.html#lifetime
-
-      If your hosting removes .html, it will appear as:
-
-      premium#monthly
-      premium#lifetime
-    */
-
     history.pushState(
-      { plan: selectedPlan },
+      null,
       "",
       `#${selectedPlan}`
     );
 
     updateCheckout();
+    playDescriptionAnimation();
   });
 });
 
@@ -389,3 +380,20 @@ if (plans[initialPlan]) {
 }
 
 updateCheckout();
+function playDescriptionAnimation() {
+  descriptionAnimationItems.forEach((item, index) => {
+    item.classList.remove("plan-pop");
+
+    item.style.setProperty(
+      "--plan-pop-delay",
+      `${Math.min(index * 70, 280)}ms`
+    );
+  });
+
+  // Restarts the animation.
+  void document.body.offsetWidth;
+
+  descriptionAnimationItems.forEach((item) => {
+    item.classList.add("plan-pop");
+  });
+}
