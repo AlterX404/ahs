@@ -1,399 +1,405 @@
+"use strict";
+
+/*
+|--------------------------------------------------------------------------
+| ALTER HUB PREMIUM CHECKOUT
+|--------------------------------------------------------------------------
+|
+| Lifetime PayPal Hosted Button:
+| E6G8XUCHW7SU8
+|
+| Replace REPLACE_WITH_MONTHLY_BUTTON_ID with the hosted button ID
+| generated for the $9.99 Monthly product inside PayPal.
+|
+*/
+
+const PAYPAL_BUTTON_IDS = {
+  lifetime: "E6G8XUCHW7SU8",
+  monthly: "REPLACE_WITH_MONTHLY_BUTTON_ID"
+};
+
 const plans = {
   lifetime: {
     label: "Lifetime Access",
-    price: 34.99,
-    link: "https://alter.sell.app/product/alterhubkeys",
-
+    price: "$34.99",
+    breakdown: "One-time payment",
     eyebrow: "LIFETIME ACCESS",
-    title: "One purchase.",
     titleAccent: "Access for life.",
-
     description:
-      "Make one payment and receive permanent Alter Hub premium access, including all future platform updates and priority support.",
-
+      "Make one payment and receive permanent Alter Hub premium access, including future platform updates and priority support.",
     features: [
       "Permanent access",
-      "Future updates included",
+      "Future updates",
       "Best long-term value"
     ]
   },
 
   monthly: {
     label: "Monthly Access",
-    price: 9.99,
-    link:
-      "https://alter.sell.app/product/alterhubkeys?variant=368188",
-
+    price: "$9.99",
+    breakdown: "30 days of premium access",
     eyebrow: "MONTHLY ACCESS",
-    title: "Full premium.",
-    titleAccent: "Flexible monthly access.",
-
+    titleAccent: "Premium for 30 days.",
     description:
-      "Get complete Alter Hub premium access for one month with all current features, regular updates, and priority community support.",
-
+      "Unlock all Alter Hub premium features for 30 days with a flexible plan you can renew whenever you need it.",
     features: [
-      "Complete premium access",
-      "Flexible monthly plan",
-      "Priority support"
+      "30-day premium access",
+      "All premium features",
+      "Flexible renewal"
     ]
   }
 };
 
 
+/*
+|--------------------------------------------------------------------------
+| ELEMENTS
+|--------------------------------------------------------------------------
+*/
+
+const planButtons = document.querySelectorAll(".plan-card");
+const termsCheckbox = document.querySelector("#terms-checkbox");
+const termsHint = document.querySelector("#terms-hint");
+const paypalCheckout = document.querySelector("#paypal-checkout");
+
+const selectedPlanLabel = document.querySelector(
+  "#selected-plan-label"
+);
+
+const totalBreakdown = document.querySelector("#total-breakdown");
+const orderTotal = document.querySelector("#order-total");
+
+const productEyebrow = document.querySelector("#product-eyebrow");
+const productTitleAccent = document.querySelector(
+  "#product-title-accent"
+);
+
+const productDescription = document.querySelector(
+  "#product-description"
+);
+
+const featureOne = document.querySelector("#feature-one");
+const featureTwo = document.querySelector("#feature-two");
+const featureThree = document.querySelector("#feature-three");
+
+const lifetimePayPalWrapper = document.querySelector(
+  "#paypal-lifetime-wrapper"
+);
+
+const monthlyPayPalWrapper = document.querySelector(
+  "#paypal-monthly-wrapper"
+);
+
+
+/*
+|--------------------------------------------------------------------------
+| STATE
+|--------------------------------------------------------------------------
+*/
+
 let selectedPlan = "lifetime";
-let quantity = 1;
-let acceptedTerms = false;
+let termsAccepted = false;
+let paypalButtonsRendered = false;
 
 
-/* PLAN AND PAYMENT CONTROLS */
+/*
+|--------------------------------------------------------------------------
+| PAYPAL BUTTON RENDERING
+|--------------------------------------------------------------------------
+*/
 
-const planButtons =
-  document.querySelectorAll(".plan-card");
+function renderPayPalButtons() {
+  if (paypalButtonsRendered) {
+    return;
+  }
 
-const paymentButtons =
-  document.querySelectorAll("[data-payment]");
+  if (
+    typeof window.paypal === "undefined" ||
+    typeof window.paypal.HostedButtons !== "function"
+  ) {
+    console.error(
+      "PayPal Hosted Buttons failed to load. Check the PayPal SDK script."
+    );
 
+    termsHint.textContent =
+      "PayPal could not be loaded. Please refresh the page.";
 
-/* QUANTITY CONTROLS */
+    return;
+  }
 
-const decreaseButton =
-  document.querySelector("#decrease-quantity");
+  try {
+    window.paypal
+      .HostedButtons({
+        hostedButtonId: PAYPAL_BUTTON_IDS.lifetime
+      })
+      .render("#paypal-container-lifetime");
+  } catch (error) {
+    console.error(
+      "Failed to render the Lifetime PayPal button:",
+      error
+    );
+  }
 
-const increaseButton =
-  document.querySelector("#increase-quantity");
+  if (
+    PAYPAL_BUTTON_IDS.monthly &&
+    PAYPAL_BUTTON_IDS.monthly !==
+      "REPLACE_WITH_MONTHLY_BUTTON_ID"
+  ) {
+    try {
+      window.paypal
+        .HostedButtons({
+          hostedButtonId: PAYPAL_BUTTON_IDS.monthly
+        })
+        .render("#paypal-container-monthly");
+    } catch (error) {
+      console.error(
+        "Failed to render the Monthly PayPal button:",
+        error
+      );
+    }
+  } else {
+    const monthlyContainer = document.querySelector(
+      "#paypal-container-monthly"
+    );
 
-const quantityValue =
-  document.querySelector("#quantity-value");
+    if (monthlyContainer) {
+      monthlyContainer.innerHTML = `
+        <p class="paypal-configuration-message">
+          Monthly PayPal checkout has not been configured yet.
+        </p>
+      `;
+    }
+  }
 
-
-/* CHECKOUT ELEMENTS */
-
-const termsCheckbox =
-  document.querySelector("#terms-checkbox");
-
-const selectedPlanLabel =
-  document.querySelector("#selected-plan-label");
-
-const totalBreakdown =
-  document.querySelector("#total-breakdown");
-
-const orderTotal =
-  document.querySelector("#order-total");
-
-const purchaseButton =
-  document.querySelector("#purchase-button");
-
-const termsHint =
-  document.querySelector("#terms-hint");
-
-
-/* PAYMENT PROVIDER ELEMENTS */
-
-const providerLogo =
-  document.querySelector("#provider-logo");
-
-const providerName =
-  document.querySelector("#provider-name");
-
-const providerDescription =
-  document.querySelector("#provider-description");
-
-
-/* LEFT-SIDE PRODUCT CONTENT */
-
-const productEyebrow =
-  document.querySelector("#product-eyebrow");
-
-const productTitle =
-  document.querySelector("#product-title");
-
-const productDescription =
-  document.querySelector("#product-description");
-
-const featureOne =
-  document.querySelector("#feature-one");
-
-const featureTwo =
-  document.querySelector("#feature-two");
-
-const featureThree =
-  document.querySelector("#feature-three");
-
-const descriptionAnimationItems =
-  document.querySelectorAll(
-    ".product-heading > *, .feature-strip > div"
-  );
-/* CREATE CHECKOUT LINK */
-
-function getCheckoutUrl() {
-  const plan = plans[selectedPlan];
-
-  const separator =
-    plan.link.includes("?") ? "&" : "?";
-
-  return `${plan.link}${separator}quantity=${quantity}`;
+  paypalButtonsRendered = true;
 }
 
 
-/* UPDATE PAGE CONTENT */
+/*
+|--------------------------------------------------------------------------
+| PLAN ANIMATION
+|--------------------------------------------------------------------------
+*/
 
-function updateCheckout() {
-  const plan = plans[selectedPlan];
+function restartPlanAnimation() {
+  const animatedElements = [
+    productEyebrow,
+    productTitleAccent,
+    productDescription,
+    featureOne,
+    featureTwo,
+    featureThree
+  ].filter(Boolean);
 
-  const total =
-    (plan.price * quantity).toFixed(2);
+  animatedElements.forEach((element) => {
+    element.classList.remove("plan-content-enter");
+  });
 
+  void document.body.offsetWidth;
 
-  /* UPDATE LEFT-SIDE CONTENT */
-
-  productEyebrow.textContent =
-    plan.eyebrow;
-
-  productTitle.innerHTML = `
-    ${plan.title}
-    <br>
-    <span id="product-title-accent">
-      ${plan.titleAccent}
-    </span>
-  `;
-
-  productDescription.textContent =
-    plan.description;
-
-  featureOne.textContent =
-    plan.features[0];
-
-  featureTwo.textContent =
-    plan.features[1];
-
-  featureThree.textContent =
-    plan.features[2];
-
-
-  /* UPDATE CHECKOUT TOTAL */
-
-  quantityValue.textContent =
-    quantity;
-
-  selectedPlanLabel.textContent =
-    plan.label;
-
-  totalBreakdown.textContent =
-    `$${plan.price.toFixed(2)} × ${quantity}`;
-
-  orderTotal.textContent =
-    `$${total}`;
-
-
-  /* UPDATE SELECTED PLAN CARD */
-
-  planButtons.forEach((button) => {
-    const isSelected =
-      button.dataset.plan === selectedPlan;
-
-    button.classList.toggle(
-      "selected",
-      isSelected
+  animatedElements.forEach((element, index) => {
+    element.style.setProperty(
+      "--animation-delay",
+      `${index * 55}ms`
     );
 
+    element.classList.add("plan-content-enter");
+  });
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| PLAN SELECTION
+|--------------------------------------------------------------------------
+*/
+
+function updateSelectedPlan(planName, animate = true) {
+  const plan = plans[planName];
+
+  if (!plan) {
+    console.error(`Unknown premium plan: ${planName}`);
+    return;
+  }
+
+  selectedPlan = planName;
+
+  planButtons.forEach((button) => {
+    const isSelected = button.dataset.plan === planName;
+
+    button.classList.toggle("selected", isSelected);
     button.setAttribute(
-      "aria-pressed",
+      "aria-checked",
       String(isSelected)
     );
   });
 
+  selectedPlanLabel.textContent = plan.label;
+  totalBreakdown.textContent = plan.breakdown;
+  orderTotal.textContent = plan.price;
 
-  /* ENABLE OR DISABLE PURCHASE BUTTON */
+  if (productEyebrow) {
+    productEyebrow.textContent = plan.eyebrow;
+  }
 
-  purchaseButton.classList.toggle(
-    "disabled",
-    !acceptedTerms
+  if (productTitleAccent) {
+    productTitleAccent.textContent = plan.titleAccent;
+  }
+
+  if (productDescription) {
+    productDescription.textContent = plan.description;
+  }
+
+  if (featureOne) {
+    featureOne.textContent = plan.features[0];
+  }
+
+  if (featureTwo) {
+    featureTwo.textContent = plan.features[1];
+  }
+
+  if (featureThree) {
+    featureThree.textContent = plan.features[2];
+  }
+
+  const lifetimeSelected = planName === "lifetime";
+
+  lifetimePayPalWrapper.hidden = !lifetimeSelected;
+  monthlyPayPalWrapper.hidden = lifetimeSelected;
+
+  lifetimePayPalWrapper.classList.toggle(
+    "active",
+    lifetimeSelected
   );
 
-  purchaseButton.setAttribute(
-    "aria-disabled",
-    String(!acceptedTerms)
+  monthlyPayPalWrapper.classList.toggle(
+    "active",
+    !lifetimeSelected
   );
 
-  purchaseButton.href =
-    acceptedTerms
-      ? getCheckoutUrl()
-      : "#";
+  if (animate) {
+    restartPlanAnimation();
+  }
 
-  termsHint.classList.toggle(
-    "hidden",
-    acceptedTerms
+  updateCheckoutAvailability();
+
+  history.replaceState(
+    null,
+    "",
+    `#${planName}`
   );
 }
 
 
-/* SELECT A PLAN */
+/*
+|--------------------------------------------------------------------------
+| TERMS
+|--------------------------------------------------------------------------
+*/
+
+function updateCheckoutAvailability() {
+  const checkoutEnabled = termsAccepted;
+
+  paypalCheckout.classList.toggle(
+    "disabled",
+    !checkoutEnabled
+  );
+
+  paypalCheckout.setAttribute(
+    "aria-disabled",
+    String(!checkoutEnabled)
+  );
+
+  if (!checkoutEnabled) {
+    termsHint.textContent =
+      "Accept the terms to unlock secure payment.";
+
+    termsHint.classList.remove("accepted");
+    return;
+  }
+
+  if (
+    selectedPlan === "monthly" &&
+    PAYPAL_BUTTON_IDS.monthly ===
+      "REPLACE_WITH_MONTHLY_BUTTON_ID"
+  ) {
+    termsHint.textContent =
+      "Monthly checkout needs its PayPal hosted button ID.";
+
+    termsHint.classList.remove("accepted");
+    return;
+  }
+
+  termsHint.textContent =
+    `${plans[selectedPlan].label} checkout is ready.`;
+
+  termsHint.classList.add("accepted");
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| URL HASH SUPPORT
+|--------------------------------------------------------------------------
+*/
+
+function getPlanFromHash() {
+  const hash = window.location.hash
+    .replace("#", "")
+    .trim()
+    .toLowerCase();
+
+  if (hash === "monthly") {
+    return "monthly";
+  }
+
+  return "lifetime";
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| EVENTS
+|--------------------------------------------------------------------------
+*/
 
 planButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    const newPlan = button.dataset.plan;
-
-    if (newPlan === selectedPlan) {
-      return;
-    }
-
-    selectedPlan = newPlan;
-
-    history.pushState(
-      null,
-      "",
-      `#${selectedPlan}`
-    );
-
-    updateCheckout();
-    playDescriptionAnimation();
+    const planName = button.dataset.plan;
+    updateSelectedPlan(planName);
   });
 });
-
-
-/* DECREASE QUANTITY */
-
-decreaseButton.addEventListener("click", () => {
-  quantity =
-    Math.max(1, quantity - 1);
-
-  updateCheckout();
-});
-
-
-/* INCREASE QUANTITY */
-
-increaseButton.addEventListener("click", () => {
-  quantity =
-    Math.min(10, quantity + 1);
-
-  updateCheckout();
-});
-
-
-/* TERMS CHECKBOX */
 
 termsCheckbox.addEventListener("change", () => {
-  acceptedTerms =
-    termsCheckbox.checked;
+  termsAccepted = termsCheckbox.checked;
+  updateCheckoutAvailability();
+});
 
-  updateCheckout();
+window.addEventListener("hashchange", () => {
+  updateSelectedPlan(getPlanFromHash());
 });
 
 
-/* BLOCK CHECKOUT UNTIL TERMS ARE ACCEPTED */
+/*
+|--------------------------------------------------------------------------
+| INITIALIZATION
+|--------------------------------------------------------------------------
+*/
 
-purchaseButton.addEventListener(
-  "click",
-  (event) => {
-    if (!acceptedTerms) {
-      event.preventDefault();
-    }
-  }
-);
+function initializeCheckout() {
+  renderPayPalButtons();
 
+  const initialPlan = getPlanFromHash();
 
-/* PAYMENT TYPE SWITCH */
-
-paymentButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    paymentButtons.forEach((item) => {
-      item.classList.toggle(
-        "active",
-        item === button
-      );
-    });
-
-    const isFiat =
-      button.dataset.payment === "fiat";
-
-    providerLogo.textContent =
-      isFiat ? "P" : "₿";
-
-    providerName.textContent =
-      isFiat
-        ? "PayPal & Cards"
-        : "Cryptocurrency";
-
-    providerDescription.textContent =
-      isFiat
-        ? "Pay by card, PayPal, Apple Pay, and more"
-        : "Available payment options appear at checkout";
-  });
-});
-
-
-/* READ PLAN FROM URL */
-
-function getPlanFromUrl() {
-  return window.location.hash
-    .replace("#", "")
-    .toLowerCase();
+  updateSelectedPlan(initialPlan, false);
+  updateCheckoutAvailability();
 }
 
-
-/* LOAD MONTHLY OR LIFETIME FROM URL */
-
-function loadPlanFromUrl() {
-  const planFromUrl =
-    getPlanFromUrl();
-
-  if (plans[planFromUrl]) {
-    selectedPlan =
-      planFromUrl;
-
-    updateCheckout();
-  }
-}
-
-
-/* SUPPORT BROWSER BACK AND FORWARD */
-
-window.addEventListener(
-  "popstate",
-  loadPlanFromUrl
-);
-
-window.addEventListener(
-  "hashchange",
-  loadPlanFromUrl
-);
-
-
-/* INITIAL PAGE LOAD */
-
-const initialPlan =
-  getPlanFromUrl();
-
-if (plans[initialPlan]) {
-  selectedPlan =
-    initialPlan;
-} else {
-  selectedPlan =
-    "lifetime";
-
-  history.replaceState(
-    { plan: selectedPlan },
-    "",
-    "#lifetime"
+if (document.readyState === "loading") {
+  document.addEventListener(
+    "DOMContentLoaded",
+    initializeCheckout
   );
-}
-
-updateCheckout();
-function playDescriptionAnimation() {
-  descriptionAnimationItems.forEach((item, index) => {
-    item.classList.remove("plan-pop");
-
-    item.style.setProperty(
-      "--plan-pop-delay",
-      `${Math.min(index * 70, 280)}ms`
-    );
-  });
-
-  // Restarts the animation.
-  void document.body.offsetWidth;
-
-  descriptionAnimationItems.forEach((item) => {
-    item.classList.add("plan-pop");
-  });
+} else {
+  initializeCheckout();
 }
