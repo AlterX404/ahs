@@ -73,3 +73,16 @@
     transition: none;
   }
 }
+.task.locked {
+  opacity: 0.42;
+  filter: saturate(0.45);
+  box-shadow: none;
+}
+
+.task.locked .task-status {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.task.locked .task-arrow {
+  opacity: 0.4;
+}
