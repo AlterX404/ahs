@@ -906,3 +906,30 @@ footer a:hover {
 .hidden {
   display: none !important;
 }
+
+@keyframes plan-description-pop {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.plan-pop {
+  animation:
+    plan-description-pop
+    0.55s
+    cubic-bezier(0.2, 0.8, 0.2, 1)
+    var(--plan-pop-delay, 0ms)
+    both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plan-pop {
+    animation: none;
+  }
+}
