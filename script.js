@@ -95,4 +95,4 @@ if (heroSection && heroTilt) {
   });
 }
 const FINAL_LINK =
-  "https://sub4unlock.com/S/Z4d18";
+  "https://loot-link.com/s?vIdjVjaM";
