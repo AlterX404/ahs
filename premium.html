@@ -41,9 +41,9 @@
     href="premium.css"
   >
 
-  <script 
-  src="https://www.paypal.com/sdk/js?client-id=BAA_xc_bFzIU_CVMLm-rNFQ84VC1RJQ1DUoSxTb-uGuL0mvIGsz8gGP1G6H9npeJEdSm4GgQNKdZTnd8J4&components=hosted-buttons&disable-funding=venmo&currency=USD">
-  </script>
+  <script
+    src="https://www.paypal.com/sdk/js?client-id=BAA_xc_bFzIU_CVMLm-rNFQ84VC1RJQ1DUoSxTb-uGuL0mvIGsz8gGP1G6H9npeJEdSm4GgQNKdZTnd8J4&components=hosted-buttons&disable-funding=venmo&currency=USD"
+  ></script>
 </head>
 
 <body>
@@ -425,7 +425,11 @@
 
           <!-- PLANS -->
 
-          <div class="plan-list">
+          <div
+            class="plan-list"
+            role="radiogroup"
+            aria-label="Choose an Alter Hub premium plan"
+          >
 
             <!-- LIFETIME -->
 
@@ -434,7 +438,8 @@
               id="lifetime"
               type="button"
               data-plan="lifetime"
-              aria-pressed="true"
+              role="radio"
+              aria-checked="true"
             >
 
               <span
@@ -459,8 +464,8 @@
                 </span>
 
                 <span class="plan-description">
-                  A one-time purchase with permanent access to all
-                  premium features and future updates.
+                  Make one payment and keep permanent access to Alter
+                  Hub Premium, including future platform updates.
                 </span>
 
                 <span class="price-row">
@@ -495,7 +500,8 @@
               id="monthly"
               type="button"
               data-plan="monthly"
-              aria-pressed="false"
+              role="radio"
+              aria-checked="false"
             >
 
               <span
@@ -508,14 +514,16 @@
               <span class="plan-content">
 
                 <span class="plan-row">
+
                   <strong>
                     Monthly Key
                   </strong>
+
                 </span>
 
                 <span class="plan-description">
-                  Full premium access for players who prefer a
-                  flexible monthly plan.
+                  Get complete premium access for 30 days with the
+                  freedom to renew only when you need it.
                 </span>
 
                 <span class="price-row">
@@ -545,100 +553,25 @@
           </div>
 
 
-          <!-- QUANTITY -->
+          <!-- SELECTED PLAN TOTAL -->
 
-          <div class="quantity-row">
-
-            <div>
-              <span class="field-label">
-                QUANTITY
-              </span>
-
-              <p>
-                Number of premium keys
-              </p>
-            </div>
-
-            <div class="stepper">
-
-              <button
-                type="button"
-                id="decrease-quantity"
-                aria-label="Decrease quantity"
-              >
-                −
-              </button>
-
-              <span id="quantity-value">
-                1
-              </span>
-
-              <button
-                type="button"
-                id="increase-quantity"
-                aria-label="Increase quantity"
-              >
-                +
-              </button>
-
-            </div>
-
-          </div>
-
-
-          <!-- PAYMENT TYPE -->
-
-          <div
-            class="payment-switch"
-            aria-label="Payment type"
-          >
-
-            <button
-              class="active"
-              type="button"
-              data-payment="fiat"
-            >
-              Pay with Fiat
-            </button>
-
-            <button
-              type="button"
-              data-payment="crypto"
-            >
-              Pay with Crypto
-            </button>
-
-          </div>
-
-
-          <!-- PAYMENT PROVIDER -->
-
-          <div class="provider-card">
-
-            <span
-              class="provider-logo"
-              id="provider-logo"
-            >
-              P
-            </span>
+          <div class="order-total">
 
             <div>
-              <div id="paypal-container-E6G8XUCHW7SU8"></div>
-              <script>
-                 paypal.HostedButtons({
-                    hostedButtonId: "E6G8XUCHW7SU8",
-                 }).render("#paypal-container-E6G8XUCHW7SU8")
-              </script>
 
-              <strong id="provider-name">
-                PayPal &amp; Cards
-              </strong>
+              <span id="selected-plan-label">
+                Lifetime Access
+              </span>
 
-              <p id="provider-description">
-                Pay by card, PayPal, Apple Pay, and more
-              </p>
+              <small id="total-breakdown">
+                One-time payment
+              </small>
 
             </div>
+
+            <strong id="order-total">
+              $34.99
+            </strong>
 
           </div>
 
@@ -659,51 +592,73 @@
 
           </label>
 
-
-          <!-- TOTAL -->
-
-          <div class="order-total">
-
-            <div>
-
-              <span id="selected-plan-label">
-                Lifetime Access
-              </span>
-
-              <small id="total-breakdown">
-                $34.99 × 1
-              </small>
-
-            </div>
-
-            <strong id="order-total">
-              $34.99
-            </strong>
-
-          </div>
-
-
-          <!-- PURCHASE BUTTON -->
-
-          <a
-            class="purchase-button disabled"
-            id="purchase-button"
-            href="#"
-            aria-disabled="true"
-          >
-            Continue to secure checkout
-
-            <span>
-              →
-            </span>
-          </a>
-
           <p
             class="terms-hint"
             id="terms-hint"
           >
-            Accept the terms to continue.
+            Accept the terms to unlock secure payment.
           </p>
+
+
+          <!-- PAYPAL CHECKOUT -->
+
+          <div
+            class="paypal-checkout disabled"
+            id="paypal-checkout"
+            aria-disabled="true"
+          >
+
+            <!-- LIFETIME PAYPAL BUTTON -->
+
+            <div
+              class="paypal-plan-container active"
+              id="paypal-lifetime-wrapper"
+              data-paypal-plan="lifetime"
+            >
+              <div id="paypal-container-lifetime"></div>
+            </div>
+
+
+            <!-- MONTHLY PAYPAL BUTTON -->
+
+            <div
+              class="paypal-plan-container"
+              id="paypal-monthly-wrapper"
+              data-paypal-plan="monthly"
+              hidden
+            >
+              <div id="paypal-container-monthly"></div>
+            </div>
+
+          </div>
+
+
+          <!-- PAYMENT PROVIDER -->
+
+          <div class="provider-card">
+
+            <span
+              class="provider-logo"
+              aria-hidden="true"
+            >
+              P
+            </span>
+
+            <div>
+
+              <strong>
+                PayPal &amp; Cards
+              </strong>
+
+              <p>
+                Pay securely using PayPal or an available debit or
+                credit card option.
+              </p>
+
+            </div>
+
+          </div>
+
 
           <p class="checkout-note">
             Payment and key delivery are securely completed by our
