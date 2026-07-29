@@ -1,4 +1,4 @@
-async function loadFooter() {
+document.addEventListener("DOMContentLoaded", async () => {
   const footerContainer = document.getElementById("footer-container");
 
   if (!footerContainer) return;
@@ -7,20 +7,14 @@ async function loadFooter() {
     const response = await fetch("/footer.html");
 
     if (!response.ok) {
-      throw new Error(`Footer could not be loaded: ${response.status}`);
+      throw new Error(`Failed to load footer: ${response.status}`);
     }
 
     footerContainer.innerHTML = await response.text();
-
-    const yearElement = document.getElementById("footer-year");
-
-    if (yearElement) {
-      yearElement.textContent = new Date().getFullYear();
-    }
   } catch (error) {
-    console.error(error);
+    console.error("Footer loading error:", error);
   }
-}
+});
 
 document.addEventListener("DOMContentLoaded", loadFooter);
 
