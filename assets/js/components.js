@@ -23,3 +23,16 @@ async function loadFooter() {
 }
 
 document.addEventListener("DOMContentLoaded", loadFooter);
+
+document.addEventListener("DOMContentLoaded", async () => {
+    const container = document.getElementById("footer-container");
+    if (!container) return;
+
+    const response = await fetch("/footer.html");
+    container.innerHTML = await response.text();
+
+    const year = document.getElementById("footer-year");
+    if (year) {
+        year.textContent = new Date().getFullYear();
+    }
+});
