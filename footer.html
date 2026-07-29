@@ -3,22 +3,30 @@
   <div class="footer-main">
 
     <div class="footer-brand">
-      <a href="/" class="footer-logo">
+      <h2>
         Alter<span>Hub</span>
-      </a>
+      </h2>
 
       <p>
         A fast, modern, and community-focused Roblox utility platform.
       </p>
     </div>
 
-    <nav class="footer-navigation">
-      <a href="/">Home</a>
-      <a href="/#pricing">Pricing</a>
-      <a href="/#features">Features</a>
-      <a href="/#games">Games</a>
-      <a href="/#faq">FAQ</a>
-      <a href="https://discord.gg/nzyb2QxYjn" target="_blank" rel="noopener">
+    <nav
+      class="footer-navigation"
+      aria-label="Footer navigation"
+    >
+      <a href="index#home">Home</a>
+      <a href="index#pricing">Pricing</a>
+      <a href="index#features">Features</a>
+      <a href="index#games">Games</a>
+      <a href="index#faq">FAQ</a>
+
+      <a
+        href="https://discord.gg/nzyb2QxYjn"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         Discord
       </a>
     </nav>
@@ -27,19 +35,26 @@
 
   <div class="footer-bottom">
 
-    <p>© <span id="footer-year"></span> Alter Hub. All rights reserved.</p>
+    <p>
+      © <span id="footer-year"></span> Alter Hub. All rights reserved.
+    </p>
 
-    <nav class="footer-legal">
-      <a href="/terms.html">Terms of Service</a>
-      <a href="/privacy.html">Privacy Policy</a>
-      <a href="https://discord.gg/nzyb2QxYjn" target="_blank" rel="noopener">
-        Discord
-      </a>
-      <a href="https://www.youtube.com/@alter-x9749" target="_blank" rel="noopener">
-        YouTube
-      </a>
+    <nav
+      class="footer-legal"
+      aria-label="Legal navigation"
+    >
+      <a href="terms.html">Terms of Service</a>
+      <a href="privacy.html">Privacy Policy</a>
     </nav>
 
   </div>
 
 </footer>
+
+<script>
+  const footerYear = document.getElementById("footer-year");
+
+  if (footerYear) {
+    footerYear.textContent = new Date().getFullYear();
+  }
+</script>
