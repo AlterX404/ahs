@@ -1576,28 +1576,6 @@
         }
         );
 
-        resetButton.addEventListener(
-        "click",
-        () => {
-            const shouldReset =
-            window.confirm(
-                "Reset all saved progress for this page?"
-            );
-
-            if (!shouldReset) {
-            return;
-            }
-
-            state = createEmptyState();
-
-            saveState();
-            updateInterface();
-
-            showToast(
-            "Progress has been reset."
-            );
-        }
-        );
 
         document.addEventListener(
         "visibilitychange",
