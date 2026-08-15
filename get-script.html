@@ -719,10 +719,200 @@
         animation: none !important;
       }
     }
+  
+    /* =====================================================
+       ALTER HUB ADSTERRA DISPLAY LAYOUT
+       Existing unlock/task JavaScript is unchanged.
+       ===================================================== */
+
+    .ah-ad-slot {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: fit-content;
+      max-width: 100%;
+      margin: 22px auto;
+      overflow: hidden;
+      background:
+        linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.025),
+          rgba(255, 255, 255, 0.012)
+        );
+      border: 1px dashed rgba(255, 255, 255, 0.09);
+      border-radius: 14px;
+      min-height: 50px;
+    }
+
+    .ah-ad-slot iframe {
+      display: block !important;
+      border: 0 !important;
+      margin: 0 !important;
+    }
+
+    .ah-ad-leaderboard {
+      width: 728px;
+      min-width: 728px;
+      min-height: 90px;
+    }
+
+    .ah-ad-rectangle {
+      width: 300px;
+      min-width: 300px;
+      min-height: 250px;
+    }
+
+    .ah-ad-mobile {
+      width: 320px;
+      min-width: 320px;
+      min-height: 50px;
+      display: none;
+    }
+
+    .ah-ad-row {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin: 24px auto;
+    }
+
+    .ah-ad-row .ah-ad-slot {
+      margin: 0;
+    }
+
+    .ah-rail {
+      position: fixed;
+      top: 96px;
+      z-index: 80;
+      width: 176px;
+      max-height: calc(100vh - 112px);
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      background: rgba(8, 8, 10, 0.74);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 16px;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      scrollbar-width: thin;
+    }
+
+    .ah-rail-left { left: 10px; }
+    .ah-rail-right { right: 10px; }
+
+    .ah-rail .ah-ad-slot {
+      margin: 0;
+      flex: 0 0 auto;
+    }
+
+    .ah-ad-rail-600 {
+      width: 160px;
+      min-width: 160px;
+      min-height: 600px;
+    }
+
+    .ah-ad-rail-300 {
+      width: 160px;
+      min-width: 160px;
+      min-height: 300px;
+    }
+
+    @media (max-width: 1180px) {
+      .ah-rail { display: none; }
+    }
+
+    @media (max-width: 780px) {
+      .ah-ad-leaderboard { display: none; }
+      .ah-ad-mobile { display: grid; }
+      .ah-ad-row { gap: 14px; }
+    }
+
+    @media (max-width: 350px) {
+      .ah-ad-mobile,
+      .ah-ad-rectangle {
+        transform: scale(0.92);
+        transform-origin: top center;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+
   </style>
 </head>
 
 <body>
+
+  <!-- ALTER HUB LEFT AD RAIL -->
+  <aside class="ah-rail ah-rail-left" aria-label="Advertisement">
+
+      <!-- ADSTERRA: left-rail -->
+      <div class="ah-ad-slot ah-ad-rail-600" data-ad-zone="left-rail">
+        <script>
+          atOptions = {
+            'key' : '5a699b5e53a24d4894357c7b7701963a',
+            'format' : 'iframe',
+            'height' : 600,
+            'width' : 160,
+            'params' : {}
+          };
+        </script>
+        <script src="https://regrettablewageralways.com/5a699b5e53a24d4894357c7b7701963a/invoke.js"></script>
+      </div>
+
+      <!-- ADSTERRA: left-rail-secondary -->
+      <div class="ah-ad-slot ah-ad-rail-300" data-ad-zone="left-rail-secondary">
+        <script>
+          atOptions = {
+            'key' : '3e399fd351c6a3da604f8a9ec10d75a1',
+            'format' : 'iframe',
+            'height' : 300,
+            'width' : 160,
+            'params' : {}
+          };
+        </script>
+        <script src="https://regrettablewageralways.com/3e399fd351c6a3da604f8a9ec10d75a1/invoke.js"></script>
+      </div>
+  </aside>
+
+  <!-- ALTER HUB RIGHT AD RAIL -->
+  <aside class="ah-rail ah-rail-right" aria-label="Advertisement">
+
+      <!-- ADSTERRA: right-rail -->
+      <div class="ah-ad-slot ah-ad-rail-600" data-ad-zone="right-rail">
+        <script>
+          atOptions = {
+            'key' : '5e44863175d7f91cdfa7b4061ac293d4',
+            'format' : 'iframe',
+            'height' : 600,
+            'width' : 160,
+            'params' : {}
+          };
+        </script>
+        <script src="https://regrettablewageralways.com/5e44863175d7f91cdfa7b4061ac293d4/invoke.js"></script>
+      </div>
+
+      <!-- ADSTERRA: right-rail-secondary -->
+      <div class="ah-ad-slot ah-ad-rail-300" data-ad-zone="right-rail-secondary">
+        <script>
+          atOptions = {
+            'key' : '3e399fd351c6a3da604f8a9ec10d75a1',
+            'format' : 'iframe',
+            'height' : 300,
+            'width' : 160,
+            'params' : {}
+          };
+        </script>
+        <script src="https://regrettablewageralways.com/3e399fd351c6a3da604f8a9ec10d75a1/invoke.js"></script>
+      </div>
+  </aside>
+
 
   <header class="site-header">
 
@@ -764,6 +954,36 @@
   </header>
 
 
+      <!-- ADSTERRA: top-leaderboard -->
+      <div class="ah-ad-slot ah-ad-leaderboard" data-ad-zone="top-leaderboard">
+        <script>
+          atOptions = {
+            'key' : '510441b68afe63cde32426e4f9a64477',
+            'format' : 'iframe',
+            'height' : 90,
+            'width' : 728,
+            'params' : {}
+          };
+        </script>
+        <script src="https://regrettablewageralways.com/510441b68afe63cde32426e4f9a64477/invoke.js"></script>
+      </div>
+
+      <!-- ADSTERRA: top-mobile-banner -->
+      <div class="ah-ad-slot ah-ad-mobile" data-ad-zone="top-mobile-banner">
+        <script>
+          atOptions = {
+            'key' : 'ac921f71aa5be1b091858921f796b4e2',
+            'format' : 'iframe',
+            'height' : 50,
+            'width' : 320,
+            'params' : {}
+          };
+        </script>
+        <script src="https://regrettablewageralways.com/ac921f71aa5be1b091858921f796b4e2/invoke.js"></script>
+      </div>
+
+
+
   <main class="page">
 
     <div class="unlock-container">
@@ -785,6 +1005,53 @@
         </p>
 
       </div>
+
+
+      <!-- ADSTERRA: after-heading-leaderboard -->
+      <div class="ah-ad-slot ah-ad-leaderboard" data-ad-zone="after-heading-leaderboard">
+        <script>
+          atOptions = {
+            'key' : '5ca9db4475da01935a98a11e45151c0c',
+            'format' : 'iframe',
+            'height' : 90,
+            'width' : 728,
+            'params' : {}
+          };
+        </script>
+        <script src="https://regrettablewageralways.com/5ca9db4475da01935a98a11e45151c0c/invoke.js"></script>
+      </div>
+
+      <div class="ah-ad-row" aria-label="Advertisements">
+
+      <!-- ADSTERRA: heading-rectangle-left -->
+      <div class="ah-ad-slot ah-ad-rectangle" data-ad-zone="heading-rectangle-left">
+        <script>
+          atOptions = {
+            'key' : '687f9bf984adb7aa6526a7ede3d1de49',
+            'format' : 'iframe',
+            'height' : 250,
+            'width' : 300,
+            'params' : {}
+          };
+        </script>
+        <script src="https://regrettablewageralways.com/687f9bf984adb7aa6526a7ede3d1de49/invoke.js"></script>
+      </div>
+
+      <!-- ADSTERRA: heading-rectangle-right -->
+      <div class="ah-ad-slot ah-ad-rectangle" data-ad-zone="heading-rectangle-right">
+        <script>
+          atOptions = {
+            'key' : 'c2a00c4dd904e5b5cc800b84c4745611',
+            'format' : 'iframe',
+            'height' : 250,
+            'width' : 300,
+            'params' : {}
+          };
+        </script>
+        <script src="https://regrettablewageralways.com/c2a00c4dd904e5b5cc800b84c4745611/invoke.js"></script>
+      </div>
+      </div>
+
           
 
       <div
@@ -1048,6 +1315,53 @@
       </div>
 
 
+      <!-- ADSTERRA: after-tasks-leaderboard -->
+      <div class="ah-ad-slot ah-ad-leaderboard" data-ad-zone="after-tasks-leaderboard">
+        <script>
+          atOptions = {
+            'key' : 'fb6b5faf61603702c762699c66d86cfe',
+            'format' : 'iframe',
+            'height' : 90,
+            'width' : 728,
+            'params' : {}
+          };
+        </script>
+        <script src="https://regrettablewageralways.com/fb6b5faf61603702c762699c66d86cfe/invoke.js"></script>
+      </div>
+
+      <div class="ah-ad-row" aria-label="Advertisements">
+
+      <!-- ADSTERRA: tasks-rectangle-left -->
+      <div class="ah-ad-slot ah-ad-rectangle" data-ad-zone="tasks-rectangle-left">
+        <script>
+          atOptions = {
+            'key' : '89ac587bfdfe86f95d12414831c0f7ad',
+            'format' : 'iframe',
+            'height' : 250,
+            'width' : 300,
+            'params' : {}
+          };
+        </script>
+        <script src="https://regrettablewageralways.com/89ac587bfdfe86f95d12414831c0f7ad/invoke.js"></script>
+      </div>
+
+      <!-- ADSTERRA: tasks-rectangle-right -->
+      <div class="ah-ad-slot ah-ad-rectangle" data-ad-zone="tasks-rectangle-right">
+        <script>
+          atOptions = {
+            'key' : '5c01b4ecc07d6a050b84475efc2504c4',
+            'format' : 'iframe',
+            'height' : 250,
+            'width' : 300,
+            'params' : {}
+          };
+        </script>
+        <script src="https://regrettablewageralways.com/5c01b4ecc07d6a050b84475efc2504c4/invoke.js"></script>
+      </div>
+      </div>
+
+
+
       <section
         class="progress-section"
         aria-label="Unlock progress"
@@ -1078,6 +1392,53 @@
         </div>
 
       </section>
+
+
+      <!-- ADSTERRA: after-progress-leaderboard -->
+      <div class="ah-ad-slot ah-ad-leaderboard" data-ad-zone="after-progress-leaderboard">
+        <script>
+          atOptions = {
+            'key' : '93256b403dbf313c197ce9bef66529b3',
+            'format' : 'iframe',
+            'height' : 90,
+            'width' : 728,
+            'params' : {}
+          };
+        </script>
+        <script src="https://regrettablewageralways.com/93256b403dbf313c197ce9bef66529b3/invoke.js"></script>
+      </div>
+
+      <div class="ah-ad-row" aria-label="Advertisements">
+
+      <!-- ADSTERRA: progress-rectangle-left -->
+      <div class="ah-ad-slot ah-ad-rectangle" data-ad-zone="progress-rectangle-left">
+        <script>
+          atOptions = {
+            'key' : 'a1d8590d1ad23e0d951921421e5b4364',
+            'format' : 'iframe',
+            'height' : 250,
+            'width' : 300,
+            'params' : {}
+          };
+        </script>
+        <script src="https://regrettablewageralways.com/a1d8590d1ad23e0d951921421e5b4364/invoke.js"></script>
+      </div>
+
+      <!-- ADSTERRA: progress-rectangle-right -->
+      <div class="ah-ad-slot ah-ad-rectangle" data-ad-zone="progress-rectangle-right">
+        <script>
+          atOptions = {
+            'key' : '437029fb951fcb0ceef3026887cf2f11',
+            'format' : 'iframe',
+            'height' : 250,
+            'width' : 300,
+            'params' : {}
+          };
+        </script>
+        <script src="https://regrettablewageralways.com/437029fb951fcb0ceef3026887cf2f11/invoke.js"></script>
+      </div>
+      </div>
+
 
 
       <button
@@ -1112,6 +1473,39 @@
       </button>
 
 
+      
+
+      <!-- ADSTERRA: before-info-leaderboard -->
+      <div class="ah-ad-slot ah-ad-leaderboard" data-ad-zone="before-info-leaderboard">
+        <script>
+          atOptions = {
+            'key' : 'b5ec075b4fe347ebcf7fc5fe33c4b73f',
+            'format' : 'iframe',
+            'height' : 90,
+            'width' : 728,
+            'params' : {}
+          };
+        </script>
+        <script src="https://regrettablewageralways.com/b5ec075b4fe347ebcf7fc5fe33c4b73f/invoke.js"></script>
+      </div>
+
+      <div class="ah-ad-row" aria-label="Advertisement">
+
+      <!-- ADSTERRA: final-rectangle -->
+      <div class="ah-ad-slot ah-ad-rectangle" data-ad-zone="final-rectangle">
+        <script>
+          atOptions = {
+            'key' : 'cfde3b064970f5aa070f1f82468e61f8',
+            'format' : 'iframe',
+            'height' : 250,
+            'width' : 300,
+            'params' : {}
+          };
+        </script>
+        <script src="https://regrettablewageralways.com/cfde3b064970f5aa070f1f82468e61f8/invoke.js"></script>
+      </div>
+      </div>
+
       <div class="information">
 
         <strong>Important:</strong>
@@ -1132,6 +1526,36 @@
 
       </div>
 
+
+      <!-- ADSTERRA: bottom-leaderboard -->
+      <div class="ah-ad-slot ah-ad-leaderboard" data-ad-zone="bottom-leaderboard">
+        <script>
+          atOptions = {
+            'key' : '22a86f4d46beeee6ee84bb61167aa3e9',
+            'format' : 'iframe',
+            'height' : 90,
+            'width' : 728,
+            'params' : {}
+          };
+        </script>
+        <script src="https://regrettablewageralways.com/22a86f4d46beeee6ee84bb61167aa3e9/invoke.js"></script>
+      </div>
+
+      <!-- ADSTERRA: bottom-mobile-banner -->
+      <div class="ah-ad-slot ah-ad-mobile" data-ad-zone="bottom-mobile-banner">
+        <script>
+          atOptions = {
+            'key' : '6ba9ead7c07c2157adaa34b8c0085f93',
+            'format' : 'iframe',
+            'height' : 50,
+            'width' : 320,
+            'params' : {}
+          };
+        </script>
+        <script src="https://regrettablewageralways.com/6ba9ead7c07c2157adaa34b8c0085f93/invoke.js"></script>
+      </div>
+
+
     </div>
     
     
@@ -1147,7 +1571,11 @@
   ></div>
 
 
-    <script>
+    
+  <!-- ADSTERRA POPUNDER / FIRST-INTERACTION FORMAT -->
+  <script src="https://regrettablewageralways.com/3c/b6/6e/3cb66e10b6664867e3c2e208dba45c5c.js"></script>
+
+<script>
     (() => {
         const WAIT_SECONDS = 8;
 
