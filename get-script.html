@@ -1,1619 +1,965 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1291000340659446"
-     crossorigin="anonymous"></script>
-  <meta charset="UTF-8" />
+const toggle = document.querySelector('.menu-toggle');
+const nav = document.querySelector('.nav-links');
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  />
+if (toggle && nav) {
+  toggle.addEventListener('click', () => {
+    const open = nav.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.textContent = open ? '✕' : '☰';
+  });
 
-  <meta
-    name="theme-color"
-    content="#050505"
-  />
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      nav.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.textContent = '☰';
+    });
+  });
+}
 
-  <meta
-    name="description"
-    content="Complete the Alter Hub access steps to continue."
-  />
 
-  <title>Get Script | Alter Hub</title>
+// =====================================================
+// REVEAL ANIMATIONS
+// =====================================================
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
+const revealTargets = document.querySelectorAll(
+  '.section-heading, .card, .game-card, .price-card, .faq-list details, .community-card, .footer-top, .footer-bottom'
+);
 
-  <link
-    rel="preconnect"
-    href="https://fonts.gstatic.com"
-    crossorigin
-  />
+revealTargets.forEach((element, index) => {
+  element.classList.add('reveal');
 
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-    rel="stylesheet"
-  />
+  const parent = element.parentElement;
 
-  <style>
-    :root {
-      --background: #050505;
-      --background-soft: #090909;
-      --panel: #111111;
-      --panel-hover: #151515;
+  const siblings = parent
+    ? [...parent.children].filter(child =>
+        child.matches(
+          '.card, .game-card, .price-card, .faq-list details, .community-card'
+        )
+      )
+    : [];
 
-      --primary-red: #b10808;
-      --primary-red-light: #d11313;
-      --primary-red-dark: #720404;
+  const itemIndex = siblings.indexOf(element);
 
-      --text: #f5f5f5;
-      --muted: #929292;
+  if (itemIndex >= 0) {
+    element.style.setProperty(
+      '--reveal-delay',
+      `${Math.min(itemIndex * 70, 280)}ms`
+    );
+  }
+});
 
-      --border: rgba(255, 255, 255, 0.08);
-      --red-border: rgba(177, 8, 8, 0.48);
+if ('IntersectionObserver' in window) {
+  const revealObserver = new IntersectionObserver(
+    (entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      threshold: 0.12,
+      rootMargin: '0px 0px -40px 0px'
+    }
+  );
 
-      --container: 780px;
+  revealTargets.forEach(element =>
+    revealObserver.observe(element)
+  );
+} else {
+  revealTargets.forEach(element =>
+    element.classList.add('is-visible')
+  );
+}
+
+
+// =====================================================
+// HERO TILT
+// =====================================================
+
+const heroSection =
+  document.querySelector(".hero");
+
+const heroTilt =
+  document.querySelector(".hero-tilt");
+
+if (heroSection && heroTilt) {
+  const maximumRotation = 12;
+
+  heroSection.addEventListener(
+    "pointermove",
+    event => {
+      if (event.pointerType === "touch") return;
+
+      const heroBounds =
+        heroSection.getBoundingClientRect();
+
+      const cursorX =
+        event.clientX - heroBounds.left;
+
+      const cursorY =
+        event.clientY - heroBounds.top;
+
+      const horizontalPosition =
+        cursorX / heroBounds.width - 0.5;
+
+      const verticalPosition =
+        cursorY / heroBounds.height - 0.5;
+
+      const rotateY =
+        horizontalPosition *
+        maximumRotation *
+        2;
+
+      const rotateX =
+        verticalPosition *
+        maximumRotation *
+        -2;
+
+      heroSection.classList.add(
+        "is-tracking"
+      );
+
+      heroTilt.style.setProperty(
+        "--hero-rotate-x",
+        `${rotateX.toFixed(2)}deg`
+      );
+
+      heroTilt.style.setProperty(
+        "--hero-rotate-y",
+        `${rotateY.toFixed(2)}deg`
+      );
+    }
+  );
+
+  heroSection.addEventListener(
+    "pointerleave",
+    () => {
+      heroSection.classList.remove(
+        "is-tracking"
+      );
+
+      heroTilt.style.setProperty(
+        "--hero-rotate-x",
+        "0deg"
+      );
+
+      heroTilt.style.setProperty(
+        "--hero-rotate-y",
+        "0deg"
+      );
+    }
+  );
+}
+
+
+// =====================================================
+// FINAL LINK
+// =====================================================
+
+const FINAL_LINK =
+  "https://loot-link.com/s?vIdjVjaM";
+
+
+// =====================================================
+// ALTER HUB ADSTERRA SYSTEM
+// =====================================================
+
+const ALTER_HUB_ADS = [
+  {
+    key: "510441b68afe63cde32426e4f9a64477",
+    width: 728,
+    height: 90,
+    type: "leaderboard"
+  },
+
+  {
+    key: "5ca9db4475da01935a98a11e45151c0c",
+    width: 728,
+    height: 90,
+    type: "leaderboard"
+  },
+
+  {
+    key: "fb6b5faf61603702c762699c66d86cfe",
+    width: 728,
+    height: 90,
+    type: "leaderboard"
+  },
+
+  {
+    key: "93256b403dbf313c197ce9bef66529b3",
+    width: 728,
+    height: 90,
+    type: "leaderboard"
+  },
+
+  {
+    key: "b5ec075b4fe347ebcf7fc5fe33c4b73f",
+    width: 728,
+    height: 90,
+    type: "leaderboard"
+  },
+
+  {
+    key: "22a86f4d46beeee6ee84bb61167aa3e9",
+    width: 728,
+    height: 90,
+    type: "leaderboard"
+  },
+
+  {
+    key: "687f9bf984adb7aa6526a7ede3d1de49",
+    width: 300,
+    height: 250,
+    type: "rectangle"
+  },
+
+  {
+    key: "c2a00c4dd904e5b5cc800b84c4745611",
+    width: 300,
+    height: 250,
+    type: "rectangle"
+  },
+
+  {
+    key: "89ac587bfdfe86f95d12414831c0f7ad",
+    width: 300,
+    height: 250,
+    type: "rectangle"
+  },
+
+  {
+    key: "5c01b4ecc07d6a050b84475efc2504c4",
+    width: 300,
+    height: 250,
+    type: "rectangle"
+  },
+
+  {
+    key: "a1d8590d1ad23e0d951921421e5b4364",
+    width: 300,
+    height: 250,
+    type: "rectangle"
+  },
+
+  {
+    key: "437029fb951fcb0ceef3026887cf2f11",
+    width: 300,
+    height: 250,
+    type: "rectangle"
+  },
+
+  {
+    key: "cfde3b064970f5aa070f1f82468e61f8",
+    width: 300,
+    height: 250,
+    type: "rectangle"
+  },
+
+  {
+    key: "ac921f71aa5be1b091858921f796b4e2",
+    width: 320,
+    height: 50,
+    type: "mobile"
+  },
+
+  {
+    key: "6ba9ead7c07c2157adaa34b8c0085f93",
+    width: 320,
+    height: 50,
+    type: "mobile"
+  },
+
+  {
+    key: "5a699b5e53a24d4894357c7b7701963a",
+    width: 160,
+    height: 600,
+    type: "left-rail"
+  },
+
+  {
+    key: "5e44863175d7f91cdfa7b4061ac293d4",
+    width: 160,
+    height: 600,
+    type: "right-rail"
+  },
+
+  {
+    key: "3e399fd351c6a3da604f8a9ec10d75a1",
+    width: 160,
+    height: 300,
+    type: "rail-secondary"
+  }
+];
+
+
+// =====================================================
+// AD CSS
+// =====================================================
+
+const alterHubAdStyle =
+  document.createElement("style");
+
+alterHubAdStyle.textContent = `
+  .ah-auto-ad {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: fit-content;
+    max-width: 100%;
+
+    margin: 28px auto;
+
+    overflow: hidden;
+
+    border-radius: 14px;
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255,255,255,.025),
+        rgba(255,255,255,.012)
+      );
+
+    border:
+      1px solid
+      rgba(255,255,255,.07);
+  }
+
+  .ah-auto-ad iframe {
+    display: block;
+    border: 0;
+  }
+
+  .ah-ad-leaderboard {
+    width: min(728px, 100%);
+    min-height: 90px;
+  }
+
+  .ah-ad-rectangle {
+    width: 300px;
+    height: 250px;
+  }
+
+  .ah-ad-mobile {
+    width: 320px;
+    height: 50px;
+  }
+
+  .ah-ad-row {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    gap: 20px;
+
+    margin:
+      30px auto;
+
+    flex-wrap: wrap;
+  }
+
+  .ah-desktop-rail {
+    position: fixed;
+
+    top: 50%;
+
+    z-index: 50;
+
+    transform:
+      translateY(-50%);
+
+    width: 176px;
+
+    padding: 8px;
+
+    display: flex;
+    justify-content: center;
+
+    border-radius: 16px;
+
+    background:
+      rgba(10,10,12,.72);
+
+    border:
+      1px solid
+      rgba(255,255,255,.07);
+
+    backdrop-filter:
+      blur(15px);
+  }
+
+  .ah-desktop-rail-left {
+    left: 8px;
+  }
+
+  .ah-desktop-rail-right {
+    right: 8px;
+  }
+
+  .ah-mobile-ad {
+    display: none;
+  }
+
+  @media (max-width: 1550px) {
+    .ah-desktop-rail {
+      display: none;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .ah-ad-leaderboard {
+      display: none;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      min-height: 100vh;
-      overflow-x: hidden;
-      color: var(--text);
-      background:
-        radial-gradient(
-          circle at 50% 18%,
-          rgba(177, 8, 8, 0.13),
-          transparent 32%
-        ),
-        var(--background);
-      font-family: "Inter", sans-serif;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      pointer-events: none;
-      background:
-        linear-gradient(
-          rgba(255, 255, 255, 0.012) 1px,
-          transparent 1px
-        ),
-        linear-gradient(
-          90deg,
-          rgba(255, 255, 255, 0.012) 1px,
-          transparent 1px
-        );
-      background-size: 48px 48px;
-      mask-image:
-        linear-gradient(
-          to bottom,
-          rgba(0, 0, 0, 0.65),
-          transparent 72%
-        );
-    }
-
-    button,
-    a {
-      font: inherit;
-    }
-
-    button {
-      border: none;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    /* HEADER */
-
-    .site-header {
-      width: 100%;
-      min-height: 78px;
+    .ah-mobile-ad {
       display: flex;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(5, 5, 5, 0.88);
-      border-bottom: 1px solid var(--border);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
     }
 
-    .header-inner {
-      width: min(1180px, calc(100% - 40px));
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
+    .ah-auto-ad {
+      margin:
+        20px auto;
+    }
+  }
+`;
+
+document.head.appendChild(
+  alterHubAdStyle
+);
+
+
+// =====================================================
+// CREATE AD CONTAINER
+// =====================================================
+
+function createAdContainer(
+  width,
+  height,
+  extraClass = ""
+) {
+  const container =
+    document.createElement("div");
+
+  container.className =
+    "ah-auto-ad " +
+    extraClass;
+
+  container.style.width =
+    width + "px";
+
+  container.style.minWidth =
+    width + "px";
+
+  container.style.height =
+    height + "px";
+
+  container.style.minHeight =
+    height + "px";
+
+  return container;
+}
+
+
+// =====================================================
+// LOAD SINGLE AD
+// =====================================================
+
+function loadAdsterraAd(
+  container,
+  config
+) {
+  return new Promise(resolve => {
+    if (!container || !config) {
+      resolve();
+      return;
     }
 
-    .brand {
-      display: inline-flex;
-      align-items: center;
-      gap: 11px;
-      color: white;
-      font-size: 25px;
-      font-weight: 900;
-      letter-spacing: -1.1px;
-    }
+    window.atOptions = {
+      key: config.key,
+      format: "iframe",
+      height: config.height,
+      width: config.width,
+      params: {}
+    };
 
-    .brand > span > span {
-      color: var(--primary-red-light);
-    }
+    const script =
+      document.createElement("script");
 
-    .brand-icon {
-      width: 40px;
-      height: 40px;
-      display: grid;
-      place-items: center;
-      color: white;
-      background:
-        linear-gradient(
-          145deg,
-          var(--primary-red-light),
-          var(--primary-red-dark)
-        );
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 11px;
-      box-shadow:
-        0 8px 24px rgba(177, 8, 8, 0.23),
-        inset 0 1px 0 rgba(255, 255, 255, 0.12);
-    }
+    script.src =
+      "https://regrettablewageralways.com/" +
+      config.key +
+      "/invoke.js";
 
-    .brand-icon svg {
-      width: 21px;
-      height: 21px;
-      fill: currentColor;
-    }
+    script.async = false;
 
-    .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 700;
-      transition:
-        color 0.2s ease,
-        transform 0.2s ease;
-    }
+    script.onload = () => {
+      resolve();
+    };
 
-    .back-link:hover {
-      color: white;
-      transform: translateX(-3px);
-    }
+    script.onerror = () => {
+      resolve();
+    };
 
-    /* PAGE */
+    container.appendChild(script);
+  });
+}
 
-    .page {
-      padding: 58px 20px 80px;
-    }
 
-    .unlock-container {
-      width: min(var(--container), 100%);
-      margin: 0 auto;
-    }
+// =====================================================
+// INSERT AD AFTER ELEMENT
+// =====================================================
 
-    .page-heading {
-      margin-bottom: 38px;
-      text-align: center;
-    }
+function insertAfter(
+  target,
+  element
+) {
+  if (!target || !element) return;
 
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 18px;
-      padding: 9px 20px;
-      color: var(--primary-red-light);
-      background: rgba(177, 8, 8, 0.09);
-      border: 1px solid rgba(177, 8, 8, 0.22);
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-    }
+  target.insertAdjacentElement(
+    "afterend",
+    element
+  );
+}
 
-    .page-heading h1 {
-      margin-bottom: 14px;
-      color: white;
-      font-size: clamp(36px, 6vw, 54px);
-      font-weight: 900;
-      letter-spacing: -2.4px;
-      line-height: 1.03;
-    }
 
-    .page-heading h1 span {
-      color: var(--primary-red-light);
-    }
+// =====================================================
+// FIND CONTENT TARGETS
+// =====================================================
 
-    .page-heading p {
-      max-width: 600px;
-      margin: 0 auto;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.75;
-    }
+function getSectionTargets() {
+  return [
+    ...document.querySelectorAll(
+      ".section-heading"
+    )
+  ];
+}
 
-    /* TASKS */
 
-    .tasks {
-      display: grid;
-      gap: 13px;
-    }
+// =====================================================
+// LOAD ADS SEQUENTIALLY
+// =====================================================
 
-    .task {
-      width: 100%;
-      min-height: 76px;
-      display: grid;
-      grid-template-columns: 54px 1fr 42px;
-      align-items: center;
-      gap: 12px;
-      padding: 11px 18px;
-      position: relative;
-      overflow: hidden;
-      color: white;
-      text-align: left;
-      cursor: pointer;
-      background:
-        linear-gradient(
-          110deg,
-          var(--primary-red-dark),
-          var(--primary-red)
-        );
-      border: 1px solid rgba(255, 255, 255, 0.07);
-      border-radius: 15px;
-      box-shadow:
-        0 12px 28px rgba(177, 8, 8, 0.13),
-        inset 0 1px 0 rgba(255, 255, 255, 0.08);
-      transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease,
-        border-color 0.2s ease,
-        background 0.2s ease;
-    }
+async function initializeAlterHubAds() {
+  let adIndex = 0;
 
-    .task::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background:
-        linear-gradient(
-          115deg,
-          transparent 20%,
-          rgba(255, 255, 255, 0.07) 48%,
-          transparent 75%
-        );
-      transform: translateX(-120%);
-      transition: transform 0.55s ease;
-    }
+  function nextAd(type) {
+    while (
+      adIndex <
+      ALTER_HUB_ADS.length
+    ) {
+      const ad =
+        ALTER_HUB_ADS[
+          adIndex++
+        ];
 
-    .task:hover::before {
-      transform: translateX(120%);
-    }
-
-    .task:hover:not(:disabled) {
-      transform: translateY(-3px);
-      border-color: rgba(255, 255, 255, 0.12);
-      box-shadow:
-        0 18px 36px rgba(177, 8, 8, 0.21),
-        inset 0 1px 0 rgba(255, 255, 255, 0.11);
-    }
-
-    .task:active:not(:disabled) {
-      transform: translateY(0) scale(0.992);
-    }
-
-    .task:disabled {
-      cursor: default;
-    }
-
-    .task-icon {
-      width: 44px;
-      height: 44px;
-      display: grid;
-      place-items: center;
-      position: relative;
-      z-index: 1;
-      background: rgba(0, 0, 0, 0.23);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 11px;
-    }
-
-    .task-icon svg {
-      width: 23px;
-      height: 23px;
-      fill: currentColor;
-    }
-
-    .task-text {
-      min-width: 0;
-      position: relative;
-      z-index: 1;
-      text-align: center;
-    }
-
-    .task-title {
-      display: block;
-      margin-bottom: 4px;
-      color: white;
-      font-size: 15px;
-      font-weight: 800;
-    }
-
-    .task-status {
-      display: block;
-      color: rgba(255, 255, 255, 0.64);
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.7px;
-      text-transform: uppercase;
-    }
-
-    .task-arrow {
-      display: grid;
-      place-items: center;
-      position: relative;
-      z-index: 1;
-      font-size: 24px;
-      font-weight: 900;
-      transition: transform 0.2s ease;
-    }
-
-    .task:hover:not(:disabled) .task-arrow {
-      transform: translateX(4px);
-    }
-
-    /* WAITING STATE */
-
-    .task.pending {
-      background:
-        linear-gradient(
-          110deg,
-          #330404,
-          #6d0606
-        );
-      border-color: rgba(209, 19, 19, 0.35);
-    }
-
-    .task.pending::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: var(--wait-progress, 0%);
-      height: 3px;
-      background: var(--primary-red-light);
-      box-shadow: 0 0 14px rgba(209, 19, 19, 0.7);
-      transition: width 0.25s linear;
-    }
-
-    .task.pending .task-icon {
-      animation: waitingPulse 1.1s ease-in-out infinite;
-    }
-
-    /* COMPLETED STATE */
-
-    .task.complete {
-      background:
-        linear-gradient(
-          110deg,
-          #171717,
-          #101010
-        );
-      border-color: var(--red-border);
-      box-shadow:
-        0 10px 26px rgba(0, 0, 0, 0.26),
-        inset 3px 0 0 var(--primary-red);
-    }
-
-    .task.complete .task-icon {
-      color: white;
-      background: var(--primary-red-dark);
-      border-color: rgba(209, 19, 19, 0.3);
-    }
-
-    .task.complete .task-status {
-      color: var(--primary-red-light);
-    }
-
-    .task.complete .task-arrow {
-      color: var(--primary-red-light);
-    }
-
-    @keyframes waitingPulse {
-      0%,
-      100% {
-        transform: scale(1);
-        opacity: 1;
-      }
-
-      50% {
-        transform: scale(0.92);
-        opacity: 0.65;
+      if (
+        !type ||
+        ad.type === type
+      ) {
+        return ad;
       }
     }
 
-    /* PROGRESS */
+    return null;
+  }
 
-    .progress-section {
-      margin-top: 32px;
-      text-align: center;
+
+  // =================================================
+  // TOP LEADERBOARD
+  // =================================================
+
+  const hero =
+    document.querySelector(
+      ".hero"
+    );
+
+  const topConfig =
+    nextAd("leaderboard");
+
+  if (hero && topConfig) {
+    const container =
+      createAdContainer(
+        728,
+        90,
+        "ah-ad-leaderboard"
+      );
+
+    hero.parentElement.insertBefore(
+      container,
+      hero
+    );
+
+    await loadAdsterraAd(
+      container,
+      topConfig
+    );
+  }
+
+
+  // =================================================
+  // AFTER HERO
+  // =================================================
+
+  const heroConfig =
+    nextAd("leaderboard");
+
+  if (hero && heroConfig) {
+    const container =
+      createAdContainer(
+        728,
+        90,
+        "ah-ad-leaderboard"
+      );
+
+    insertAfter(
+      hero,
+      container
+    );
+
+    await loadAdsterraAd(
+      container,
+      heroConfig
+    );
+  }
+
+
+  // =================================================
+  // ADS BETWEEN SECTIONS
+  // =================================================
+
+  const sections =
+    getSectionTargets();
+
+  for (
+    let i = 0;
+    i < sections.length;
+    i++
+  ) {
+    if (i % 2 !== 0) {
+      continue;
     }
 
-    .progress-label {
-      margin-bottom: 11px;
-      color: white;
-      font-size: 13px;
-      font-weight: 700;
+    const leaderboard =
+      nextAd("leaderboard");
+
+    if (!leaderboard) {
+      break;
     }
 
-    .progress-track {
-      width: 76%;
-      height: 8px;
-      margin: 0 auto;
-      overflow: hidden;
-      background: #1c1c1c;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: 999px;
+    const container =
+      createAdContainer(
+        728,
+        90,
+        "ah-ad-leaderboard"
+      );
+
+    const section =
+      sections[i].closest(
+        "section"
+      ) || sections[i];
+
+    insertAfter(
+      section,
+      container
+    );
+
+    await loadAdsterraAd(
+      container,
+      leaderboard
+    );
+  }
+
+
+  // =================================================
+  // RECTANGLE ADS AFTER CARD GROUPS
+  // =================================================
+
+  const cardGroups =
+    [
+      ...document.querySelectorAll(
+        ".cards, .game-grid, .pricing-grid, .community-card"
+      )
+    ];
+
+  let rectangleAds =
+    ALTER_HUB_ADS.filter(
+      ad =>
+        ad.type === "rectangle"
+    );
+
+  let rectangleIndex = 0;
+
+  for (
+    const group of cardGroups
+  ) {
+    if (
+      rectangleIndex >=
+      rectangleAds.length
+    ) {
+      break;
     }
 
-    .progress-bar {
-      width: 0;
-      height: 100%;
-      background:
-        linear-gradient(
-          90deg,
-          var(--primary-red-dark),
-          var(--primary-red-light)
-        );
-      border-radius: inherit;
-      box-shadow: 0 0 14px rgba(209, 19, 19, 0.5);
-      transition: width 0.45s ease;
-    }
+    const row =
+      document.createElement(
+        "div"
+      );
 
-    /* FINAL BUTTON */
+    row.className =
+      "ah-ad-row";
 
-    .final-button {
-      width: 100%;
-      min-height: 72px;
-      display: grid;
-      grid-template-columns: 48px 1fr 38px;
-      align-items: center;
-      gap: 12px;
-      margin-top: 26px;
-      padding: 11px 18px;
-      color: #717171;
-      cursor: not-allowed;
-      background:
-        linear-gradient(
-          110deg,
-          #111111,
-          #181818
-        );
-      border: 1px solid var(--border);
-      border-radius: 15px;
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.24);
-      opacity: 0.72;
-      transition:
-        opacity 0.25s ease,
-        transform 0.25s ease,
-        box-shadow 0.25s ease,
-        color 0.25s ease,
-        background 0.25s ease,
-        border-color 0.25s ease;
-    }
+    insertAfter(
+      group,
+      row
+    );
 
-    .final-button.unlocked {
-      color: white;
-      cursor: pointer;
-      opacity: 1;
-      background:
-        linear-gradient(
-          110deg,
-          var(--primary-red-dark),
-          var(--primary-red-light)
-        );
-      border-color: rgba(209, 19, 19, 0.54);
-      box-shadow:
-        0 16px 36px rgba(177, 8, 8, 0.25),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    }
+    for (
+      let x = 0;
+      x < 2;
+      x++
+    ) {
+      const config =
+        rectangleAds[
+          rectangleIndex++
+        ];
 
-    .final-button.unlocked:hover {
-      transform: translateY(-3px);
-      box-shadow:
-        0 21px 42px rgba(177, 8, 8, 0.34),
-        inset 0 1px 0 rgba(255, 255, 255, 0.12);
-    }
-
-    .final-icon {
-      display: grid;
-      place-items: center;
-    }
-
-    .final-icon svg {
-      width: 24px;
-      height: 24px;
-      fill: currentColor;
-    }
-
-    .final-text {
-      text-align: center;
-      font-size: 16px;
-      font-weight: 800;
-    }
-
-    .final-arrow {
-      font-size: 24px;
-      font-weight: 900;
-    }
-
-    /* INFORMATION */
-
-    .information {
-      margin-top: 22px;
-      padding: 18px 20px;
-      color: var(--muted);
-      text-align: center;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      font-size: 11px;
-      line-height: 1.75;
-    }
-
-    .information strong {
-      color: #d8d8d8;
-    }
-
-    .reset-button {
-      margin-top: 14px;
-      color: #747474;
-      cursor: pointer;
-      background: transparent;
-      border: none;
-      font-size: 11px;
-      font-weight: 700;
-      text-decoration: underline;
-      text-underline-offset: 4px;
-      transition: color 0.2s ease;
-    }
-
-    .reset-button:hover {
-      color: var(--primary-red-light);
-    }
-
-    /* TOAST */
-
-    .toast {
-      position: fixed;
-      right: 22px;
-      bottom: 22px;
-      z-index: 200;
-      max-width: min(350px, calc(100% - 44px));
-      padding: 14px 18px;
-      color: white;
-      pointer-events: none;
-      background: #121212;
-      border: 1px solid var(--red-border);
-      border-radius: 12px;
-      box-shadow: 0 16px 42px rgba(0, 0, 0, 0.48);
-      opacity: 0;
-      transform: translateY(15px);
-      transition:
-        opacity 0.25s ease,
-        transform 0.25s ease;
-    }
-
-    .toast.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* MOBILE */
-
-    @media (max-width: 650px) {
-      .site-header {
-        min-height: 70px;
+      if (!config) {
+        break;
       }
 
-      .header-inner {
-        width: min(100% - 26px, 1180px);
-      }
-
-      .brand {
-        font-size: 21px;
-      }
-
-      .brand-icon {
-        width: 36px;
-        height: 36px;
-      }
-
-      .back-link span {
-        display: none;
-      }
-
-      .page {
-        padding: 42px 14px 60px;
-      }
-
-      .page-heading {
-        margin-bottom: 29px;
-      }
-
-      .page-heading h1 {
-        letter-spacing: -1.5px;
-      }
-
-      .page-heading p {
-        font-size: 13px;
-      }
-
-      .task {
-        min-height: 70px;
-        grid-template-columns: 45px 1fr 29px;
-        padding: 9px 12px;
-        border-radius: 13px;
-      }
-
-      .task-icon {
-        width: 39px;
-        height: 39px;
-      }
-
-      .task-icon svg {
-        width: 20px;
-        height: 20px;
-      }
-
-      .task-title {
-        font-size: 13px;
-      }
-
-      .task-status {
-        font-size: 8px;
-      }
-
-      .progress-track {
-        width: 91%;
-      }
-
-      .final-button {
-        min-height: 67px;
-        grid-template-columns: 39px 1fr 27px;
-        padding: 9px 13px;
-        border-radius: 13px;
-      }
-
-      .final-text {
-        font-size: 14px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
-        scroll-behavior: auto !important;
-        transition: none !important;
-        animation: none !important;
-      }
-    }
-  </style>
-</head>
-
-<body>
-
-  <header class="site-header">
-
-    <div class="header-inner">
-
-      <a
-        class="brand"
-        href="index"
-        aria-label="Return to Alter Hub"
-      >
-
-        <span
-          class="brand-icon"
-          aria-hidden="true"
-        >
-          <svg viewBox="0 0 24 24">
-            <path
-              d="M12.92 2.62a1 1 0 0 0-1.84 0L2.17 22h4.06l1.9-4.54h7.75L17.77 22h4.06L12.92 2.62Zm-3.35 11.4L12 8.19l2.43 5.83H9.57Z"
-            />
-          </svg>
-        </span>
-
-        <span>
-          Alter<span>Hub</span>
-        </span>
-
-      </a>
-
-      <a
-        class="back-link"
-        href="index"
-      >
-        ←
-        <span>Back to home</span>
-      </a>
-
-    </div>
-
-  </header>
-
-
-  <main class="page">
-
-    <div class="unlock-container">
-
-      <div class="page-heading">
-
-        <span class="eyebrow">
-          Complete All Steps Below
-        </span>
-
-        <h1>
-          Unlock Your
-          <span>Access</span>
-        </h1>
-
-        <p>
-          Open each step and remain on its page for a few seconds. After the
-          waiting period finishes, the task will be marked as completed.
-        </p>
-
-      </div>
-          
-
-      <div
-        class="tasks"
-        id="tasks"
-      >
-
-        <!-- STEP 1 -->
-
-        <button
-          class="task"
-          type="button"
-          data-task="0"
-          data-url="https://www.youtube.com/@alter-x9749?sub_confirmation=1"
-        >
-
-          <span
-            class="task-icon"
-            aria-hidden="true"
-          >
-            <svg viewBox="0 0 24 24">
-              <path
-                d="M23.5 6.2a3 3 0 0 0-2.1-2.12C19.55 3.58 12 3.58 12 3.58s-7.55 0-9.4.5A3 3 0 0 0 .5 6.2 31.9 31.9 0 0 0 0 12a31.9 31.9 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.12c1.85.5 9.4.5 9.4.5s7.55 0 9.4-.5a3 3 0 0 0 2.1-2.12A31.9 31.9 0 0 0 24 12a31.9 31.9 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.25 3.6-6.25 3.6Z"
-              />
-            </svg>
-          </span>
-
-          <span class="task-text">
-
-            <span class="task-title">
-              Subscribe To Alter Hub on YouTube
-            </span>
-
-            <span class="task-status">
-              Open step
-            </span>
-
-          </span>
-
-          <span
-            class="task-arrow"
-            aria-hidden="true"
-          >
-            →
-          </span>
-
-        </button>
-
-
-        <!-- STEP 2 -->
-
-        <button
-          class="task"
-          type="button"
-          data-task="1"
-          data-url="https://www.youtube.com/watch?v=h1Ajf3zZQJY"
-        >
-
-          <span
-            class="task-icon"
-            aria-hidden="true"
-          >
-            <svg viewBox="0 0 24 24">
-              <path
-                d="M1 21h4V9H1v12Zm22-11a2 2 0 0 0-2-2h-6.31l.95-4.57.03-.32a1.5 1.5 0 0 0-.44-1.06L14.17 1 7.59 7.59A2 2 0 0 0 7 9v10a2 2 0 0 0 2 2h9a2 2 0 0 0 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2Z"
-              />
-            </svg>
-          </span>
-
-          <span class="task-text">
-
-            <span class="task-title">
-              Like Save and Share the Video
-            </span>
-
-            <span class="task-status">
-              Open step
-            </span>
-
-          </span>
-
-          <span
-            class="task-arrow"
-            aria-hidden="true"
-          >
-            →
-          </span>
-
-        </button>
-
-
-        <!-- STEP 3 -->
-
-        <button
-          class="task"
-          type="button"
-          data-task="2"
-          data-url="https://youtu.be/q7-vrAsgf28?si=cZnl9w-qx_Q9dOj3"
-        >
-
-          <span
-            class="task-icon"
-            aria-hidden="true"
-          >
-            <svg viewBox="0 0 24 24">
-              <path
-                d="M1 21h4V9H1v12Zm22-11a2 2 0 0 0-2-2h-6.31l.95-4.57.03-.32a1.5 1.5 0 0 0-.44-1.06L14.17 1 7.59 7.59A2 2 0 0 0 7 9v10a2 2 0 0 0 2 2h9a2 2 0 0 0 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2Z"
-              />
-            </svg>
-          </span>
-
-          <span class="task-text">
-
-            <span class="task-title">
-              Like Save and Share the Video
-            </span>
-
-            <span class="task-status">
-              Open step
-            </span>
-
-          </span>
-
-          <span
-            class="task-arrow"
-            aria-hidden="true"
-          >
-            →
-          </span>
-
-        </button>
-
-
-        <!-- STEP 4 -->
-
-        <button
-          class="task"
-          type="button"
-          data-task="3"
-          data-url="hhttps://youtu.be/R7Zm-w7vM5U?si=6vqKWf8pYDea7DaY"
-        >
-
-          <span
-            class="task-icon"
-            aria-hidden="true"
-          >
-            <svg viewBox="0 0 24 24">
-              <path
-                d="M1 21h4V9H1v12Zm22-11a2 2 0 0 0-2-2h-6.31l.95-4.57.03-.32a1.5 1.5 0 0 0-.44-1.06L14.17 1 7.59 7.59A2 2 0 0 0 7 9v10a2 2 0 0 0 2 2h9a2 2 0 0 0 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2Z"
-              />
-            </svg>
-          </span>
-
-          <span class="task-text">
-
-            <span class="task-title">
-                Like Save and Share the Video
-
-            </span>
-
-            <span class="task-status">
-              Open step
-            </span>
-
-          </span>
-
-          <span
-            class="task-arrow"
-            aria-hidden="true"
-          >
-            →
-          </span>
-
-        </button>
-
-
-        <!-- STEP 5 -->
-
-        <button
-          class="task"
-          type="button"
-          data-task="4"
-          data-url="https://youtu.be/0FXGul4MisQ?si=12WJuYFd2MYjBTk0"
-        >
-
-          <span
-            class="task-icon"
-            aria-hidden="true"
-          >
-
-            <svg viewBox="0 0 24 24">
-              <path
-                d="M1 21h4V9H1v12Zm22-11a2 2 0 0 0-2-2h-6.31l.95-4.57.03-.32a1.5 1.5 0 0 0-.44-1.06L14.17 1 7.59 7.59A2 2 0 0 0 7 9v10a2 2 0 0 0 2 2h9a2 2 0 0 0 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2Z"
-              />
-            </svg>
-          </span>
-
-          <span class="task-text">
-
-            <span class="task-title">
-              Like Save and Share the Video 
-            </span>
-
-            <span class="task-status">
-              Open step
-            </span>
-
-          </span>
-
-          <span
-            class="task-arrow"
-            aria-hidden="true"
-          >
-            →
-          </span>
-
-        </button>
-
-
-        <!-- STEP 6 -->
-
-        <button
-          class="task"
-          type="button"
-          data-task="5"
-          data-url="https://discord.gg/XDHqEm7J2w"
-        >
-
-          <span
-            class="task-icon"
-            aria-hidden="true"
-          >
-
-            <svg viewBox="0 0 24 24">
-              <path
-                d="M20.32 4.37A19.8 19.8 0 0 0 15.44 3l-.6 1.2a18.5 18.5 0 0 0-5.68 0L8.56 3a19.7 19.7 0 0 0-4.88 1.38C.6 8.92-.23 13.35.18 17.72a19.9 19.9 0 0 0 5.99 3.03l1.46-2a12.7 12.7 0 0 1-2.3-1.1l.57-.44c4.44 2.07 9.25 2.07 13.64 0l.58.44c-.74.44-1.52.8-2.31 1.1l1.46 2a19.8 19.8 0 0 0 5.99-3.03c.48-5.07-.82-9.46-2.94-13.35ZM8.02 15.06c-1.32 0-2.4-1.22-2.4-2.72s1.05-2.73 2.4-2.73 2.42 1.23 2.4 2.73c0 1.5-1.06 2.72-2.4 2.72Zm7.96 0c-1.32 0-2.4-1.22-2.4-2.72s1.06-2.73 2.4-2.73 2.42 1.23 2.4 2.73c0 1.5-1.05 2.72-2.4 2.72Z"
-              />
-            </svg>
-          </span>
-          <span class="task-text">
-
-            <span class="task-title">
-              Join The Discord Server
-            </span>
-
-            <span class="task-status">
-              Open step
-            </span>
-
-          </span>
-
-          <span
-            class="task-arrow"
-            aria-hidden="true"
-          >
-            →
-          </span>
-
-        </button>
-
-      </div>
-
-
-      <section
-        class="progress-section"
-        aria-label="Unlock progress"
-      >
-
-        <p
-          class="progress-label"
-          id="progress-label"
-          aria-live="polite"
-        >
-          Steps Completed 0/6
-        </p>
-
-        <div
-          class="progress-track"
-          role="progressbar"
-          aria-valuemin="0"
-          aria-valuemax="6"
-          aria-valuenow="0"
-          aria-labelledby="progress-label"
-        >
-
-          <div
-            class="progress-bar"
-            id="progress-bar"
-          ></div>
-
-        </div>
-
-      </section>
-
-
-      <button
-        class="final-button"
-        id="final-button"
-        type="button"
-        disabled
-      >
-
-        <span
-          class="final-icon"
-          aria-hidden="true"
-        >
-          <svg viewBox="0 0 24 24">
-            <path
-              d="M3.9 12a5 5 0 0 1 5-5H12v2H8.9a3 3 0 1 0 0 6H12v2H8.9a5 5 0 0 1-5-5Zm5-1h6.2v2H8.9v-2Zm6.2-4H12V5h3.1a7 7 0 1 1 0 14H12v-2h3.1a5 5 0 1 0 0-10Z"
-            />
-          </svg>
-        </span>
-
-        <span class="final-text">
-          Complete All Steps
-        </span>
-
-        <span
-          class="final-arrow"
-          aria-hidden="true"
-        >
-          →
-        </span>
-
-      </button>
-
-
-      <div class="information">
-
-        <strong>Important:</strong>
-
-        The task will be marked as complete after the waiting period finishes.
-        Opening a task does not independently verify a subscription, like,
-        comment, or server membership.
-
-        <br />
-
-        <button
-          class="reset-button"
-          id="reset-button"
-          type="button"
-        >
-          Reset saved progress
-        </button>
-
-      </div>
-
-    </div>
-    
-    
-
-  </main>
-
-
-  <div
-    class="toast"
-    id="toast"
-    role="status"
-    aria-live="polite"
-  ></div>
-
-
-    <script>
-    (() => {
-        const WAIT_SECONDS = 8;
-
-        const FINAL_LINK =
-        "https://loot-link.com/s?vIdjVjaM";
-
-        const STORAGE_KEY =
-        "alterHubUnlockProgressV3";
-
-        const taskButtons = Array.from(
-        document.querySelectorAll(".task")
+      const container =
+        createAdContainer(
+          300,
+          250,
+          "ah-ad-rectangle"
         );
 
-        const progressLabel =
-        document.getElementById("progress-label");
-
-        const progressTrack =
-        document.querySelector(".progress-track");
-
-        const progressBar =
-        document.getElementById("progress-bar");
-
-        const finalButton =
-        document.getElementById("final-button");
-
-        const finalButtonText =
-        finalButton.querySelector(".final-text");
-
-        const resetButton =
-        document.getElementById("reset-button");
-
-        const toast =
-        document.getElementById("toast");
-
-        let toastTimer = null;
-        let countdownTimer = null;
-
-        function createEmptyState() {
-        return {
-            completed: taskButtons.map(() => false),
-            pendingUntil: taskButtons.map(() => null)
-        };
-        }
-
-        function normalizeState(value) {
-        const emptyState = createEmptyState();
-
-        if (!value || typeof value !== "object") {
-            return emptyState;
-        }
-
-        if (
-            Array.isArray(value.completed) &&
-            value.completed.length === taskButtons.length
-        ) {
-            emptyState.completed =
-            value.completed.map(Boolean);
-        }
-
-        if (
-            Array.isArray(value.pendingUntil) &&
-            value.pendingUntil.length === taskButtons.length
-        ) {
-            emptyState.pendingUntil =
-            value.pendingUntil.map((timestamp) => {
-                const parsedTimestamp = Number(timestamp);
-
-                return Number.isFinite(parsedTimestamp)
-                ? parsedTimestamp
-                : null;
-            });
-        }
-
-        return emptyState;
-        }
-
-        function loadState() {
-        try {
-            const savedValue =
-            localStorage.getItem(STORAGE_KEY);
-
-            if (!savedValue) {
-            return createEmptyState();
-            }
-
-            return normalizeState(
-            JSON.parse(savedValue)
-            );
-        } catch (error) {
-            console.warn(
-            "Could not read saved progress:",
-            error
-            );
-
-            return createEmptyState();
-        }
-        }
-
-        let state = loadState();
-
-        function saveState() {
-        try {
-            localStorage.setItem(
-            STORAGE_KEY,
-            JSON.stringify(state)
-            );
-        } catch (error) {
-            console.warn(
-            "Could not save progress:",
-            error
-            );
-        }
-        }
-
-        function showToast(message) {
-        window.clearTimeout(toastTimer);
-
-        toast.textContent = message;
-        toast.classList.add("visible");
-
-        toastTimer = window.setTimeout(() => {
-            toast.classList.remove("visible");
-        }, 2500);
-        }
-
-        function finishExpiredTasks() {
-        const currentTime = Date.now();
-        let stateChanged = false;
-
-        state.pendingUntil.forEach(
-            (completionTime, index) => {
-            if (
-                !state.completed[index] &&
-                completionTime &&
-                currentTime >= completionTime
-            ) {
-                state.completed[index] = true;
-                state.pendingUntil[index] = null;
-                stateChanged = true;
-            }
-            }
-        );
-
-        if (stateChanged) {
-            saveState();
-        }
-
-        return stateChanged;
-        }
-
-        function getActivePendingIndex() {
-        const currentTime = Date.now();
-
-        return state.pendingUntil.findIndex(
-            (completionTime, index) =>
-            !state.completed[index] &&
-            completionTime &&
-            completionTime > currentTime
-        );
-        }
-
-        function updateInterface() {
-        finishExpiredTasks();
-
-        const currentTime = Date.now();
-        const activePendingIndex =
-            getActivePendingIndex();
-
-        let completedCount = 0;
-
-        taskButtons.forEach((button, index) => {
-            const status =
-            button.querySelector(".task-status");
-
-            const isComplete =
-            Boolean(state.completed[index]);
-
-            const isPending =
-            index === activePendingIndex;
-
-            const isLocked =
-            activePendingIndex !== -1 &&
-            index !== activePendingIndex &&
-            !isComplete;
-
-            button.classList.toggle(
-            "complete",
-            isComplete
-            );
-
-            button.classList.toggle(
-            "pending",
-            isPending
-            );
-
-            button.classList.toggle(
-            "locked",
-            isLocked
-            );
-
-            if (isComplete) {
-            completedCount += 1;
-
-            button.disabled = true;
-            status.textContent = "Completed ✓";
-
-            button.style.setProperty(
-                "--wait-progress",
-                "100%"
-            );
-
-            return;
-            }
-
-            if (isPending) {
-            const completionTime =
-                state.pendingUntil[index];
-
-            const millisecondsRemaining =
-                completionTime - currentTime;
-
-            const secondsRemaining =
-                Math.max(
-                1,
-                Math.ceil(millisecondsRemaining / 1000)
-                );
-
-            const totalMilliseconds =
-                WAIT_SECONDS * 1000;
-
-            const millisecondsPassed =
-                totalMilliseconds - millisecondsRemaining;
-
-            const waitPercentage =
-                Math.max(
-                0,
-                Math.min(
-                    100,
-                    (
-                    millisecondsPassed /
-                    totalMilliseconds
-                    ) * 100
-                )
-                );
-
-            button.disabled = true;
-
-            status.textContent =
-                `Completing in ${secondsRemaining}s`;
-
-            button.style.setProperty(
-                "--wait-progress",
-                `${waitPercentage}%`
-            );
-
-            return;
-            }
-
-            if (isLocked) {
-            button.disabled = true;
-
-            status.textContent =
-                "Finish current step first";
-
-            button.style.setProperty(
-                "--wait-progress",
-                "0%"
-            );
-
-            return;
-            }
-
-            button.disabled = false;
-            status.textContent = "Open step";
-
-            button.style.setProperty(
-            "--wait-progress",
-            "0%"
-            );
-        });
-
-        const totalTasks =
-            taskButtons.length;
-
-        const percentage =
-            totalTasks === 0
-            ? 0
-            : (
-                completedCount /
-                totalTasks
-                ) * 100;
-
-        progressLabel.textContent =
-            `Steps Completed ${completedCount}/${totalTasks}`;
-
-        progressBar.style.width =
-            `${percentage}%`;
-
-        progressTrack.setAttribute(
-            "aria-valuemax",
-            String(totalTasks)
-        );
-
-        progressTrack.setAttribute(
-            "aria-valuenow",
-            String(completedCount)
-        );
-
-        const allComplete =
-            totalTasks > 0 &&
-            completedCount === totalTasks;
-
-        finalButton.disabled =
-            !allComplete;
-
-        finalButton.classList.toggle(
-            "unlocked",
-            allComplete
-        );
-
-        if (allComplete) {
-            finalButtonText.textContent =
-            "Get Your Script";
-        } else if (activePendingIndex !== -1) {
-            finalButtonText.textContent =
-            "Waiting for Current Step";
-        } else {
-            finalButtonText.textContent =
-            "Complete All Steps";
-        }
-        }
-
-        function beginCountdown() {
-        if (countdownTimer) {
-            window.clearInterval(countdownTimer);
-        }
-
-        countdownTimer =
-            window.setInterval(() => {
-            const completedBefore =
-                state.completed.filter(Boolean).length;
-
-            updateInterface();
-
-            const completedAfter =
-                state.completed.filter(Boolean).length;
-
-            if (completedAfter > completedBefore) {
-                showToast(
-                "Task completed. You may start the next step."
-                );
-            }
-            }, 250);
-        }
-
-        taskButtons.forEach((button, index) => {
-        button.addEventListener("click", () => {
-            const activePendingIndex =
-            getActivePendingIndex();
-
-            if (
-            activePendingIndex !== -1 &&
-            activePendingIndex !== index
-            ) {
-            showToast(
-                "Please wait for the current step to finish."
-            );
-
-            return;
-            }
-
-            if (
-            state.completed[index] ||
-            (
-                state.pendingUntil[index] &&
-                state.pendingUntil[index] > Date.now()
-            )
-            ) {
-            return;
-            }
-
-            const url =
-            button.dataset.url;
-
-            if (url) {
-            window.open(
-                url,
-                "_blank",
-                "noopener,noreferrer"
-            );
-            }
-
-            /*
-            * Clear any old pending values so only one task
-            * can ever be active at a time.
-            */
-            state.pendingUntil =
-            state.pendingUntil.map(() => null);
-
-            state.pendingUntil[index] =
-            Date.now() +
-            WAIT_SECONDS * 1000;
-
-            saveState();
-            updateInterface();
-
-            showToast(
-            `Task opened. Please wait ${WAIT_SECONDS} seconds.`
-            );
-        });
-        });
-
-        finalButton.addEventListener(
-        "click",
-        () => {
-            if (finalButton.disabled) {
-            showToast(
-                "Complete every step before continuing."
-            );
-
-            return;
-            }
-
-            window.location.href =
-            FINAL_LINK;
-        }
-        );
-
-        resetButton.addEventListener(
-        "click",
-        () => {
-            const shouldReset =
-            window.confirm(
-                "Reset all saved progress for this page?"
-            );
-
-            if (!shouldReset) {
-            return;
-            }
-
-            state = createEmptyState();
-
-            saveState();
-            updateInterface();
-
-            showToast(
-            "Progress has been reset."
-            );
-        }
-        );
-
-        document.addEventListener(
-        "visibilitychange",
-        updateInterface
-        );
-
-        window.addEventListener(
-        "focus",
-        updateInterface
-        );
-
-        updateInterface();
-        beginCountdown();
-    })();
-    </script>
-</body>
-</html>
-
-  
+      row.appendChild(
+        container
+      );
+
+      await loadAdsterraAd(
+        container,
+        config
+      );
+    }
+  }
+
+
+  // =================================================
+  // BEFORE FOOTER
+  // =================================================
+
+  const footer =
+    document.querySelector(
+      "footer"
+    );
+
+  const footerLeaderboard =
+    ALTER_HUB_ADS
+      .filter(
+        ad =>
+          ad.type ===
+          "leaderboard"
+      )
+      .at(-1);
+
+  if (
+    footer &&
+    footerLeaderboard
+  ) {
+    const container =
+      createAdContainer(
+        728,
+        90,
+        "ah-ad-leaderboard"
+      );
+
+    footer.parentElement.insertBefore(
+      container,
+      footer
+    );
+
+    await loadAdsterraAd(
+      container,
+      footerLeaderboard
+    );
+  }
+
+
+  // =================================================
+  // MOBILE BANNERS
+  // =================================================
+
+  const mobileAds =
+    ALTER_HUB_ADS.filter(
+      ad =>
+        ad.type === "mobile"
+    );
+
+  const mobileTargets =
+    [
+      hero,
+      ...sections
+    ].filter(Boolean);
+
+  for (
+    let i = 0;
+    i < mobileAds.length;
+    i++
+  ) {
+    const target =
+      mobileTargets[
+        Math.min(
+          i * 2,
+          mobileTargets.length - 1
+        )
+      ];
+
+    if (!target) {
+      continue;
+    }
+
+    const container =
+      createAdContainer(
+        320,
+        50,
+        "ah-ad-mobile ah-mobile-ad"
+      );
+
+    insertAfter(
+      target,
+      container
+    );
+
+    await loadAdsterraAd(
+      container,
+      mobileAds[i]
+    );
+  }
+
+
+  // =================================================
+  // LEFT DESKTOP RAIL
+  // =================================================
+
+  const leftConfig =
+    ALTER_HUB_ADS.find(
+      ad =>
+        ad.type ===
+        "left-rail"
+    );
+
+  if (leftConfig) {
+    const rail =
+      createAdContainer(
+        160,
+        600,
+        "ah-desktop-rail " +
+        "ah-desktop-rail-left"
+      );
+
+    document.body.appendChild(
+      rail
+    );
+
+    await loadAdsterraAd(
+      rail,
+      leftConfig
+    );
+  }
+
+
+  // =================================================
+  // RIGHT DESKTOP RAIL
+  // =================================================
+
+  const rightConfig =
+    ALTER_HUB_ADS.find(
+      ad =>
+        ad.type ===
+        "right-rail"
+    );
+
+  if (rightConfig) {
+    const rail =
+      createAdContainer(
+        160,
+        600,
+        "ah-desktop-rail " +
+        "ah-desktop-rail-right"
+      );
+
+    document.body.appendChild(
+      rail
+    );
+
+    await loadAdsterraAd(
+      rail,
+      rightConfig
+    );
+  }
+}
+
+
+// =====================================================
+// ADSTERRA POPUNDER
+// =====================================================
+
+function loadAlterHubPopunder() {
+  if (
+    document.getElementById(
+      "alterhub-popunder"
+    )
+  ) {
+    return;
+  }
+
+  const script =
+    document.createElement(
+      "script"
+    );
+
+  script.id =
+    "alterhub-popunder";
+
+  script.src =
+    "https://regrettablewageralways.com/3c/b6/6e/3cb66e10b6664867e3c2e208dba45c5c.js";
+
+  script.async = true;
+
+  document.body.appendChild(
+    script
+  );
+}
+
+
+// =====================================================
+// START ADS
+// =====================================================
+
+if (
+  document.readyState ===
+  "loading"
+) {
+  document.addEventListener(
+    "DOMContentLoaded",
+    async () => {
+      await initializeAlterHubAds();
+
+      loadAlterHubPopunder();
+    }
+  );
+} else {
+  initializeAlterHubAds()
+    .then(() => {
+      loadAlterHubPopunder();
+    });
+}
