@@ -116,11 +116,13 @@
           </p>
 
           <h1 id="product-title">
-            Pick your access.
+            <span class="product-title-main" id="product-title-main">
+              Skip the key grind.
+            </span>
             <br>
 
             <span id="product-title-accent">
-              Skip the checkpoints.
+              Fast access, every time.
             </span>
           </h1>
 
@@ -287,12 +289,12 @@
             </span>
 
             <div>
-              <p class="eyebrow">
-                PREMIUM BENEFITS
+              <p class="eyebrow" id="benefits-eyebrow">
+                KEYLESS BENEFITS
               </p>
 
-              <h2>
-                Why Go Premium
+              <h2 id="benefits-title">
+                Why Go Keyless
               </h2>
             </div>
 
@@ -301,28 +303,28 @@
           <ul class="benefit-list">
 
             <li>
-              <span>⚡</span>
-              Faster execution and smoother performance
+              <span id="benefit-icon-1">🔑</span>
+              <strong id="benefit-text-1">No checkpoint flow while your access is active</strong>
             </li>
 
             <li>
-              <span>🔐</span>
-              Saved access for quicker launches
+              <span id="benefit-icon-2">⚡</span>
+              <strong id="benefit-text-2">Fast access on your activated device</strong>
             </li>
 
             <li>
-              <span>🧩</span>
-              Access to all premium scripts and modules
+              <span id="benefit-icon-3">🔄</span>
+              <strong id="benefit-text-3">Regular Alter Hub platform updates</strong>
             </li>
 
             <li>
-              <span>✦</span>
-              Early access to new features
+              <span id="benefit-icon-4">🎮</span>
+              <strong id="benefit-text-4">Access across supported Alter Hub games</strong>
             </li>
 
             <li>
-              <span>✉️</span>
-              Priority updates and community support
+              <span id="benefit-icon-5">💬</span>
+              <strong id="benefit-text-5">Community support when you need help</strong>
             </li>
 
           </ul>
@@ -341,12 +343,12 @@
             </span>
 
             <div>
-              <p class="eyebrow">
+              <p class="eyebrow" id="activation-eyebrow">
                 GET STARTED
               </p>
 
-              <h2>
-                How to Activate
+              <h2 id="activation-title">
+                How to Activate Keyless
               </h2>
             </div>
 
@@ -356,34 +358,29 @@
 
             <li>
               <span>1</span>
-
-              <p>
-                Choose and purchase your premium key.
+              <p id="activation-step-1">
+                Choose your Keyless duration and purchase your key.
               </p>
             </li>
 
             <li>
               <span>2</span>
-
-              <p>
-                Open Alter Hub and select
-                <strong>Key System</strong>.
+              <p id="activation-step-2">
+                Open Alter Hub and select <strong>Key System</strong>.
               </p>
             </li>
 
             <li>
               <span>3</span>
-
-              <p>
-                Enter your key and verify it.
+              <p id="activation-step-3">
+                Enter the Keyless key once on the device you want to activate.
               </p>
             </li>
 
             <li>
               <span>4</span>
-
-              <p>
-                Your premium access unlocks instantly.
+              <p id="activation-step-4">
+                Keyless access stays active for your selected duration.
               </p>
             </li>
 
@@ -398,7 +395,7 @@
 
       <aside
         class="checkout-panel"
-        aria-label="Premium checkout"
+        aria-label="Alter Hub access checkout"
       >
 
         <div class="checkout-sticky">
@@ -410,8 +407,8 @@
                 SECURE CHECKOUT
               </p>
 
-              <h2>
-                Choose your access
+              <h2 id="checkout-title">
+                Choose Keyless access
               </h2>
             </div>
 
@@ -425,14 +422,79 @@
           <!-- ACCESS TIER -->
 
           <div class="checkout-field">
-            <label class="field-label" for="duration-select">
+            <span class="field-label" id="duration-label">
               ACCESS DURATION
-            </label>
+            </span>
 
-            <select id="duration-select" class="duration-select">
-              <option value="monthly">Monthly · 30 Days</option>
-              <option value="lifetime">Lifetime · One Time</option>
-            </select>
+            <div
+              class="duration-dropdown"
+              id="duration-dropdown"
+              data-open="false"
+            >
+              <button
+                class="duration-trigger"
+                id="duration-trigger"
+                type="button"
+                aria-haspopup="listbox"
+                aria-expanded="false"
+                aria-labelledby="duration-label duration-trigger-label"
+              >
+                <span>
+                  <small>SELECTED DURATION</small>
+                  <strong id="duration-trigger-label">Monthly · 30 Days</strong>
+                </span>
+
+                <span class="duration-chevron" aria-hidden="true">⌄</span>
+              </button>
+
+              <div
+                class="duration-menu"
+                id="duration-menu"
+                role="listbox"
+                aria-label="Select access duration"
+                hidden
+              >
+                <button
+                  class="duration-option selected"
+                  type="button"
+                  role="option"
+                  aria-selected="true"
+                  data-duration="monthly"
+                >
+                  <span>
+                    <strong>Monthly</strong>
+                    <small>30 days · flexible access</small>
+                  </span>
+
+                  <b>30 DAYS</b>
+                </button>
+
+                <button
+                  class="duration-option"
+                  type="button"
+                  role="option"
+                  aria-selected="false"
+                  data-duration="lifetime"
+                >
+                  <span>
+                    <strong>Lifetime</strong>
+                    <small>One payment · permanent access</small>
+                  </span>
+
+                  <b>FOREVER</b>
+                </button>
+              </div>
+
+              <select
+                id="duration-select"
+                class="duration-select-native"
+                aria-hidden="true"
+                tabindex="-1"
+              >
+                <option value="monthly">Monthly · 30 Days</option>
+                <option value="lifetime">Lifetime · One Time</option>
+              </select>
+            </div>
           </div>
 
 
