@@ -1009,3 +1009,136 @@ footer a:hover {
     animation: none;
   }
 }
+
+
+/* =========================================================
+   THREE-TIER + DURATION SELECTOR
+   ========================================================= */
+
+.checkout-field {
+  margin-bottom: 14px;
+}
+
+.checkout-field .field-label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.duration-select {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 42px 0 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  outline: none;
+  color: #f6f6f6;
+  background:
+    linear-gradient(45deg, transparent 50%, #8f8f94 50%) calc(100% - 18px) 21px / 6px 6px no-repeat,
+    linear-gradient(135deg, #8f8f94 50%, transparent 50%) calc(100% - 12px) 21px / 6px 6px no-repeat,
+    #09090a;
+  appearance: none;
+  cursor: pointer;
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.duration-select:focus {
+  border-color: #8d1717;
+  box-shadow: 0 0 0 3px rgba(181, 8, 8, 0.12);
+}
+
+.duration-select option {
+  color: #f6f6f6;
+  background: #09090a;
+}
+
+.tier-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+  margin-bottom: 14px;
+}
+
+.tier-card {
+  min-width: 0;
+  min-height: 72px;
+  padding: 12px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 4px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #09090a;
+  color: #fff;
+  text-align: left;
+  cursor: pointer;
+  transition: 180ms ease;
+}
+
+.tier-card:hover {
+  border-color: #4b1111;
+  transform: translateY(-1px);
+}
+
+.tier-card.selected {
+  border-color: #a81515;
+  background:
+    linear-gradient(120deg, rgba(181, 8, 8, 0.18), rgba(181, 8, 8, 0.04)),
+    #0d0909;
+  box-shadow: inset 0 0 0 1px rgba(181, 8, 8, 0.18);
+}
+
+.tier-card span {
+  color: #a74141;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 1.4px;
+}
+
+.tier-card strong {
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.selected-plan-card {
+  padding: 19px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: #09090a;
+}
+
+.selected-plan-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.plan-label-small {
+  display: block;
+  margin-bottom: 3px;
+  color: #a74141;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+}
+
+.selected-plan-heading h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.order-total {
+  margin-top: 16px;
+}
+
+@media (max-width: 560px) {
+  .tier-list {
+    grid-template-columns: 1fr;
+  }
+
+  .tier-card {
+    min-height: 58px;
+  }
+}
