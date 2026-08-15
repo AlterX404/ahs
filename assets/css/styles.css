@@ -225,3 +225,47 @@
   .price{font-size:44px}
   .price-card li{font-size:13px}
 }
+
+
+/* ===== FORCE 3 PRICING CARDS IN ONE ROW ===== */
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  width: 100%;
+  max-width: 1160px;
+  margin: 0 auto;
+  align-items: stretch;
+}
+
+.pricing-grid .price-card {
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.pricing-grid .price-card ul {
+  flex: 1;
+}
+
+.pricing-grid .price-card .btn {
+  margin-top: auto;
+  width: 100%;
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .pricing-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Mobile */
+@media (max-width: 650px) {
+  .pricing-grid {
+    grid-template-columns: 1fr;
+  }
+}
