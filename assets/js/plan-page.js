@@ -206,6 +206,7 @@ const animatedElements = Array.from(document.querySelectorAll("[data-plan-conten
 let selectedDuration = durationFromHash();
 let paypalButtonRendered = false;
 let paypalRenderStarted = false;
+let paypalButtonActions = null;
 
 function durationFromHash() {
   const hash = window.location.hash.slice(1).trim().toLowerCase();
@@ -323,6 +324,28 @@ async function renderPayPalSubscriptionButton() {
         label: "subscribe"
       },
 
+      onInit(data, actions) {
+        paypalButtonActions = actions;
+
+        if (termsCheckbox?.checked) {
+          actions.enable();
+        } else {
+          actions.disable();
+        }
+      },
+
+      onClick() {
+        if (termsCheckbox?.checked) return;
+
+        if (checkoutHint) {
+          checkoutHint.textContent =
+            "Accept the recurring billing terms before continuing to PayPal.";
+          checkoutHint.classList.remove("is-ready");
+        }
+
+        termsCheckbox?.focus();
+      },
+
       createSubscription(data, actions) {
         return actions.subscription.create({
           plan_id: planId
@@ -398,24 +421,30 @@ function updatePurchaseAvailability() {
     purchaseButton.removeAttribute("href");
     purchaseButton.setAttribute("aria-disabled", "true");
     purchaseButton.tabIndex = -1;
-    purchaseButton.hidden = accepted;
+    purchaseButton.hidden = true;
 
     if (purchaseButtonLabel) {
       purchaseButtonLabel.textContent = "Accept Terms to Subscribe";
     }
 
     if (paypalSubscriptionWrap) {
-      paypalSubscriptionWrap.hidden = !accepted;
+      paypalSubscriptionWrap.hidden = false;
+    }
+
+    if (paypalButtonActions) {
+      if (accepted) {
+        paypalButtonActions.enable();
+      } else {
+        paypalButtonActions.disable();
+      }
     }
 
     checkoutHint.classList.toggle("is-ready", accepted);
     checkoutHint.textContent = accepted
-      ? "Complete the secure PayPal checkout to start automatic monthly billing."
-      : "Accept the recurring billing terms to reveal the PayPal subscription button.";
+      ? "Click the PayPal Subscribe button to start secure monthly billing."
+      : "Accept the recurring billing terms to activate the PayPal Subscribe button.";
 
-    if (accepted) {
-      void renderPayPalSubscriptionButton();
-    }
+    void renderPayPalSubscriptionButton();
 
     return;
   }
