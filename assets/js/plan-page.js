@@ -198,19 +198,19 @@ const PAYPAL_LIFETIME_HOSTED_BUTTON_IDS = Object.freeze({
   "premium-plus": "4FKKNCSEUJCX6"
 });
 
-// Monthly subscriptions use window.paypal. Lifetime Hosted Buttons are loaded
-// into window.paypalHosted through PayPal's supported data-namespace option.
-// Keeping the two SDK instances in separate namespaces prevents the client IDs
-// and components from overwriting each other.
+// Monthly subscriptions use the normal PayPal Buttons SDK in the page.
+// Lifetime purchases use PayPal Hosted Buttons inside an isolated iframe.
+// The iframe intentionally uses PayPal's generated Hosted Button code with
+// window.paypal so its separate client ID never conflicts with the monthly SDK.
 const PAYPAL_CLIENT_ID = "BAAwVHsGOQSMvQW5S6JMpJEMMbOTSeZuXZpkEF4ygqGKi0-4F5o6rj8MAeP5dENFSGaxDhSJcHSRyzzgVI";
 const PAYPAL_HOSTED_CLIENT_ID = "BAA_xc_bFzIU_CVMLm-rNFQ84VC1RJQ1DUoSxTb-uGuL0mvlGsz8gGP1G6H9npeJEdSm4GgQNKdZTnd8J4";
 const PAYPAL_SDK_ID = "alter-hub-paypal-sdk";
-const PAYPAL_HOSTED_SDK_ID = "alter-hub-paypal-hosted-sdk";
-const PAYPAL_HOSTED_NAMESPACE = "paypalHosted";
 const PAYPAL_SDK_TIMEOUT_MS = 20000;
+const PAYPAL_HOSTED_MESSAGE_SOURCE = "alterhub-paypal-hosted";
 
 let paypalSdkPromise = null;
-let paypalHostedSdkPromise = null;
+let paypalHostedIframe = null;
+let paypalHostedReadyTimeout = null;
 
 function paypalSdkReady() {
   return Boolean(window.paypal && typeof window.paypal.Buttons === "function");
@@ -282,7 +282,6 @@ function loadPayPalSdk({ forceReload = false } = {}) {
       document.head.appendChild(script);
     }
 
-    // The SDK may already be ready if another script instance loaded it.
     if (paypalSdkReady()) handleLoad();
   }).catch((error) => {
     paypalSdkPromise = null;
@@ -292,107 +291,86 @@ function loadPayPalSdk({ forceReload = false } = {}) {
   return paypalSdkPromise;
 }
 
-
-function clearPayPalHostedGlobal() {
-  try {
-    delete window[PAYPAL_HOSTED_NAMESPACE];
-  } catch (_) {
-    window[PAYPAL_HOSTED_NAMESPACE] = undefined;
-  }
+function escapeHtmlAttribute(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
 }
 
-function paypalHostedSdkReady() {
-  const sdk = window[PAYPAL_HOSTED_NAMESPACE];
-  return Boolean(sdk && typeof sdk.HostedButtons === "function");
-}
+function buildHostedButtonFrameDocument(hostedButtonId) {
+  const safeButtonId = escapeHtmlAttribute(hostedButtonId);
+  const sdkUrl = `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(PAYPAL_HOSTED_CLIENT_ID)}&components=hosted-buttons&disable-funding=venmo&currency=USD`;
 
-function buildPayPalHostedSdkUrl() {
-  const params = new URLSearchParams({
-    "client-id": PAYPAL_HOSTED_CLIENT_ID,
-    components: "hosted-buttons",
-    "disable-funding": "venmo",
-    currency: "USD"
-  });
-
-  return `https://www.paypal.com/sdk/js?${params.toString()}`;
-}
-
-function loadPayPalHostedSdk({ forceReload = false } = {}) {
-  if (paypalHostedSdkReady() && !forceReload) {
-    return Promise.resolve(window[PAYPAL_HOSTED_NAMESPACE]);
-  }
-
-  if (forceReload) {
-    document.getElementById(PAYPAL_HOSTED_SDK_ID)?.remove();
-    paypalHostedSdkPromise = null;
-    clearPayPalHostedGlobal();
-  }
-
-  if (paypalHostedSdkPromise) return paypalHostedSdkPromise;
-
-  paypalHostedSdkPromise = new Promise((resolve, reject) => {
-    let script = document.getElementById(PAYPAL_HOSTED_SDK_ID);
-    let settled = false;
-
-    const finish = (callback, value) => {
-      if (settled) return;
-      settled = true;
-      window.clearTimeout(timeoutId);
-      callback(value);
-    };
-
-    const handleLoad = () => {
-      if (paypalHostedSdkReady()) {
-        finish(resolve, window[PAYPAL_HOSTED_NAMESPACE]);
-      } else {
-        finish(
-          reject,
-          new Error(
-            "PayPal Hosted Buttons SDK loaded, but paypalHosted.HostedButtons is unavailable."
-          )
+  return `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      background: transparent;
+      overflow: hidden;
+      color-scheme: light;
+    }
+    #paypal-container-${safeButtonId} {
+      width: 100%;
+      min-height: 44px;
+    }
+  </style>
+</head>
+<body>
+  <div id="paypal-container-${safeButtonId}"></div>
+  <script src="${sdkUrl}"><\/script>
+  <script>
+    (function () {
+      var source = ${JSON.stringify(PAYPAL_HOSTED_MESSAGE_SOURCE)};
+      var buttonId = ${JSON.stringify(hostedButtonId)};
+      var send = function (type, extra) {
+        var message = Object.assign({ source: source, type: type, buttonId: buttonId }, extra || {});
+        window.parent.postMessage(message, "*");
+      };
+      var resize = function () {
+        var height = Math.max(
+          document.documentElement ? document.documentElement.scrollHeight : 0,
+          document.body ? document.body.scrollHeight : 0,
+          64
         );
+        send("resize", { height: height });
+      };
+
+      try {
+        if (!window.paypal || typeof window.paypal.HostedButtons !== "function") {
+          throw new Error("PayPal Hosted Buttons SDK loaded without paypal.HostedButtons.");
+        }
+
+        var result = window.paypal.HostedButtons({ hostedButtonId: buttonId })
+          .render("#paypal-container-" + buttonId);
+
+        Promise.resolve(result).then(function () {
+          send("ready");
+          resize();
+          setTimeout(resize, 250);
+          setTimeout(resize, 1000);
+        }).catch(function (error) {
+          send("error", { message: error && error.message ? error.message : String(error) });
+        });
+      } catch (error) {
+        send("error", { message: error && error.message ? error.message : String(error) });
       }
-    };
 
-    const handleError = () => {
-      finish(
-        reject,
-        new Error("PayPal Hosted Buttons SDK request failed to load.")
-      );
-    };
-
-    const timeoutId = window.setTimeout(() => {
-      finish(
-        reject,
-        new Error("PayPal Hosted Buttons SDK timed out while loading.")
-      );
-    }, PAYPAL_SDK_TIMEOUT_MS);
-
-    const isNewScript = !script;
-
-    if (isNewScript) {
-      script = document.createElement("script");
-      script.id = PAYPAL_HOSTED_SDK_ID;
-      script.src = buildPayPalHostedSdkUrl();
-      script.async = true;
-      script.setAttribute("data-namespace", PAYPAL_HOSTED_NAMESPACE);
-      script.dataset.sdkIntegrationSource = "button-factory";
-    }
-
-    script.addEventListener("load", handleLoad, { once: true });
-    script.addEventListener("error", handleError, { once: true });
-
-    if (isNewScript) {
-      document.head.appendChild(script);
-    }
-
-    if (paypalHostedSdkReady()) handleLoad();
-  }).catch((error) => {
-    paypalHostedSdkPromise = null;
-    throw error;
-  });
-
-  return paypalHostedSdkPromise;
+      window.addEventListener("load", resize);
+      if (window.ResizeObserver) {
+        new ResizeObserver(resize).observe(document.body);
+      }
+    })();
+  <\/script>
+</body>
+</html>`;
 }
 
 const tierSlug = document.body.dataset.tier;
@@ -476,6 +454,10 @@ function renderList(selector, items, numbered = false) {
 function resetPayPalCheckout(mode = selectedDuration) {
   if (!paypalSubscriptionButton) return;
 
+  window.clearTimeout(paypalHostedReadyTimeout);
+  paypalHostedReadyTimeout = null;
+  paypalHostedIframe = null;
+
   paypalSubscriptionButton.replaceChildren();
   paypalButtonRendered = false;
   paypalRenderStarted = false;
@@ -529,8 +511,7 @@ function showPayPalStatus(message, isError = false, allowRetry = false) {
 
       try {
         if (selectedDuration === "lifetime") {
-          await loadPayPalHostedSdk({ forceReload: true });
-          await renderPayPalHostedButton();
+          renderPayPalHostedButton();
         } else {
           await loadPayPalSdk({ forceReload: true });
           await renderPayPalSubscriptionButton();
@@ -539,7 +520,7 @@ function showPayPalStatus(message, isError = false, allowRetry = false) {
         console.error("PayPal retry failed:", error);
         showPayPalStatus(
           selectedDuration === "lifetime"
-            ? "PayPal Hosted Buttons could not load. Check the browser console/network request for paypal.com/sdk/js."
+            ? "PayPal lifetime checkout could not load. Please retry or check whether paypal.com is blocked."
             : "PayPal checkout could not load. Check the browser console/network request for paypal.com/sdk/js.",
           true,
           true
@@ -670,14 +651,63 @@ async function renderPayPalSubscriptionButton() {
 }
 
 function setLifetimeHostedButtonEnabled(enabled) {
-  if (!paypalSubscriptionButton || !paypalHostedButtonRendered) return;
+  if (!paypalHostedIframe) return;
 
-  paypalSubscriptionButton.style.pointerEvents = enabled ? "auto" : "none";
-  paypalSubscriptionButton.style.opacity = enabled ? "1" : "0.55";
-  paypalSubscriptionButton.setAttribute("aria-disabled", String(!enabled));
+  paypalHostedIframe.style.pointerEvents = enabled ? "auto" : "none";
+  paypalHostedIframe.style.opacity = enabled ? "1" : "0.55";
+  paypalHostedIframe.setAttribute("aria-disabled", String(!enabled));
 }
 
-async function renderPayPalHostedButton() {
+function handleHostedPayPalMessage(event) {
+  const data = event.data;
+
+  if (
+    !data ||
+    data.source !== PAYPAL_HOSTED_MESSAGE_SOURCE ||
+    !paypalHostedIframe ||
+    event.source !== paypalHostedIframe.contentWindow
+  ) {
+    return;
+  }
+
+  const expectedButtonId = PAYPAL_LIFETIME_HOSTED_BUTTON_IDS[tierSlug];
+  if (data.buttonId !== expectedButtonId) return;
+
+  if (data.type === "resize") {
+    const height = Number(data.height);
+    if (Number.isFinite(height) && height > 0) {
+      paypalHostedIframe.style.height = `${Math.min(Math.max(height, 64), 600)}px`;
+    }
+    return;
+  }
+
+  if (data.type === "ready") {
+    window.clearTimeout(paypalHostedReadyTimeout);
+    paypalHostedReadyTimeout = null;
+    paypalHostedButtonRendered = true;
+    paypalHostedRenderStarted = false;
+    setLifetimeHostedButtonEnabled(Boolean(termsCheckbox?.checked));
+    return;
+  }
+
+  if (data.type === "error") {
+    window.clearTimeout(paypalHostedReadyTimeout);
+    paypalHostedReadyTimeout = null;
+    paypalHostedRenderStarted = false;
+    paypalHostedIframe = null;
+
+    console.error("PayPal lifetime Hosted Button error:", data.message || "Unknown error");
+    showPayPalStatus(
+      `PayPal lifetime checkout could not load: ${data.message || "unknown PayPal error"}`,
+      true,
+      true
+    );
+  }
+}
+
+window.addEventListener("message", handleHostedPayPalMessage);
+
+function renderPayPalHostedButton() {
   if (
     selectedDuration !== "lifetime" ||
     !paypalSubscriptionButton ||
@@ -695,46 +725,36 @@ async function renderPayPalHostedButton() {
   }
 
   paypalHostedRenderStarted = true;
-  paypalSubscriptionButton.style.pointerEvents = "auto";
-  paypalSubscriptionButton.style.opacity = "1";
-  paypalSubscriptionButton.removeAttribute("aria-disabled");
   paypalSubscriptionButton.replaceChildren();
-  showPayPalStatus("Loading secure PayPal lifetime checkout…");
 
-  try {
-    const paypalHosted = await loadPayPalHostedSdk();
+  const iframe = document.createElement("iframe");
+  iframe.className = "paypal-hosted-frame";
+  iframe.title = `PayPal checkout for ${tier.name} Lifetime`;
+  iframe.setAttribute("allow", "payment");
+  iframe.setAttribute("scrolling", "no");
+  iframe.style.display = "block";
+  iframe.style.width = "100%";
+  iframe.style.height = "96px";
+  iframe.style.border = "0";
+  iframe.style.background = "transparent";
+  iframe.srcdoc = buildHostedButtonFrameDocument(hostedButtonId);
 
-    // The user may have changed back to Monthly while the SDK was loading.
-    if (selectedDuration !== "lifetime") return;
+  paypalHostedIframe = iframe;
+  paypalSubscriptionButton.appendChild(iframe);
+  setLifetimeHostedButtonEnabled(Boolean(termsCheckbox?.checked));
 
-    // Match PayPal's generated Hosted Button code exactly by rendering into
-    // paypal-container-<HOSTED_BUTTON_ID> for each lifetime product.
-    const hostedContainer = document.createElement("div");
-    hostedContainer.id = `paypal-container-${hostedButtonId}`;
-    paypalSubscriptionButton.replaceChildren(hostedContainer);
+  window.clearTimeout(paypalHostedReadyTimeout);
+  paypalHostedReadyTimeout = window.setTimeout(() => {
+    if (paypalHostedButtonRendered || selectedDuration !== "lifetime") return;
 
-    const hostedButtons = paypalHosted.HostedButtons({
-      hostedButtonId
-    });
-
-    await hostedButtons.render(`#${hostedContainer.id}`);
-    paypalHostedButtonRendered = true;
-    setLifetimeHostedButtonEnabled(Boolean(termsCheckbox?.checked));
-  } catch (error) {
-    console.error("Failed to render PayPal lifetime Hosted Button:", error);
-    console.error("Hosted SDK URL:", buildPayPalHostedSdkUrl());
-    console.error("Hosted SDK namespace value:", window[PAYPAL_HOSTED_NAMESPACE]);
-    paypalSubscriptionButton.style.pointerEvents = "auto";
-    paypalSubscriptionButton.style.opacity = "1";
-    paypalSubscriptionButton.removeAttribute("aria-disabled");
+    paypalHostedRenderStarted = false;
+    paypalHostedIframe = null;
     showPayPalStatus(
-      `PayPal lifetime checkout could not load: ${error?.message || "unknown PayPal SDK error"}`,
+      "PayPal lifetime checkout timed out while loading. Please retry or check whether paypal.com is blocked.",
       true,
       true
     );
-  } finally {
-    paypalHostedRenderStarted = false;
-  }
+  }, PAYPAL_SDK_TIMEOUT_MS);
 }
 
 function updatePurchaseAvailability() {
