@@ -198,13 +198,15 @@ const PAYPAL_LIFETIME_HOSTED_BUTTON_IDS = Object.freeze({
   "premium-plus": "4FKKNCSEUJCX6"
 });
 
-// Monthly subscriptions and lifetime Hosted Buttons use their own PayPal SDK
-// configurations. The Hosted Buttons SDK is loaded into a separate namespace
-// so both integrations can coexist safely on the same page.
+// Monthly subscriptions use window.paypal. Lifetime Hosted Buttons are loaded
+// into window.paypalHosted through PayPal's supported data-namespace option.
+// Keeping the two SDK instances in separate namespaces prevents the client IDs
+// and components from overwriting each other.
 const PAYPAL_CLIENT_ID = "BAAwVHsGOQSMvQW5S6JMpJEMMbOTSeZuXZpkEF4ygqGKi0-4F5o6rj8MAeP5dENFSGaxDhSJcHSRyzzgVI";
 const PAYPAL_HOSTED_CLIENT_ID = "BAA_xc_bFzIU_CVMLm-rNFQ84VC1RJQ1DUoSxTb-uGuL0mvlGsz8gGP1G6H9npeJEdSm4GgQNKdZTnd8J4";
 const PAYPAL_SDK_ID = "alter-hub-paypal-sdk";
 const PAYPAL_HOSTED_SDK_ID = "alter-hub-paypal-hosted-sdk";
+const PAYPAL_HOSTED_NAMESPACE = "paypalHosted";
 const PAYPAL_SDK_TIMEOUT_MS = 20000;
 
 let paypalSdkPromise = null;
@@ -235,17 +237,6 @@ function loadPayPalSdk({ forceReload = false } = {}) {
   }
 
   if (paypalSdkPromise) return paypalSdkPromise;
-
-  // Only one PayPal SDK mode owns window.paypal at a time. If Lifetime was
-  // selected previously, unload its Hosted Buttons SDK before restoring the
-  // monthly subscription SDK.
-  document.getElementById(PAYPAL_HOSTED_SDK_ID)?.remove();
-  paypalHostedSdkPromise = null;
-  try {
-    delete window.paypal;
-  } catch (_) {
-    window.paypal = undefined;
-  }
 
   paypalSdkPromise = new Promise((resolve, reject) => {
     let script = document.getElementById(PAYPAL_SDK_ID);
@@ -302,16 +293,17 @@ function loadPayPalSdk({ forceReload = false } = {}) {
 }
 
 
-function clearPayPalGlobal() {
+function clearPayPalHostedGlobal() {
   try {
-    delete window.paypal;
+    delete window[PAYPAL_HOSTED_NAMESPACE];
   } catch (_) {
-    window.paypal = undefined;
+    window[PAYPAL_HOSTED_NAMESPACE] = undefined;
   }
 }
 
 function paypalHostedSdkReady() {
-  return Boolean(window.paypal && typeof window.paypal.HostedButtons === "function");
+  const sdk = window[PAYPAL_HOSTED_NAMESPACE];
+  return Boolean(sdk && typeof sdk.HostedButtons === "function");
 }
 
 function buildPayPalHostedSdkUrl() {
@@ -325,36 +317,21 @@ function buildPayPalHostedSdkUrl() {
   return `https://www.paypal.com/sdk/js?${params.toString()}`;
 }
 
-function removeMonthlyPayPalSdk() {
-  document.getElementById(PAYPAL_SDK_ID)?.remove();
-  paypalSdkPromise = null;
-}
-
-function removeHostedPayPalSdk() {
-  document.getElementById(PAYPAL_HOSTED_SDK_ID)?.remove();
-  paypalHostedSdkPromise = null;
-}
-
 function loadPayPalHostedSdk({ forceReload = false } = {}) {
   if (paypalHostedSdkReady() && !forceReload) {
-    return Promise.resolve(window.paypal);
+    return Promise.resolve(window[PAYPAL_HOSTED_NAMESPACE]);
   }
 
   if (forceReload) {
-    removeHostedPayPalSdk();
+    document.getElementById(PAYPAL_HOSTED_SDK_ID)?.remove();
+    paypalHostedSdkPromise = null;
+    clearPayPalHostedGlobal();
   }
 
   if (paypalHostedSdkPromise) return paypalHostedSdkPromise;
 
-  // PayPal generated Hosted Button code expects the normal `window.paypal`
-  // namespace. Duration changes now force a full page reload, so on a normal
-  // lifetime page there is no monthly PayPal SDK competing for this namespace.
-  removeMonthlyPayPalSdk();
-  removeHostedPayPalSdk();
-  clearPayPalGlobal();
-
   paypalHostedSdkPromise = new Promise((resolve, reject) => {
-    const script = document.createElement("script");
+    let script = document.getElementById(PAYPAL_HOSTED_SDK_ID);
     let settled = false;
 
     const finish = (callback, value) => {
@@ -366,11 +343,13 @@ function loadPayPalHostedSdk({ forceReload = false } = {}) {
 
     const handleLoad = () => {
       if (paypalHostedSdkReady()) {
-        finish(resolve, window.paypal);
+        finish(resolve, window[PAYPAL_HOSTED_NAMESPACE]);
       } else {
         finish(
           reject,
-          new Error("PayPal Hosted Buttons SDK loaded but paypal.HostedButtons is unavailable.")
+          new Error(
+            "PayPal Hosted Buttons SDK loaded, but paypalHosted.HostedButtons is unavailable."
+          )
         );
       }
     };
@@ -378,7 +357,7 @@ function loadPayPalHostedSdk({ forceReload = false } = {}) {
     const handleError = () => {
       finish(
         reject,
-        new Error("PayPal Hosted Buttons SDK request was blocked or failed.")
+        new Error("PayPal Hosted Buttons SDK request failed to load.")
       );
     };
 
@@ -389,13 +368,25 @@ function loadPayPalHostedSdk({ forceReload = false } = {}) {
       );
     }, PAYPAL_SDK_TIMEOUT_MS);
 
-    script.id = PAYPAL_HOSTED_SDK_ID;
-    script.src = buildPayPalHostedSdkUrl();
-    script.async = true;
-    script.dataset.sdkIntegrationSource = "button-factory";
+    const isNewScript = !script;
+
+    if (isNewScript) {
+      script = document.createElement("script");
+      script.id = PAYPAL_HOSTED_SDK_ID;
+      script.src = buildPayPalHostedSdkUrl();
+      script.async = true;
+      script.setAttribute("data-namespace", PAYPAL_HOSTED_NAMESPACE);
+      script.dataset.sdkIntegrationSource = "button-factory";
+    }
+
     script.addEventListener("load", handleLoad, { once: true });
     script.addEventListener("error", handleError, { once: true });
-    document.head.appendChild(script);
+
+    if (isNewScript) {
+      document.head.appendChild(script);
+    }
+
+    if (paypalHostedSdkReady()) handleLoad();
   }).catch((error) => {
     paypalHostedSdkPromise = null;
     throw error;
@@ -530,16 +521,30 @@ function showPayPalStatus(message, isError = false, allowRetry = false) {
     retryButton.type = "button";
     retryButton.className = "paypal-retry-button";
     retryButton.textContent = "Retry PayPal";
-    retryButton.addEventListener("click", () => {
+    retryButton.addEventListener("click", async () => {
       retryButton.disabled = true;
       text.textContent = "Reloading PayPal checkout…";
 
-      // The monthly subscription SDK and the lifetime Hosted Buttons SDK use
-      // different PayPal client IDs/components. PayPal does not reliably
-      // support replacing one SDK configuration with another in the same
-      // document, even after its <script> tag is removed. A full reload gives
-      // the selected checkout a clean PayPal SDK instance.
-      window.location.reload();
+      resetPayPalCheckout(selectedDuration);
+
+      try {
+        if (selectedDuration === "lifetime") {
+          await loadPayPalHostedSdk({ forceReload: true });
+          await renderPayPalHostedButton();
+        } else {
+          await loadPayPalSdk({ forceReload: true });
+          await renderPayPalSubscriptionButton();
+        }
+      } catch (error) {
+        console.error("PayPal retry failed:", error);
+        showPayPalStatus(
+          selectedDuration === "lifetime"
+            ? "PayPal Hosted Buttons could not load. Check the browser console/network request for paypal.com/sdk/js."
+            : "PayPal checkout could not load. Check the browser console/network request for paypal.com/sdk/js.",
+          true,
+          true
+        );
+      }
     });
     status.appendChild(retryButton);
   }
@@ -717,11 +722,13 @@ async function renderPayPalHostedButton() {
     setLifetimeHostedButtonEnabled(Boolean(termsCheckbox?.checked));
   } catch (error) {
     console.error("Failed to render PayPal lifetime Hosted Button:", error);
+    console.error("Hosted SDK URL:", buildPayPalHostedSdkUrl());
+    console.error("Hosted SDK namespace value:", window[PAYPAL_HOSTED_NAMESPACE]);
     paypalSubscriptionButton.style.pointerEvents = "auto";
     paypalSubscriptionButton.style.opacity = "1";
     paypalSubscriptionButton.removeAttribute("aria-disabled");
     showPayPalStatus(
-      "PayPal lifetime checkout could not load. Please retry or open this page directly in Chrome/Safari with content blockers disabled.",
+      `PayPal lifetime checkout could not load: ${error?.message || "unknown PayPal SDK error"}`,
       true,
       true
     );
@@ -854,13 +861,10 @@ durationButtons.forEach((button) => {
       return;
     }
 
-    // Monthly subscriptions and lifetime Hosted Buttons require different
-    // PayPal SDK configurations/client IDs. Switching them inside the same
-    // document can leave PayPal's first SDK instance cached internally and
-    // causes the second checkout to fail. Save the new mode in the URL, then
-    // reload so only the correct SDK is ever loaded for this document.
-    window.history.pushState({ duration }, "", `#${duration}`);
-    window.location.reload();
+    selectedDuration = duration;
+    termsCheckbox.checked = false;
+    resetPayPalCheckout(duration);
+    renderPlan({ animate: true, updateHistory: true, pushHistory: true });
   });
 });
 
@@ -879,15 +883,11 @@ if (purchaseButton) {
 
 window.addEventListener("popstate", () => {
   const nextDuration = durationFromHash();
-  if (nextDuration !== selectedDuration) {
-    window.location.reload();
-  }
-});
-
-window.addEventListener("hashchange", () => {
-  const nextDuration = durationFromHash();
-  if (nextDuration !== selectedDuration) {
-    window.location.reload();
+  if (nextDuration !== selectedDuration && tier[nextDuration]) {
+    selectedDuration = nextDuration;
+    if (termsCheckbox) termsCheckbox.checked = false;
+    resetPayPalCheckout(nextDuration);
+    renderPlan({ animate: true, updateHistory: false });
   }
 });
 
