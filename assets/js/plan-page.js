@@ -191,6 +191,92 @@ const PAYPAL_MONTHLY_PLAN_IDS = Object.freeze({
   "premium-plus": "P-72H85729L5583625MNKBVQKY"
 });
 
+const PAYPAL_CLIENT_ID = "BAAwVHsGOQSMvQW5S6JMpJEMMbOTSeZuXZpkEF4ygqGKi0-4F5o6rj8MAeP5dENFSGaxDhSJcHSRyzzgVI";
+const PAYPAL_SDK_ID = "alter-hub-paypal-sdk";
+const PAYPAL_SDK_TIMEOUT_MS = 20000;
+
+let paypalSdkPromise = null;
+
+function paypalSdkReady() {
+  return Boolean(window.paypal && typeof window.paypal.Buttons === "function");
+}
+
+function buildPayPalSdkUrl() {
+  const params = new URLSearchParams({
+    "client-id": PAYPAL_CLIENT_ID,
+    components: "buttons",
+    vault: "true",
+    intent: "subscription",
+    currency: "USD"
+  });
+
+  return `https://www.paypal.com/sdk/js?${params.toString()}`;
+}
+
+function loadPayPalSdk({ forceReload = false } = {}) {
+  if (paypalSdkReady()) return Promise.resolve(window.paypal);
+
+  if (forceReload) {
+    document.getElementById(PAYPAL_SDK_ID)?.remove();
+    paypalSdkPromise = null;
+  }
+
+  if (paypalSdkPromise) return paypalSdkPromise;
+
+  paypalSdkPromise = new Promise((resolve, reject) => {
+    let script = document.getElementById(PAYPAL_SDK_ID);
+    let settled = false;
+
+    const finish = (callback, value) => {
+      if (settled) return;
+      settled = true;
+      window.clearTimeout(timeoutId);
+      callback(value);
+    };
+
+    const handleLoad = () => {
+      if (paypalSdkReady()) {
+        finish(resolve, window.paypal);
+      } else {
+        finish(reject, new Error("PayPal SDK loaded but window.paypal is unavailable."));
+      }
+    };
+
+    const handleError = () => {
+      finish(reject, new Error("PayPal SDK request was blocked or failed."));
+    };
+
+    const timeoutId = window.setTimeout(() => {
+      finish(reject, new Error("PayPal SDK timed out while loading."));
+    }, PAYPAL_SDK_TIMEOUT_MS);
+
+    const isNewScript = !script;
+
+    if (isNewScript) {
+      script = document.createElement("script");
+      script.id = PAYPAL_SDK_ID;
+      script.src = buildPayPalSdkUrl();
+      script.async = true;
+      script.dataset.sdkIntegrationSource = "button-factory";
+    }
+
+    script.addEventListener("load", handleLoad, { once: true });
+    script.addEventListener("error", handleError, { once: true });
+
+    if (isNewScript) {
+      document.head.appendChild(script);
+    }
+
+    // The SDK may already be ready if another script instance loaded it.
+    if (paypalSdkReady()) handleLoad();
+  }).catch((error) => {
+    paypalSdkPromise = null;
+    throw error;
+  });
+
+  return paypalSdkPromise;
+}
+
 const tierSlug = document.body.dataset.tier;
 const tier = PLAN_CATALOG[tierSlug] || PLAN_CATALOG.keyless;
 const durationButtons = Array.from(document.querySelectorAll("[data-duration]"));
@@ -281,13 +367,46 @@ function lifetimePurchaseRequestUrl() {
   return `mailto:support@alterhub.online?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 
-function showPayPalStatus(message, isError = false) {
+function showPayPalStatus(message, isError = false, allowRetry = false) {
   if (!paypalSubscriptionButton) return;
 
   paypalSubscriptionButton.replaceChildren();
-  const status = document.createElement("p");
+
+  const status = document.createElement("div");
   status.className = `paypal-status${isError ? " is-error" : ""}`;
-  status.textContent = message;
+
+  const text = document.createElement("p");
+  text.textContent = message;
+  status.appendChild(text);
+
+  if (allowRetry) {
+    const retryButton = document.createElement("button");
+    retryButton.type = "button";
+    retryButton.className = "paypal-retry-button";
+    retryButton.textContent = "Retry PayPal";
+    retryButton.addEventListener("click", async () => {
+      retryButton.disabled = true;
+      text.textContent = "Reloading PayPal checkout…";
+      paypalButtonRendered = false;
+      paypalRenderStarted = false;
+      paypalButtonActions = null;
+
+      try {
+        await loadPayPalSdk({ forceReload: true });
+        paypalSubscriptionButton.replaceChildren();
+        await renderPayPalSubscriptionButton();
+      } catch (error) {
+        console.error("PayPal retry failed:", error);
+        showPayPalStatus(
+          "PayPal is still blocked or unavailable. Open this page in Chrome/Safari and disable content blockers for alterhub.online, then retry.",
+          true,
+          true
+        );
+      }
+    });
+    status.appendChild(retryButton);
+  }
+
   paypalSubscriptionButton.appendChild(status);
 }
 
@@ -307,15 +426,14 @@ async function renderPayPalSubscriptionButton() {
     return;
   }
 
-  if (!window.paypal || typeof window.paypal.Buttons !== "function") {
-    showPayPalStatus("PayPal could not be loaded. Please refresh the page.", true);
-    return;
-  }
-
   paypalRenderStarted = true;
   paypalSubscriptionButton.replaceChildren();
+  showPayPalStatus("Loading secure PayPal checkout…");
 
   try {
+    await loadPayPalSdk();
+    paypalSubscriptionButton.replaceChildren();
+
     const buttons = window.paypal.Buttons({
       style: {
         shape: "pill",
@@ -394,7 +512,8 @@ async function renderPayPalSubscriptionButton() {
   } catch (error) {
     console.error("Failed to render PayPal subscription button:", error);
     showPayPalStatus(
-      "PayPal could not be loaded. Please refresh and try again.",
+      "PayPal checkout could not load. It may be blocked by the browser, an ad/content blocker, an in-app browser, or the current network.",
+      true,
       true
     );
   } finally {

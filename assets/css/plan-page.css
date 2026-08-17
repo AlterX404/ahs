@@ -393,8 +393,7 @@ input:focus-visible {
 }
 
 .checkout-inner {
-  position: sticky;
-  top: 92px;
+  position: static;
   padding: 30px;
   border-radius: 13px;
   background: linear-gradient(160deg, #111113, #09090a);
@@ -694,10 +693,35 @@ input:focus-visible {
   text-align: center;
 }
 
+.paypal-status p {
+  margin: 0;
+}
+
 .paypal-status.is-error {
   border-color: #d8a2a2;
   background: #fff5f5;
   color: #8d2222;
+}
+
+.paypal-retry-button {
+  margin-top: 10px;
+  padding: 9px 14px;
+  border: 1px solid #9f2626;
+  border-radius: 7px;
+  background: #8d0707;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.paypal-retry-button:hover {
+  background: #a50a0a;
+}
+
+.paypal-retry-button:disabled {
+  opacity: 0.6;
+  cursor: wait;
 }
 
 .purchase-button {
