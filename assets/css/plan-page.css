@@ -644,6 +644,62 @@ input:focus-visible {
   text-underline-offset: 3px;
 }
 
+.paypal-subscription-wrap {
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid #d7d7d9;
+  border-radius: 11px;
+  background: #f4f4f5;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.24);
+}
+
+.paypal-subscription-wrap[hidden],
+.purchase-button[hidden] {
+  display: none !important;
+}
+
+.paypal-subscription-heading {
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.paypal-subscription-heading span {
+  color: #8d0707;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.paypal-subscription-heading strong {
+  color: #242426;
+  font-size: 9px;
+}
+
+#paypal-subscription-button {
+  min-height: 45px;
+}
+
+.paypal-status {
+  margin: 0;
+  padding: 12px;
+  border: 1px solid #d0d0d3;
+  border-radius: 8px;
+  background: #fff;
+  color: #333337;
+  font-size: 10px;
+  line-height: 1.55;
+  text-align: center;
+}
+
+.paypal-status.is-error {
+  border-color: #d8a2a2;
+  background: #fff5f5;
+  color: #8d2222;
+}
+
 .purchase-button {
   width: 100%;
   min-height: 52px;

@@ -11,32 +11,32 @@ const PLAN_CATALOG = {
       "Community support for setup and activation"
     ],
     steps: [
-      "Choose either the 30-day or lifetime Keyless option.",
-      "Accept the store terms and continue with your purchase request.",
+      "Choose either the recurring monthly or lifetime Keyless option.",
+      "Accept the store terms and subscribe securely through PayPal.",
       "After receiving your key, open Alter Hub and go to the Key System.",
       "Enter the key once on the device you want to activate."
     ],
     monthly: {
       cardTitle: "Monthly Key",
-      cardDescription: "Keyless access for 30 days. Renew only when you want to.",
-      heroEyebrow: "KEYLESS ACCESS · 30 DAYS",
+      cardDescription: "Keyless access billed automatically every month until cancelled.",
+      heroEyebrow: "KEYLESS ACCESS · MONTHLY",
       titleMain: "Skip the key system.",
-      titleAccent: "For 30 days.",
-      description: "A monthly Keyless key lets you use Alter Hub for 30 days without completing the free key-system checkpoints. It includes core Alter Hub access, but it does not unlock features reserved for Premium or Premium Plus.",
+      titleAccent: "Month after month.",
+      description: "A monthly Keyless subscription removes the free key-system checkpoints while your PayPal subscription remains active. It renews automatically every month until cancelled and includes core Alter Hub access, but not Premium or Premium Plus features.",
       features: [
         "No key checkpoints",
-        "30-day access",
+        "Monthly recurring access",
         "Core features only"
       ],
       summaryTitle: "Monthly Keyless",
-      summaryDescription: "Fast, checkpoint-free Alter Hub access for 30 days without premium-only features.",
+      summaryDescription: "Checkpoint-free Alter Hub access that renews automatically every month until cancelled.",
       oldPrice: "$9.99",
       price: "$5.99",
       discount: "40% OFF",
-      badge: "FLEXIBLE",
-      access: "30 days",
-      billing: "One-time payment",
-      renewal: "Renew manually"
+      badge: "AUTO-RENEW",
+      access: "While subscribed",
+      billing: "$5.99 every month",
+      renewal: "Automatic until cancelled"
     },
     lifetime: {
       cardTitle: "Lifetime Key",
@@ -72,32 +72,32 @@ const PLAN_CATALOG = {
       "Early access to selected new Premium releases"
     ],
     steps: [
-      "Choose either the 30-day or lifetime Premium option.",
-      "Accept the store terms and continue with your purchase request.",
+      "Choose either the recurring monthly or lifetime Premium option.",
+      "Accept the store terms and subscribe securely through PayPal.",
       "After receiving your key, open Alter Hub and go to the Key System.",
       "Enter your Premium key to activate every included feature."
     ],
     monthly: {
       cardTitle: "Monthly Key",
-      cardDescription: "Complete Premium access for 30 days with flexible renewal.",
-      heroEyebrow: "PREMIUM ACCESS · 30 DAYS",
+      cardDescription: "Complete Premium access billed automatically every month.",
+      heroEyebrow: "PREMIUM ACCESS · MONTHLY",
       titleMain: "Unlock more.",
-      titleAccent: "For 30 days.",
-      description: "A monthly Premium key gives you 30 days of Keyless access plus Alter Hub's premium-only features, Premium updates, and priority community support. Renew only when you want another 30 days.",
+      titleAccent: "Every month.",
+      description: "A monthly Premium subscription includes Keyless access, Alter Hub's premium-only features, Premium updates, and priority support. PayPal bills $7.99 automatically every month until you cancel.",
       features: [
         "Everything in Keyless",
         "Premium features",
         "Priority support"
       ],
       summaryTitle: "Monthly Premium",
-      summaryDescription: "The complete Premium experience for 30 days with no long-term commitment.",
+      summaryDescription: "The complete Premium experience with automatic monthly PayPal renewal until cancelled.",
       oldPrice: "$14.99",
       price: "$7.99",
       discount: "47% OFF",
       badge: "POPULAR",
-      access: "30 days",
-      billing: "One-time payment",
-      renewal: "Renew manually"
+      access: "While subscribed",
+      billing: "$7.99 every month",
+      renewal: "Automatic until cancelled"
     },
     lifetime: {
       cardTitle: "Lifetime Key",
@@ -133,32 +133,32 @@ const PLAN_CATALOG = {
       "Highest-priority community support"
     ],
     steps: [
-      "Choose either the 30-day or lifetime Premium Plus option.",
-      "Accept the store terms and continue with your purchase request.",
+      "Choose either the recurring monthly or lifetime Premium Plus option.",
+      "Accept the store terms and subscribe securely through PayPal.",
       "After receiving your key, open Alter Hub and go to the Key System.",
       "Enter your Premium Plus key to activate the complete top-tier package."
     ],
     monthly: {
       cardTitle: "Monthly Key",
-      cardDescription: "The complete top-tier experience for 30 days.",
-      heroEyebrow: "PREMIUM PLUS · 30 DAYS",
+      cardDescription: "The complete top-tier experience billed automatically every month.",
+      heroEyebrow: "PREMIUM PLUS · MONTHLY",
       titleMain: "Go all in.",
-      titleAccent: "For 30 days.",
-      description: "A monthly Premium Plus key gives you 30 days of every Premium benefit plus exclusive Plus features, earliest access to selected releases, and Alter Hub's highest-priority support tier.",
+      titleAccent: "Every month.",
+      description: "A monthly Premium Plus subscription includes every Premium benefit, exclusive Plus features, earliest access to selected releases, and top-priority support. PayPal bills $9.99 automatically every month until you cancel.",
       features: [
         "Everything in Premium",
         "Exclusive Plus benefits",
         "Top-priority support"
       ],
       summaryTitle: "Monthly Premium Plus",
-      summaryDescription: "Alter Hub's highest access tier for 30 days, with flexible manual renewal.",
+      summaryDescription: "Alter Hub's highest access tier with automatic monthly PayPal renewal until cancelled.",
       oldPrice: "$19.99",
       price: "$9.99",
       discount: "50% OFF",
       badge: "TOP TIER",
-      access: "30 days",
-      billing: "One-time payment",
-      renewal: "Renew manually"
+      access: "While subscribed",
+      billing: "$9.99 every month",
+      renewal: "Automatic until cancelled"
     },
     lifetime: {
       cardTitle: "Lifetime Key",
@@ -185,15 +185,27 @@ const PLAN_CATALOG = {
   }
 };
 
+const PAYPAL_MONTHLY_PLAN_IDS = Object.freeze({
+  keyless: "P-35C963541U1914902NKBVFZY",
+  premium: "P-6M06813917127705RNKBVO2I",
+  "premium-plus": "P-72H85729L5583625MNKBVQKY"
+});
+
 const tierSlug = document.body.dataset.tier;
 const tier = PLAN_CATALOG[tierSlug] || PLAN_CATALOG.keyless;
 const durationButtons = Array.from(document.querySelectorAll("[data-duration]"));
 const termsCheckbox = document.querySelector("#terms-checkbox");
+const termsCopy = document.querySelector("#terms-copy");
 const purchaseButton = document.querySelector("#purchase-button");
+const purchaseButtonLabel = document.querySelector("#purchase-button-label");
+const paypalSubscriptionWrap = document.querySelector("#paypal-subscription-wrap");
+const paypalSubscriptionButton = document.querySelector("#paypal-subscription-button");
 const checkoutHint = document.querySelector("#checkout-hint");
 const animatedElements = Array.from(document.querySelectorAll("[data-plan-content]"));
 
 let selectedDuration = durationFromHash();
+let paypalButtonRendered = false;
+let paypalRenderStarted = false;
 
 function durationFromHash() {
   const hash = window.location.hash.slice(1).trim().toLowerCase();
@@ -253,7 +265,7 @@ function renderList(selector, items, numbered = false) {
   });
 }
 
-function purchaseRequestUrl() {
+function lifetimePurchaseRequestUrl() {
   const plan = currentPlan();
   const subject = `Alter Hub ${plan.summaryTitle} purchase`;
   const body = [
@@ -268,19 +280,165 @@ function purchaseRequestUrl() {
   return `mailto:support@alterhub.online?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 
+function showPayPalStatus(message, isError = false) {
+  if (!paypalSubscriptionButton) return;
+
+  paypalSubscriptionButton.replaceChildren();
+  const status = document.createElement("p");
+  status.className = `paypal-status${isError ? " is-error" : ""}`;
+  status.textContent = message;
+  paypalSubscriptionButton.appendChild(status);
+}
+
+async function renderPayPalSubscriptionButton() {
+  if (
+    !paypalSubscriptionButton ||
+    paypalButtonRendered ||
+    paypalRenderStarted
+  ) {
+    return;
+  }
+
+  const planId = PAYPAL_MONTHLY_PLAN_IDS[tierSlug];
+
+  if (!planId) {
+    showPayPalStatus("This monthly PayPal plan has not been configured.", true);
+    return;
+  }
+
+  if (!window.paypal || typeof window.paypal.Buttons !== "function") {
+    showPayPalStatus("PayPal could not be loaded. Please refresh the page.", true);
+    return;
+  }
+
+  paypalRenderStarted = true;
+  paypalSubscriptionButton.replaceChildren();
+
+  try {
+    const buttons = window.paypal.Buttons({
+      style: {
+        shape: "pill",
+        color: "black",
+        layout: "vertical",
+        label: "subscribe"
+      },
+
+      createSubscription(data, actions) {
+        return actions.subscription.create({
+          plan_id: planId
+        });
+      },
+
+      onApprove(data) {
+        const reference = data.subscriptionID
+          ? ` Reference: ${data.subscriptionID}.`
+          : "";
+
+        if (checkoutHint) {
+          checkoutHint.textContent =
+            `Subscription approved.${reference} Your access will be confirmed after payment verification.`;
+          checkoutHint.classList.add("is-ready");
+        }
+      },
+
+      onCancel() {
+        if (checkoutHint) {
+          checkoutHint.textContent =
+            "The PayPal subscription was not completed. You can try again when ready.";
+          checkoutHint.classList.remove("is-ready");
+        }
+      },
+
+      onError(error) {
+        console.error("PayPal subscription error:", error);
+        showPayPalStatus(
+          "PayPal could not start the subscription. Please refresh and try again.",
+          true
+        );
+      }
+    });
+
+    if (typeof buttons.isEligible === "function" && !buttons.isEligible()) {
+      showPayPalStatus(
+        "PayPal subscriptions are not available for this browser or region.",
+        true
+      );
+      return;
+    }
+
+    await buttons.render("#paypal-subscription-button");
+    paypalButtonRendered = true;
+  } catch (error) {
+    console.error("Failed to render PayPal subscription button:", error);
+    showPayPalStatus(
+      "PayPal could not be loaded. Please refresh and try again.",
+      true
+    );
+  } finally {
+    paypalRenderStarted = false;
+  }
+}
+
 function updatePurchaseAvailability() {
   if (!termsCheckbox || !purchaseButton || !checkoutHint) return;
 
-  const ready = termsCheckbox.checked;
-  purchaseButton.setAttribute("aria-disabled", String(!ready));
-  purchaseButton.tabIndex = ready ? 0 : -1;
-  checkoutHint.classList.toggle("is-ready", ready);
-  checkoutHint.textContent = ready
-    ? "Ready. Continue to receive the official payment instructions."
-    : "Accept the terms to continue with this purchase.";
+  const accepted = termsCheckbox.checked;
+  const isMonthly = selectedDuration === "monthly";
 
-  if (ready) {
-    purchaseButton.href = purchaseRequestUrl();
+  if (termsCopy) {
+    termsCopy.textContent = isMonthly
+      ? " and authorize recurring monthly PayPal billing until I cancel."
+      : " and understand that lifetime access is a one-time purchase.";
+  }
+
+  purchaseButton.removeAttribute("target");
+  purchaseButton.removeAttribute("rel");
+
+  if (isMonthly) {
+    purchaseButton.removeAttribute("href");
+    purchaseButton.setAttribute("aria-disabled", "true");
+    purchaseButton.tabIndex = -1;
+    purchaseButton.hidden = accepted;
+
+    if (purchaseButtonLabel) {
+      purchaseButtonLabel.textContent = "Accept Terms to Subscribe";
+    }
+
+    if (paypalSubscriptionWrap) {
+      paypalSubscriptionWrap.hidden = !accepted;
+    }
+
+    checkoutHint.classList.toggle("is-ready", accepted);
+    checkoutHint.textContent = accepted
+      ? "Complete the secure PayPal checkout to start automatic monthly billing."
+      : "Accept the recurring billing terms to reveal the PayPal subscription button.";
+
+    if (accepted) {
+      void renderPayPalSubscriptionButton();
+    }
+
+    return;
+  }
+
+  if (paypalSubscriptionWrap) {
+    paypalSubscriptionWrap.hidden = true;
+  }
+
+  purchaseButton.hidden = false;
+  purchaseButton.setAttribute("aria-disabled", String(!accepted));
+  purchaseButton.tabIndex = accepted ? 0 : -1;
+
+  if (purchaseButtonLabel) {
+    purchaseButtonLabel.textContent = "Continue with Lifetime Purchase";
+  }
+
+  checkoutHint.classList.toggle("is-ready", accepted);
+  checkoutHint.textContent = accepted
+    ? "Ready. Continue to receive the official lifetime payment instructions."
+    : "Accept the terms to continue with this lifetime purchase.";
+
+  if (accepted) {
+    purchaseButton.href = lifetimePurchaseRequestUrl();
   } else {
     purchaseButton.removeAttribute("href");
   }
