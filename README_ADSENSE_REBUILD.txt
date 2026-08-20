@@ -20,3 +20,10 @@ IMPORTANT BEFORE YOU REAPPLY
 
 DEPLOYMENT
 The ahs-main directory is the static website. cloudflare-worker-adsense-ready.js is supplied beside it in the outer ZIP and should be deployed separately to your Cloudflare Worker.
+
+
+DATED CONTENT UPDATE - AUGUST 20, 2026
+---------------------------------------
+The game support directory and changelog were expanded from dated Alter Hub release notes supplied by the project owner. Thirteen games now have source-backed history pages. Anime Kingdom and Spiked remain directory-only because the supplied history did not contain enough game-specific detail.
+
+Historical feature labels are preserved for accuracy. Do not present an old release entry as current availability unless a newer update confirms it.
