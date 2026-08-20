@@ -3,16 +3,18 @@
   if (!root) return;
 
   const windowEl = root.querySelector('.ah-demo-window');
-  const navButtons = Array.from(root.querySelectorAll('[data-demo-tab]'));
-  const views = Array.from(root.querySelectorAll('[data-demo-view]'));
-  const theme = root.querySelector('#demoTheme');
+  const navButtons = [...root.querySelectorAll('[data-demo-tab]')];
+  const views = [...root.querySelectorAll('[data-demo-view]')];
+  const themeDropdown = root.querySelector('#demoThemeDropdown');
+  const themeButton = root.querySelector('#demoThemeButton');
+  const themeLabel = root.querySelector('#demoThemeLabel');
+  const themeMenu = root.querySelector('#demoThemeMenu');
+  const themeOptions = [...root.querySelectorAll('[data-theme-value]')];
   const transparency = root.querySelector('#demoTransparency');
   const minimize = root.querySelector('#demoMinimize');
+  const maximize = root.querySelector('#demoMaximize');
   const close = root.querySelector('#demoClose');
   const reopen = root.querySelector('#demoReopen');
-  const modal = root.querySelector('#demoCloseModal');
-  const closeYes = root.querySelector('#demoCloseYes');
-  const closeNo = root.querySelector('#demoCloseNo');
   const copyLink = root.querySelector('#demoCopyLink');
   const keyInput = root.querySelector('#demoKeyInput');
   const verify = root.querySelector('#demoVerify');
@@ -21,48 +23,66 @@
   const toastText = root.querySelector('#demoToastText');
   let toastTimer;
 
-  function showToast(title, message, type = '') {
-    clearTimeout(toastTimer);
-    toast.className = 'demo-toast show' + (type ? ' ' + type : '');
-    toastTitle.textContent = title;
-    toastText.textContent = message;
-    toastTimer = setTimeout(() => toast.classList.remove('show'), 3400);
-  }
-
   function setTab(tab) {
-    navButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.demoTab === tab));
+    navButtons.forEach(button => button.classList.toggle('active', button.dataset.demoTab === tab));
     views.forEach(view => view.classList.toggle('active', view.dataset.demoView === tab));
   }
 
-  navButtons.forEach(btn => btn.addEventListener('click', () => setTab(btn.dataset.demoTab)));
-
-  if (theme) {
-    theme.addEventListener('change', () => {
-      windowEl.classList.toggle('theme-rose', theme.value === 'rose');
-      showToast('Interface', theme.value === 'rose' ? 'Rose theme preview enabled.' : 'Dark theme preview enabled.');
-    });
+  function showToast(title, message) {
+    if (!toast) return;
+    clearTimeout(toastTimer);
+    toastTitle.textContent = title;
+    toastText.textContent = message;
+    toast.classList.add('show');
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2600);
   }
 
-  if (transparency) {
-    transparency.addEventListener('change', () => {
-      windowEl.classList.toggle('is-transparent', transparency.checked);
-      showToast('Interface', transparency.checked ? 'Transparency enabled.' : 'Transparency disabled.');
+  navButtons.forEach(button => button.addEventListener('click', () => setTab(button.dataset.demoTab)));
+
+  themeButton?.addEventListener('click', event => {
+    event.stopPropagation();
+    const open = !themeDropdown.classList.contains('open');
+    themeDropdown.classList.toggle('open', open);
+    themeButton.setAttribute('aria-expanded', String(open));
+  });
+
+  themeOptions.forEach(option => {
+    option.addEventListener('click', () => {
+      const value = option.dataset.themeValue;
+      windowEl.dataset.theme = value;
+      themeLabel.textContent = option.textContent.trim();
+      themeOptions.forEach(item => item.classList.toggle('selected', item === option));
+      themeDropdown.classList.remove('open');
+      themeButton.setAttribute('aria-expanded', 'false');
     });
-  }
+  });
+
+  document.addEventListener('click', event => {
+    if (!themeDropdown?.contains(event.target)) {
+      themeDropdown?.classList.remove('open');
+      themeButton?.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  transparency?.addEventListener('change', () => {
+    windowEl.classList.toggle('is-transparent', transparency.checked);
+  });
 
   minimize?.addEventListener('click', () => {
     windowEl.classList.toggle('is-minimized');
     minimize.textContent = windowEl.classList.contains('is-minimized') ? '□' : '−';
-    minimize.setAttribute('aria-label', windowEl.classList.contains('is-minimized') ? 'Restore demo window' : 'Minimize demo window');
   });
 
-  close?.addEventListener('click', () => modal.classList.add('open'));
-  closeNo?.addEventListener('click', () => modal.classList.remove('open'));
-  closeYes?.addEventListener('click', () => {
-    modal.classList.remove('open');
-    windowEl.classList.add('is-closed');
-    reopen.classList.add('show');
+  maximize?.addEventListener('click', () => {
+    windowEl.classList.remove('is-minimized');
+    minimize.textContent = '−';
   });
+
+  close?.addEventListener('click', () => {
+    windowEl.classList.add('is-closed');
+    reopen?.classList.add('show');
+  });
+
   reopen?.addEventListener('click', () => {
     windowEl.classList.remove('is-closed', 'is-minimized');
     reopen.classList.remove('show');
@@ -71,22 +91,14 @@
   });
 
   copyLink?.addEventListener('click', async () => {
-    const demoUrl = 'https://api.alterhub.online/key/demo-session';
-    try {
-      await navigator.clipboard.writeText(demoUrl);
-      showToast('Alter Hub', 'Demo key link copied. This preview does not create a live session.', 'success');
-    } catch {
-      showToast('Alter Hub', 'Demo link prepared. Clipboard access is blocked by this browser preview.');
-    }
+    const value = 'https://api.alterhub.online/key/demo-session';
+    try { await navigator.clipboard.writeText(value); } catch {}
+    showToast('Alter Hub', 'Demo key link copied.');
   });
 
   verify?.addEventListener('click', () => {
-    const value = String(keyInput.value || '').trim().toUpperCase();
-    if (value === 'ALTER-DEMO-2026') {
-      showToast('Key verified', 'Demo accepted. The real client verifies the key against the active device and server session.', 'success');
-    } else {
-      showToast('Key rejected', 'For this interactive preview, enter ALTER-DEMO-2026.', 'error');
-    }
+    const value = String(keyInput?.value || '').trim();
+    showToast(value ? 'Alter Hub' : 'Key System', value ? 'Demo key submitted.' : 'Enter a key first.');
   });
 
   keyInput?.addEventListener('keydown', event => {

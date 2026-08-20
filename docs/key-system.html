@@ -45,43 +45,122 @@
       </div>
 
       <div class="key-demo-shell" data-key-demo>
-        <div class="key-demo-label"><strong>IN-GAME INTERFACE PREVIEW</strong><span>Try the controls. This demo does not create a real key.</span></div>
+        <div class="key-demo-label"><strong>IN-GAME INTERFACE PREVIEW</strong><span>Interactive recreation of the current Alter Hub Key System UI.</span></div>
+
         <div class="key-demo-stage">
           <div class="key-demo-scene" aria-hidden="true"></div>
-          <div class="key-demo-toolbar" aria-hidden="true"><span>◈</span><span>☰</span><span>▢</span><span>⚙ options</span></div>
 
-          <section class="ah-demo-window" aria-label="Interactive Alter Hub Key System demo">
-            <div class="ah-demo-titlebar"><span><strong>Alter Hub</strong>&nbsp; Key System</span><div class="window-actions"><button class="window-action" id="demoMinimize" type="button" aria-label="Minimize demo window">−</button><button class="window-action" type="button" aria-label="Maximize preview">□</button><button class="window-action close" id="demoClose" type="button" aria-label="Close demo window">×</button></div></div>
-            <div class="ah-demo-body">
-              <aside class="ah-demo-sidebar"><button class="demo-nav-button active" type="button" data-demo-tab="key"><span class="demo-nav-icon">⚿</span><span>Key System</span></button><button class="demo-nav-button" type="button" data-demo-tab="settings"><span class="demo-nav-icon">⚙</span><span>Settings</span></button></aside>
-              <div class="ah-demo-content">
-                <div class="demo-view active" data-demo-view="key">
-                  <h2>Key System</h2>
-                  <div class="demo-info-card"><strong>Alter Hub Key System</strong><p>Generate your key-system link, complete the checkpoints, then paste your ALTER_ key below.</p></div>
-                  <button class="demo-row" id="demoCopyLink" type="button"><span class="demo-row-copy"><strong>Copy Key Link</strong><small>Generate or retrieve your Alter Hub key-system link.</small></span><span class="demo-chevron">›</span></button>
-                  <div class="demo-row"><span class="demo-row-copy"><strong>Enter Key</strong></span><input class="demo-key-input" id="demoKeyInput" type="text" autocomplete="off" spellcheck="false" placeholder="ALTER_XXXXXXXXXXXX" aria-label="Demo key input"></div>
-                  <button class="demo-row" id="demoVerify" type="button"><span class="demo-row-copy"><strong>Verify Key</strong><small>Verify this key on your device.</small></span><span class="demo-chevron">›</span></button>
-                  <p class="demo-hint">Interactive demo key: <code>ALTER-DEMO-2026</code></p>
-                </div>
-
-                <div class="demo-view" data-demo-view="settings">
-                  <h2>Settings</h2>
-                  <div class="demo-section-label">Interface</div>
-                  <div class="demo-setting-row"><div><strong>Theme</strong><small>Changes the interface theme.</small></div><select id="demoTheme" aria-label="Demo interface theme"><option value="dark">Dark</option><option value="rose">Rose</option></select></div>
-                  <div class="demo-setting-row"><div><strong>Transparency</strong><small>Makes the interface transparent.</small></div><label class="demo-switch"><input id="demoTransparency" type="checkbox" aria-label="Toggle demo transparency"><span></span></label></div>
-                  <div class="demo-setting-row"><div><strong>Minimize Bind</strong><small>Preview of the configured minimize key.</small></div><span class="demo-bind">RightControl</span></div>
-                  <div class="demo-section-label" style="margin-top:14px">Configuration</div>
-                  <div class="demo-setting-row"><div><strong>Config name</strong><small>Example interface configuration.</small></div><input type="text" value="default" aria-label="Demo configuration name"></div>
-                  <div class="demo-row" role="button" tabindex="0"><span class="demo-row-copy"><strong>Create config</strong><small>Demo only</small></span><span class="demo-chevron">›</span></div>
-                </div>
+          <section class="ah-demo-window" data-theme="dark" aria-label="Interactive Alter Hub Key System demo">
+            <header class="ah-demo-titlebar">
+              <div class="ah-demo-app-title"><span>Alter Hub</span><span class="ah-demo-app-subtitle">Key System</span></div>
+              <div class="window-actions">
+                <button class="window-action" id="demoMinimize" type="button" aria-label="Minimize demo window">−</button>
+                <button class="window-action window-maximize" id="demoMaximize" type="button" aria-label="Maximize demo window"><span></span></button>
+                <button class="window-action window-close" id="demoClose" type="button" aria-label="Close demo window">×</button>
               </div>
+            </header>
+
+            <div class="ah-demo-body">
+              <aside class="ah-demo-sidebar">
+                <button class="demo-nav-button active" type="button" data-demo-tab="key">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="7.5" cy="15.5" r="4.2"></circle><path d="M10.7 12.3 20 3m-3.2 3.2 2.3 2.3M14.4 8.6l2.3 2.3"></path></svg>
+                  <span>Key System</span>
+                </button>
+                <button class="demo-nav-button" type="button" data-demo-tab="settings">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.1"></circle><path d="M19 13.1v-2.2l-2-.7a7.3 7.3 0 0 0-.8-1.9l.9-1.9-1.6-1.6-1.9.9a7.3 7.3 0 0 0-1.9-.8L11 3H9l-.7 2a7.3 7.3 0 0 0-1.9.8l-1.9-.9-1.6 1.6.9 1.9a7.3 7.3 0 0 0-.8 1.9l-2 .7v2.2l2 .7a7.3 7.3 0 0 0 .8 1.9l-.9 1.9 1.6 1.6 1.9-.9a7.3 7.3 0 0 0 1.9.8l.7 2h2.2l.7-2a7.3 7.3 0 0 0 1.9-.8l1.9.9 1.6-1.6-.9-1.9a7.3 7.3 0 0 0 .8-1.9l1.8-.8Z"></path></svg>
+                  <span>Settings</span>
+                </button>
+              </aside>
+
+              <main class="ah-demo-main">
+                <section class="demo-view active" data-demo-view="key">
+                  <h2>Key System</h2>
+
+                  <div class="demo-card demo-info-card">
+                    <strong>Alter Hub Key System</strong>
+                    <p>Generate your key-system link, complete the checkpoints, then<br class="desktop-break"> paste your ALTER_ key below.</p>
+                  </div>
+
+                  <button class="demo-card demo-action-row" id="demoCopyLink" type="button">
+                    <span class="demo-row-copy"><strong>Copy Key Link</strong><small>Generate or retrieve your Alter Hub key-system link.</small></span>
+                    <span class="demo-chevron" aria-hidden="true">›</span>
+                  </button>
+
+                  <div class="demo-card demo-enter-row">
+                    <strong>Enter Key</strong>
+                    <input class="demo-key-input" id="demoKeyInput" type="text" autocomplete="off" spellcheck="false" placeholder="ALTER_XXXXXXXXXXXXXX" aria-label="Demo key input">
+                  </div>
+
+                  <button class="demo-card demo-action-row" id="demoVerify" type="button">
+                    <span class="demo-row-copy"><strong>Verify Key</strong><small>Verify this key on your device.</small></span>
+                    <span class="demo-chevron" aria-hidden="true">›</span>
+                  </button>
+                </section>
+
+                <section class="demo-view" data-demo-view="settings">
+                  <h2>Settings</h2>
+                  <div class="demo-title-divider"></div>
+
+                  <div class="settings-scroll" id="demoSettingsScroll">
+                    <section class="settings-section">
+                      <h3>Interface</h3>
+
+                      <div class="demo-card demo-setting-row">
+                        <div><strong>Theme</strong><small>Changes the interface theme.</small></div>
+                        <div class="demo-dropdown" id="demoThemeDropdown">
+                          <button class="demo-dropdown-button" id="demoThemeButton" type="button" aria-haspopup="listbox" aria-expanded="false"><span id="demoThemeLabel">Dark</span><span class="dropdown-caret">⌄</span></button>
+                          <div class="demo-dropdown-menu" id="demoThemeMenu" role="listbox" aria-label="Interface theme">
+                            <button type="button" data-theme-value="dark" class="selected">Dark</button>
+                            <button type="button" data-theme-value="darker">Darker</button>
+                            <button type="button" data-theme-value="light">Light</button>
+                            <button type="button" data-theme-value="aqua">Aqua</button>
+                            <button type="button" data-theme-value="amethyst">Amethyst</button>
+                            <button type="button" data-theme-value="rose">Rose</button>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="demo-card demo-setting-row">
+                        <div><strong>Transparency</strong><small>Makes the interface transparent.</small></div>
+                        <label class="demo-switch"><input id="demoTransparency" type="checkbox" aria-label="Toggle demo transparency"><span></span></label>
+                      </div>
+
+                      <div class="demo-card demo-setting-row compact-setting">
+                        <div><strong>Minimize Bind</strong></div>
+                        <button class="demo-bind" type="button">R</button>
+                      </div>
+                    </section>
+
+                    <section class="settings-section config-section">
+                      <h3>Configuration</h3>
+
+                      <div class="demo-card demo-setting-row compact-setting">
+                        <div><strong>Config name</strong></div>
+                        <input class="config-input" type="text" aria-label="Config name">
+                      </div>
+
+                      <div class="demo-card demo-setting-row compact-setting">
+                        <div><strong>Config list</strong></div>
+                        <button class="demo-select-like" type="button"><span>--</span><span class="dropdown-caret">⌄</span></button>
+                      </div>
+
+                      <button class="demo-card demo-action-row config-action" type="button"><span class="demo-row-copy"><strong>Create config</strong></span><span class="demo-chevron">›</span></button>
+                      <button class="demo-card demo-action-row config-action" type="button"><span class="demo-row-copy"><strong>Load config</strong></span><span class="demo-chevron">›</span></button>
+                      <button class="demo-card demo-action-row config-action" type="button"><span class="demo-row-copy"><strong>Overwrite config</strong></span><span class="demo-chevron">›</span></button>
+                      <button class="demo-card demo-action-row config-action" type="button"><span class="demo-row-copy"><strong>Refresh list</strong></span><span class="demo-chevron">›</span></button>
+                      <button class="demo-card demo-action-row config-action autoload-action" type="button"><span class="demo-row-copy"><strong>Set as autoload</strong><small>Current autoload config: none</small></span><span class="demo-chevron">›</span></button>
+                    </section>
+                  </div>
+                </section>
+              </main>
             </div>
-            <div class="demo-close-modal" id="demoCloseModal"><div class="demo-close-card"><div class="demo-close-copy"><h3>Close</h3><p>Are you sure you want to unload the interface preview?</p></div><div class="demo-close-actions"><button id="demoCloseYes" type="button">Yes</button><button id="demoCloseNo" type="button">No</button></div></div></div>
           </section>
+
           <button class="demo-reopen" id="demoReopen" type="button">Open Alter Hub Key System</button>
           <div class="demo-toast" id="demoToast" role="status" aria-live="polite"><strong id="demoToastTitle">Alter Hub</strong><p id="demoToastText"></p></div>
         </div>
-        <div class="demo-caption"><span><strong>Based on the current Alter Hub in-game interface.</strong> The background comes from an Alter Hub recording supplied for this page.</span><span>The preview is intentionally disconnected from the live verification API.</span></div>
+
+        <div class="demo-caption"><span><strong>Interactive code recreation of the current in-game interface.</strong> Use Key System and Settings to test it.</span><span>The preview is disconnected from the live verification API.</span></div>
       </div>
     </div>
   </section>
