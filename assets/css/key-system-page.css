@@ -652,7 +652,17 @@
 
 @media (max-width: 900px) {
   .key-demo-stage { min-height: 590px; }
-  .ah-demo-window { transform: scale(.92); transform-origin: center center; }
+  /* Remove the full-size 725x575 demo from layout flow on small screens.
+     This lets the scaled Fluent window stay truly centered instead of
+     contributing its unscaled width/height and getting pushed to one side. */
+  .ah-demo-window {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: 0;
+    transform: translate(-50%, -50%) scale(.92);
+    transform-origin: center center;
+  }
   .key-specs { grid-template-columns: 1fr; }
   .key-trouble-row { grid-template-columns: 1fr; gap: 5px; }
   .key-system-cta { align-items: flex-start; flex-direction: column; }
@@ -663,12 +673,18 @@
   .key-demo-label, .demo-caption { flex-direction: column; }
   .demo-caption span:last-child { text-align: left; }
   .key-demo-stage { min-height: 470px; }
-  .ah-demo-window { transform: scale(.72); transform-origin: center center; }
+  .ah-demo-window {
+    transform: translate(-50%, -50%) scale(.72);
+    transform-origin: center center;
+  }
   .demo-caption { display: none; }
 }
 @media (max-width: 580px) {
   .key-demo-stage { min-height: 390px; }
-  .ah-demo-window { transform: scale(.56); }
+  .ah-demo-window {
+    transform: translate(-50%, -50%) scale(.56);
+    transform-origin: center center;
+  }
 }
 
 /* ==========================================================
