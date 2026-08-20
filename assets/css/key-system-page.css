@@ -670,3 +670,40 @@
   .key-demo-stage { min-height: 390px; }
   .ah-demo-window { transform: scale(.56); }
 }
+
+/* ==========================================================
+   Homepage placement
+   The source-matched Fluent demo is shown immediately after
+   the main Alter Hub hero. The full walkthrough remains in Docs.
+   ========================================================== */
+.home-key-demo-section {
+  padding: 28px 0 72px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(153,0,0,.10), transparent 34%),
+    #070707;
+  border-bottom: 1px solid #1b1b1b;
+}
+.home-key-demo-section .key-demo-shell {
+  margin-top: 0;
+}
+.key-demo-learn-link {
+  color: #a6a6a6;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  text-decoration: none;
+  transition: color .18s ease;
+}
+.key-demo-learn-link:hover,
+.key-demo-learn-link:focus-visible {
+  color: #f0f0f0;
+}
+.demo-home-link {
+  text-decoration: none;
+}
+@media (max-width: 760px) {
+  .home-key-demo-section { padding: 18px 0 52px; }
+  .home-key-demo-section .container { width: min(100% - 16px, 1180px); }
+  .key-demo-label { align-items: flex-start; flex-direction: column; gap: 6px; }
+}
+

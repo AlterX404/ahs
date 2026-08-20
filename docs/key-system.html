@@ -1,249 +1,113 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#050505">
-  <meta name="robots" content="index, follow">
-  <meta name="description" content="Interactive Alter Hub key-system preview plus a complete guide to generating a key link, completing verification, and verifying the key in Roblox.">
-  <link rel="canonical" href="https://alterhub.online/docs/key-system.html">
-  <meta property="og:title" content="Key System Guide | Alter Hub">
-  <meta property="og:description" content="See the Alter Hub key system in an interactive Roblox-style preview, then follow the complete key and verification guide.">
-  <meta property="og:image" content="https://alterhub.online/assets/images/AH_Banner.gif">
-  <meta property="og:url" content="https://alterhub.online/docs/key-system.html">
-  <meta property="og:type" content="article">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Key System Guide | Alter Hub">
-  <meta name="twitter:description" content="Interactive preview and full walkthrough for the Alter Hub key system.">
-  <meta name="twitter:image" content="https://alterhub.online/assets/images/AH_Banner.gif">
-  <title>Key System Guide | Alter Hub</title>
-  <link rel="icon" type="image/png" href="/assets/images/AH.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/styles.css">
-  <link rel="stylesheet" href="/assets/css/content.css">
-  <link rel="stylesheet" href="/assets/css/key-system-page.css?v=fluent110">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="#050505" name="theme-color"/>
+<meta content="index, follow" name="robots"/>
+<meta content="Complete Alter Hub key-system guide covering key links, Cloudflare human verification, checkpoints, generated keys, and troubleshooting." name="description"/>
+<link href="https://alterhub.online/docs/key-system.html" rel="canonical"/>
+<meta content="Key System Guide | Alter Hub" property="og:title"/>
+<meta content="Learn how the Alter Hub key system works from key-link creation through browser verification and final in-game key verification." property="og:description"/>
+<meta content="https://alterhub.online/assets/images/AH_Banner.gif" property="og:image"/>
+<meta content="https://alterhub.online/docs/key-system.html" property="og:url"/>
+<meta content="article" property="og:type"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="Key System Guide | Alter Hub" name="twitter:title"/>
+<meta content="Complete walkthrough and troubleshooting guide for the Alter Hub key system." name="twitter:description"/>
+<meta content="https://alterhub.online/assets/images/AH_Banner.gif" name="twitter:image"/>
+<title>Key System Guide | Alter Hub</title>
+<link href="/assets/images/AH.png" rel="icon" type="image/png"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="/assets/css/styles.css" rel="stylesheet"/>
+<link href="/assets/css/content.css" rel="stylesheet"/>
+<link href="/assets/css/key-system-page.css?v=fluent110" rel="stylesheet"/>
 </head>
 <body>
 <header class="site-header">
-  <div class="container nav-wrap">
-    <a class="brand" href="/" aria-label="Alter Hub home">Alter<span>Hub</span></a>
-    <button class="menu-toggle" aria-label="Open navigation menu" aria-expanded="false" aria-controls="primary-navigation">☰</button>
-    <nav id="primary-navigation" class="nav-links" aria-label="Primary navigation"><a href="/">Home</a><a href="/games/">Games</a><a href="/docs/">Docs</a><a href="/docs/key-system.html" aria-current="page">Key System</a><a href="/changelog.html">Updates</a><a href="/#pricing">Pricing</a><a href="/about.html">About</a><a href="/contact.html">Support</a></nav>
-  </div>
+<div class="container nav-wrap">
+<a aria-label="Alter Hub home" class="brand" href="/">Alter<span>Hub</span></a>
+<button aria-controls="primary-navigation" aria-expanded="false" aria-label="Open navigation menu" class="menu-toggle">☰</button>
+<nav aria-label="Primary navigation" class="nav-links" id="primary-navigation"><a href="/">Home</a><a href="/games/">Games</a><a href="/docs/">Docs</a><a aria-current="page" href="/docs/key-system.html">Key System</a><a href="/changelog.html">Updates</a><a href="/#pricing">Pricing</a><a href="/about.html">About</a><a href="/contact.html">Support</a></nav>
+</div>
 </header>
 <main>
-  <section class="key-feature-hero">
-    <div class="container">
-      <div class="key-feature-copy">
-        <div class="breadcrumbs"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/docs/">Docs</a> <span aria-hidden="true">/</span> <span>Key System</span></div>
-        <span class="eyebrow pill">ALTER HUB ACCESS SYSTEM</span>
-        <h1>See the key system.<br><span>Then use it.</span></h1>
-        <p>This page shows an interactive model of the current in-game key interface and explains the full browser verification flow from copying the key link to verifying the final key back in Alter Hub.</p>
-        <div class="demo-badges"><span class="demo-badge"><i></i> Interactive interface preview</span><span class="demo-badge"><i></i> Current 3-checkpoint flow</span><span class="demo-badge"><i></i> Cloudflare human verification</span></div>
-      </div>
+<section class="key-feature-hero">
+<div class="container">
+<div class="key-feature-copy">
+<div class="breadcrumbs"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/docs/">Docs</a> <span aria-hidden="true">/</span> <span>Key System</span></div>
+<span class="eyebrow pill">ALTER HUB ACCESS SYSTEM</span>
+<h1>How the key system works</h1>
+<p>A complete guide to creating a key link, completing the browser verification flow, and verifying the generated key back inside Alter Hub.</p>
+<div class="demo-badges"><a class="demo-badge demo-home-link" href="/#key-system-demo"><i></i> Try the interactive demo</a><span class="demo-badge"><i></i> 3-checkpoint flow</span><span class="demo-badge"><i></i> Cloudflare human verification</span></div>
+</div>
 
-      <div class="key-demo-shell" data-key-demo>
-        <div class="key-demo-label"><strong>IN-GAME INTERFACE PREVIEW</strong><span>Interactive source-matched recreation of the current Alter Hub Key System UI.</span></div>
-
-        <div class="key-demo-stage">
-          <div class="key-demo-scene" aria-hidden="true"></div>
-
-          <section class="ah-demo-window" data-theme="dark" aria-label="Interactive Alter Hub Key System demo">
-            <header class="ah-demo-titlebar">
-              <div class="ah-demo-app-title"><span>Alter Hub</span><span class="ah-demo-app-subtitle">Key System</span></div>
-              <div class="window-actions">
-                <button class="window-action" id="demoMinimize" type="button" aria-label="Minimize demo window">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg>
-                </button>
-                <button class="window-action" id="demoMaximize" type="button" aria-label="Maximize demo window">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="5.5" width="13" height="13" rx="1"/></svg>
-                </button>
-                <button class="window-action" id="demoClose" type="button" aria-label="Close demo window">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
-                </button>
-              </div>
-            </header>
-
-            <div class="ah-demo-body">
-              <aside class="ah-demo-sidebar">
-                <button class="demo-nav-button active" type="button" data-demo-tab="key">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="7.5" cy="15.5" r="4.2"></circle><path d="M10.7 12.3 20 3m-3.2 3.2 2.3 2.3M14.4 8.6l2.3 2.3"></path></svg>
-                  <span>Key System</span>
-                </button>
-                <button class="demo-nav-button" type="button" data-demo-tab="settings">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.1"></circle><path d="M19 13.1v-2.2l-2-.7a7.3 7.3 0 0 0-.8-1.9l.9-1.9-1.6-1.6-1.9.9a7.3 7.3 0 0 0-1.9-.8L11 3H9l-.7 2a7.3 7.3 0 0 0-1.9.8l-1.9-.9-1.6 1.6.9 1.9a7.3 7.3 0 0 0-.8 1.9l-2 .7v2.2l2 .7a7.3 7.3 0 0 0 .8 1.9l-.9 1.9 1.6 1.6 1.9-.9a7.3 7.3 0 0 0 1.9.8l.7 2h2.2l.7-2a7.3 7.3 0 0 0 1.9-.8l1.9.9 1.6-1.6-.9-1.9a7.3 7.3 0 0 0 .8-1.9l1.8-.8Z"></path></svg>
-                  <span>Settings</span>
-                </button>
-              </aside>
-
-              <main class="ah-demo-main">
-                <section class="demo-view active" data-demo-view="key">
-                  <h2>Key System</h2>
-                  <div class="fluent-container">
-                    <div class="key-element-list">
-                      <div class="demo-card demo-info-card">
-                        <strong>Alter Hub Key System</strong>
-                        <p>Generate your key-system link, complete the checkpoints, then paste your ALTER_ key below.</p>
-                      </div>
-
-                      <button class="demo-card demo-action-row" id="demoCopyLink" type="button">
-                        <span class="demo-row-copy"><strong>Copy Key Link</strong><small>Generate or retrieve your Alter Hub key-system link.</small></span>
-                        <span class="demo-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span>
-                      </button>
-
-                      <div class="demo-card demo-enter-row">
-                        <strong>Enter Key</strong>
-                        <input class="demo-key-input" id="demoKeyInput" type="text" autocomplete="off" spellcheck="false" placeholder="ALTER_XXXXXXXXXXXXXX" aria-label="Demo key input">
-                      </div>
-
-                      <button class="demo-card demo-action-row" id="demoVerify" type="button">
-                        <span class="demo-row-copy"><strong>Verify Key</strong><small>Verify this key on your device.</small></span>
-                        <span class="demo-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span>
-                      </button>
-                    </div>
-                  </div>
-                </section>
-
-                <section class="demo-view" data-demo-view="settings">
-                  <h2>Settings</h2>
-                  <div class="settings-scroll" id="demoSettingsScroll">
-                    <section class="settings-section">
-                      <h3>Interface</h3>
-
-                      <div class="demo-card demo-setting-row">
-                        <div><strong>Theme</strong><small>Changes the interface theme.</small></div>
-                        <div class="demo-dropdown" id="demoThemeDropdown">
-                          <button class="demo-dropdown-button" id="demoThemeButton" type="button" aria-haspopup="listbox" aria-expanded="false">
-                            <span id="demoThemeLabel">Dark</span>
-                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-                          </button>
-                        </div>
-                      </div>
-
-                      <div class="demo-card demo-setting-row">
-                        <div><strong>Transparency</strong><small>Makes the interface transparent.</small></div>
-                        <label class="demo-switch"><input id="demoTransparency" type="checkbox" aria-label="Toggle demo transparency"><span></span></label>
-                      </div>
-
-                      <div class="demo-card demo-setting-row compact-setting">
-                        <div><strong>Minimize Bind</strong></div>
-                        <button class="demo-bind" type="button">R</button>
-                      </div>
-                    </section>
-
-                    <section class="settings-section config-section">
-                      <h3>Configuration</h3>
-
-                      <div class="demo-card demo-setting-row compact-setting">
-                        <div><strong>Config name</strong></div>
-                        <input class="config-input" type="text" aria-label="Config name">
-                      </div>
-
-                      <div class="demo-card demo-setting-row compact-setting">
-                        <div><strong>Config list</strong></div>
-                        <button class="demo-select-like" type="button"><span>--</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
-                      </div>
-
-                      <button class="demo-card demo-action-row config-action" type="button"><span class="demo-row-copy"><strong>Create config</strong></span><span class="demo-chevron"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span></button>
-                      <button class="demo-card demo-action-row config-action" type="button"><span class="demo-row-copy"><strong>Load config</strong></span><span class="demo-chevron"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span></button>
-                      <button class="demo-card demo-action-row config-action" type="button"><span class="demo-row-copy"><strong>Overwrite config</strong></span><span class="demo-chevron"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span></button>
-                      <button class="demo-card demo-action-row config-action" type="button"><span class="demo-row-copy"><strong>Refresh list</strong></span><span class="demo-chevron"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span></button>
-                      <button class="demo-card demo-action-row config-action autoload-action" type="button"><span class="demo-row-copy"><strong>Set as autoload</strong><small>Current autoload config: none</small></span><span class="demo-chevron"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span></button>
-                    </section>
-                  </div>
-                </section>
-              </main>
-            </div>
-
-            <div class="demo-theme-popover" id="demoThemeMenu" role="listbox" aria-label="Interface theme">
-              <button type="button" data-theme-value="dark" class="selected">Dark</button>
-              <button type="button" data-theme-value="darker">Darker</button>
-              <button type="button" data-theme-value="light">Light</button>
-              <button type="button" data-theme-value="aqua">Aqua</button>
-              <button type="button" data-theme-value="amethyst">Amethyst</button>
-              <button type="button" data-theme-value="rose">Rose</button>
-            </div>
-
-            <div class="demo-toast" id="demoToast" role="status" aria-live="polite"><strong id="demoToastTitle">Alter Hub</strong><p id="demoToastText"></p></div>
-          </section>
-
-          <button class="demo-reopen" id="demoReopen" type="button">Open Alter Hub Key System</button>
-        </div>
-
-        <div class="demo-caption"><span><strong>Source-matched browser recreation of the Fluent interface used by Alter Hub.</strong> Use Key System and Settings to test it.</span><span>The preview is disconnected from the live verification API.</span></div>
-      </div>
-    </div>
-  </section>
-
-  <div class="container content-layout">
-    <div>
-      <section class="article-card" id="overview">
-        <h2>What the key system does</h2>
-        <p class="lead key-article-intro">The free access path gives Alter Hub a temporary way to verify an active browser session before a key is accepted in the client. The in-game interface creates or retrieves the session link, the browser completes the verification flow, and the final key is then checked back in Alter Hub.</p>
-        <div class="key-specs"><div class="key-spec"><span>Verification stages</span><strong>3 checkpoints</strong></div><div class="key-spec"><span>Key-session window</span><strong>15 minutes</strong></div><div class="key-spec"><span>Generated key validity</span><strong>12 hours</strong></div></div>
-        <div class="callout"><p><strong>Same device matters.</strong> The current flow associates access with the device/session that created it. Avoid copying an active key session to another device or sharing the generated key.</p></div>
-      </section>
-
-      <section class="article-card" id="walkthrough">
-        <h2>Complete walkthrough</h2>
-        <p>Follow the steps in order. Opening multiple competing verification sessions or reusing an old callback can cause the session to be rejected.</p>
-        <div class="key-flow-grid">
-          <div class="key-flow-step"><b>01</b><h3>Open the Key System tab</h3><p>In Alter Hub, open the Key System screen shown in the interactive preview above.</p></div>
-          <div class="key-flow-step"><b>02</b><h3>Press Copy Key Link</h3><p>The client creates or retrieves your current key-system URL and copies it so you can open the browser verification page.</p></div>
-          <div class="key-flow-step"><b>03</b><h3>Open the copied link</h3><p>Open the official <span class="inline-code">api.alterhub.online</span> session URL. Do not use a key link copied from another person.</p></div>
-          <div class="key-flow-step"><b>04</b><h3>Pass the human check</h3><p>Before checkpoint one, complete the Cloudflare Turnstile human verification. If the challenge expires, complete a fresh one.</p></div>
-          <div class="key-flow-step"><b>05</b><h3>Complete checkpoint 1</h3><p>Choose an available provider, such as Linkvertise or LootLabs, finish the provider flow, and return to Alter Hub's session page.</p></div>
-          <div class="key-flow-step"><b>06</b><h3>Finish checkpoints 2 and 3</h3><p>Continue the verified flow until all three checkpoints are complete. The later checkpoints do not require another Turnstile challenge in the same session.</p></div>
-          <div class="key-flow-step"><b>07</b><h3>Copy the generated key</h3><p>After checkpoint three, the result page shows the temporary Alter Hub key and its remaining validity time.</p></div>
-          <div class="key-flow-step"><b>08</b><h3>Paste and Verify Key</h3><p>Return to the in-game Key System, paste the key into Enter Key, then press Verify Key. Keep the key private.</p></div>
-        </div>
-      </section>
-
-      <section class="article-card" id="security">
-        <h2>Why the browser checks exist</h2>
-        <p>The browser page is not just a visual timer. The first checkpoint requires a server-verified Cloudflare Turnstile token, and checkpoint completion is confirmed by the selected provider before the session progresses. Direct session advancement is disabled in the current Worker.</p>
-        <p>A successful challenge only proves the current browser passed the human check for that request. It does not make a copied or expired session valid, and it does not turn the interactive demo above into a real key generator.</p>
-        <div class="callout callout-neutral"><p><strong>Never send support your full generated key.</strong> If something fails, send the error message, the checkpoint number, and a screenshot with the key hidden.</p></div>
-      </section>
-
-      <section class="article-card" id="troubleshooting">
-        <h2>Common key-system problems</h2>
-        <div class="key-troubleshoot">
-          <div class="key-trouble-row"><strong>Turnstile does not complete</strong><p>Reload the current checkpoint page, allow JavaScript and cookies, then complete a fresh challenge. A stale Turnstile token cannot be reused.</p></div>
-          <div class="key-trouble-row"><strong>403 during checkpoint start</strong><p>Checkpoint one was requested without a valid human-verification token, or the token expired. Complete Turnstile again and retry from the current page.</p></div>
-          <div class="key-trouble-row"><strong>Session expired</strong><p>The verification session is temporary. Return to the in-game Key System and use Copy Key Link again to create or retrieve a current session.</p></div>
-          <div class="key-trouble-row"><strong>Checkpoint already used</strong><p>Do not retry the same provider callback. Return to the current Alter Hub session page and continue from the checkpoint it shows.</p></div>
-          <div class="key-trouble-row"><strong>Key rejected in game</strong><p>Confirm that the key was copied completely, has not expired, and is being redeemed on the same device used for the verification flow.</p></div>
-          <div class="key-trouble-row"><strong>Key expired</strong><p>Generate a new session and complete the current access flow again. Old result pages are not permanent credentials.</p></div>
-        </div>
-      </section>
-
-      <section class="article-card" id="faq">
-        <h2>Key-system FAQ</h2>
-        <h3>Do I need to solve Turnstile three times?</h3><p>No. In the current flow, the human verification is required before the first checkpoint. Checkpoints two and three continue under the same valid session.</p>
-        <h3>Can I share a key with somebody else?</h3><p>No. Treat a generated key like a temporary credential. The current access flow is designed around the device/session that created it.</p>
-        <h3>Why does the key page expire?</h3><p>The temporary session prevents old browser links from remaining useful indefinitely. A completed key has a separate validity period.</p>
-        <h3>Is the interactive model above connected to my account?</h3><p>No. It is a front-end demonstration of the current Alter Hub interface. It does not create a live session, complete providers, or verify a real key.</p>
-      </section>
-
-      <section class="article-card" id="start-now">
-        <div class="key-system-cta"><div><h3>Ready to use the real key system?</h3><p>Open Alter Hub, copy your current key link from the in-game interface, and follow the verification page it generates.</p></div><a class="btn btn-primary" href="/get-script">Get Alter Hub <span aria-hidden="true">→</span></a></div>
-      </section>
-    </div>
-
-    <aside class="content-aside"><nav class="toc" aria-label="On this page"><strong>ON THIS PAGE</strong><a href="#overview">How it works</a><a href="#walkthrough">Step-by-step guide</a><a href="#security">Verification &amp; security</a><a href="#troubleshooting">Troubleshooting</a><a href="#faq">FAQ</a><a href="#start-now">Start</a><div class="aside-note">Current documented behavior: 3 checkpoints, Turnstile before checkpoint one, 15-minute session window, and 12-hour generated key validity.</div></nav></aside>
-  </div>
+</div>
+</section>
+<div class="container content-layout">
+<div>
+<section class="article-card" id="overview">
+<h2>What the key system does</h2>
+<p class="lead key-article-intro">The free access path gives Alter Hub a temporary way to verify an active browser session before a key is accepted in the client. The in-game interface creates or retrieves the session link, the browser completes the verification flow, and the final key is then checked back in Alter Hub.</p>
+<div class="key-specs"><div class="key-spec"><span>Verification stages</span><strong>3 checkpoints</strong></div><div class="key-spec"><span>Key-session window</span><strong>15 minutes</strong></div><div class="key-spec"><span>Generated key validity</span><strong>12 hours</strong></div></div>
+<div class="callout"><p><strong>Same device matters.</strong> The current flow associates access with the device/session that created it. Avoid copying an active key session to another device or sharing the generated key.</p></div>
+</section>
+<section class="article-card" id="walkthrough">
+<h2>Complete walkthrough</h2>
+<p>Follow the steps in order. Opening multiple competing verification sessions or reusing an old callback can cause the session to be rejected.</p>
+<div class="key-flow-grid">
+<div class="key-flow-step"><b>01</b><h3>Open the Key System tab</h3><p>In Alter Hub, open the Key System screen. You can also try the interactive interface model on the homepage before starting.</p></div>
+<div class="key-flow-step"><b>02</b><h3>Press Copy Key Link</h3><p>The client creates or retrieves your current key-system URL and copies it so you can open the browser verification page.</p></div>
+<div class="key-flow-step"><b>03</b><h3>Open the copied link</h3><p>Open the official <span class="inline-code">api.alterhub.online</span> session URL. Do not use a key link copied from another person.</p></div>
+<div class="key-flow-step"><b>04</b><h3>Pass the human check</h3><p>Before checkpoint one, complete the Cloudflare Turnstile human verification. If the challenge expires, complete a fresh one.</p></div>
+<div class="key-flow-step"><b>05</b><h3>Complete checkpoint 1</h3><p>Choose an available provider, such as Linkvertise or LootLabs, finish the provider flow, and return to Alter Hub's session page.</p></div>
+<div class="key-flow-step"><b>06</b><h3>Finish checkpoints 2 and 3</h3><p>Continue the verified flow until all three checkpoints are complete. The later checkpoints do not require another Turnstile challenge in the same session.</p></div>
+<div class="key-flow-step"><b>07</b><h3>Copy the generated key</h3><p>After checkpoint three, the result page shows the temporary Alter Hub key and its remaining validity time.</p></div>
+<div class="key-flow-step"><b>08</b><h3>Paste and Verify Key</h3><p>Return to the in-game Key System, paste the key into Enter Key, then press Verify Key. Keep the key private.</p></div>
+</div>
+</section>
+<section class="article-card" id="security">
+<h2>Why the browser checks exist</h2>
+<p>The browser page is not just a visual timer. The first checkpoint requires a server-verified Cloudflare Turnstile token, and checkpoint completion is confirmed by the selected provider before the session progresses. Direct session advancement is disabled in the current Worker.</p>
+<p>A successful challenge only proves the current browser passed the human check for that request. It does not make a copied or expired session valid, and it does not turn the interactive homepage demo into a real key generator.</p>
+<div class="callout callout-neutral"><p><strong>Never send support your full generated key.</strong> If something fails, send the error message, the checkpoint number, and a screenshot with the key hidden.</p></div>
+</section>
+<section class="article-card" id="troubleshooting">
+<h2>Common key-system problems</h2>
+<div class="key-troubleshoot">
+<div class="key-trouble-row"><strong>Turnstile does not complete</strong><p>Reload the current checkpoint page, allow JavaScript and cookies, then complete a fresh challenge. A stale Turnstile token cannot be reused.</p></div>
+<div class="key-trouble-row"><strong>403 during checkpoint start</strong><p>Checkpoint one was requested without a valid human-verification token, or the token expired. Complete Turnstile again and retry from the current page.</p></div>
+<div class="key-trouble-row"><strong>Session expired</strong><p>The verification session is temporary. Return to the in-game Key System and use Copy Key Link again to create or retrieve a current session.</p></div>
+<div class="key-trouble-row"><strong>Checkpoint already used</strong><p>Do not retry the same provider callback. Return to the current Alter Hub session page and continue from the checkpoint it shows.</p></div>
+<div class="key-trouble-row"><strong>Key rejected in game</strong><p>Confirm that the key was copied completely, has not expired, and is being redeemed on the same device used for the verification flow.</p></div>
+<div class="key-trouble-row"><strong>Key expired</strong><p>Generate a new session and complete the current access flow again. Old result pages are not permanent credentials.</p></div>
+</div>
+</section>
+<section class="article-card" id="faq">
+<h2>Key-system FAQ</h2>
+<h3>Do I need to solve Turnstile three times?</h3><p>No. In the current flow, the human verification is required before the first checkpoint. Checkpoints two and three continue under the same valid session.</p>
+<h3>Can I share a key with somebody else?</h3><p>No. Treat a generated key like a temporary credential. The current access flow is designed around the device/session that created it.</p>
+<h3>Why does the key page expire?</h3><p>The temporary session prevents old browser links from remaining useful indefinitely. A completed key has a separate validity period.</p>
+<h3>Is the interactive homepage model connected to my account?</h3><p>No. It is a front-end demonstration of the current Alter Hub interface. It does not create a live session, complete providers, or verify a real key.</p>
+</section>
+<section class="article-card" id="start-now">
+<div class="key-system-cta"><div><h3>Ready to use the real key system?</h3><p>Open Alter Hub, copy your current key link from the in-game interface, and follow the verification page it generates.</p></div><a class="btn btn-primary" href="/get-script">Get Alter Hub <span aria-hidden="true">→</span></a></div>
+</section>
+</div>
+<aside class="content-aside"><nav aria-label="On this page" class="toc"><strong>ON THIS PAGE</strong><a href="#overview">How it works</a><a href="#walkthrough">Step-by-step guide</a><a href="#security">Verification &amp; security</a><a href="#troubleshooting">Troubleshooting</a><a href="#faq">FAQ</a><a href="#start-now">Start</a><div class="aside-note">Current documented behavior: 3 checkpoints, Turnstile before checkpoint one, 15-minute session window, and 12-hour generated key validity.</div></nav></aside>
+</div>
 </main>
 <footer class="footer">
-  <div class="container footer-top">
-    <div><a class="brand" href="/">Alter<span>Hub</span></a><p>Public documentation, support information, and access options for Alter Hub.</p></div>
-    <nav aria-label="Footer navigation"><a href="/games/">Games</a><a href="/docs/">Docs</a><a href="/docs/key-system.html">Key System</a><a href="/changelog.html">Updates</a><a href="/about.html">About</a><a href="/contact.html">Support</a></nav>
-  </div>
-  <div class="container footer-bottom"><span>© 2026 Alter Hub. All rights reserved.</span><div><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="https://discord.gg/nzyb2QxYjn" target="_blank" rel="noopener noreferrer">Discord</a><a href="https://www.youtube.com/@alter-x9749" target="_blank" rel="noopener noreferrer">YouTube</a></div></div>
+<div class="container footer-top">
+<div><a class="brand" href="/">Alter<span>Hub</span></a><p>Public documentation, support information, and access options for Alter Hub.</p></div>
+<nav aria-label="Footer navigation"><a href="/games/">Games</a><a href="/docs/">Docs</a><a href="/docs/key-system.html">Key System</a><a href="/changelog.html">Updates</a><a href="/about.html">About</a><a href="/contact.html">Support</a></nav>
+</div>
+<div class="container footer-bottom"><span>© 2026 Alter Hub. All rights reserved.</span><div><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="https://discord.gg/nzyb2QxYjn" rel="noopener noreferrer" target="_blank">Discord</a><a href="https://www.youtube.com/@alter-x9749" rel="noopener noreferrer" target="_blank">YouTube</a></div></div>
 </footer>
 <script src="/assets/js/script.js"></script>
-<script src="/assets/js/key-system-demo.js?v=fluent110"></script>
+
 </body>
 </html>
