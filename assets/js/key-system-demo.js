@@ -5,7 +5,6 @@
   const windowEl = root.querySelector('.ah-demo-window');
   const navButtons = [...root.querySelectorAll('[data-demo-tab]')];
   const views = [...root.querySelectorAll('[data-demo-view]')];
-  const themeDropdown = root.querySelector('#demoThemeDropdown');
   const themeButton = root.querySelector('#demoThemeButton');
   const themeLabel = root.querySelector('#demoThemeLabel');
   const themeMenu = root.querySelector('#demoThemeMenu');
@@ -26,6 +25,7 @@
   function setTab(tab) {
     navButtons.forEach(button => button.classList.toggle('active', button.dataset.demoTab === tab));
     views.forEach(view => view.classList.toggle('active', view.dataset.demoView === tab));
+    closeThemeMenu();
   }
 
   function showToast(title, message) {
@@ -34,16 +34,36 @@
     toastTitle.textContent = title;
     toastText.textContent = message;
     toast.classList.add('show');
-    toastTimer = setTimeout(() => toast.classList.remove('show'), 2600);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2400);
+  }
+
+  function positionThemeMenu() {
+    if (!themeButton || !themeMenu || !windowEl) return;
+    const windowBox = windowEl.getBoundingClientRect();
+    const buttonBox = themeButton.getBoundingClientRect();
+    const menuWidth = 212.5;
+    const left = buttonBox.left - windowBox.left - 1.25;
+    const top = buttonBox.top - windowBox.top - 6.25;
+    themeMenu.style.left = `${Math.min(left, windowEl.clientWidth - menuWidth - 7.5)}px`;
+    themeMenu.style.top = `${Math.max(7.5, top)}px`;
+  }
+
+  function openThemeMenu() {
+    positionThemeMenu();
+    themeMenu?.classList.add('open');
+    themeButton?.setAttribute('aria-expanded', 'true');
+  }
+
+  function closeThemeMenu() {
+    themeMenu?.classList.remove('open');
+    themeButton?.setAttribute('aria-expanded', 'false');
   }
 
   navButtons.forEach(button => button.addEventListener('click', () => setTab(button.dataset.demoTab)));
 
   themeButton?.addEventListener('click', event => {
     event.stopPropagation();
-    const open = !themeDropdown.classList.contains('open');
-    themeDropdown.classList.toggle('open', open);
-    themeButton.setAttribute('aria-expanded', String(open));
+    themeMenu?.classList.contains('open') ? closeThemeMenu() : openThemeMenu();
   });
 
   themeOptions.forEach(option => {
@@ -52,16 +72,16 @@
       windowEl.dataset.theme = value;
       themeLabel.textContent = option.textContent.trim();
       themeOptions.forEach(item => item.classList.toggle('selected', item === option));
-      themeDropdown.classList.remove('open');
-      themeButton.setAttribute('aria-expanded', 'false');
+      closeThemeMenu();
     });
   });
 
-  document.addEventListener('click', event => {
-    if (!themeDropdown?.contains(event.target)) {
-      themeDropdown?.classList.remove('open');
-      themeButton?.setAttribute('aria-expanded', 'false');
-    }
+  document.addEventListener('pointerdown', event => {
+    if (!themeMenu?.contains(event.target) && !themeButton?.contains(event.target)) closeThemeMenu();
+  });
+
+  window.addEventListener('resize', () => {
+    if (themeMenu?.classList.contains('open')) positionThemeMenu();
   });
 
   transparency?.addEventListener('change', () => {
@@ -70,23 +90,25 @@
 
   minimize?.addEventListener('click', () => {
     windowEl.classList.toggle('is-minimized');
-    minimize.textContent = windowEl.classList.contains('is-minimized') ? '□' : '−';
+    windowEl.classList.remove('is-maximized');
+    closeThemeMenu();
   });
 
   maximize?.addEventListener('click', () => {
     windowEl.classList.remove('is-minimized');
-    minimize.textContent = '−';
+    windowEl.classList.toggle('is-maximized');
+    closeThemeMenu();
   });
 
   close?.addEventListener('click', () => {
     windowEl.classList.add('is-closed');
     reopen?.classList.add('show');
+    closeThemeMenu();
   });
 
   reopen?.addEventListener('click', () => {
-    windowEl.classList.remove('is-closed', 'is-minimized');
+    windowEl.classList.remove('is-closed', 'is-minimized', 'is-maximized');
     reopen.classList.remove('show');
-    minimize.textContent = '−';
     setTab('key');
   });
 
@@ -103,5 +125,12 @@
 
   keyInput?.addEventListener('keydown', event => {
     if (event.key === 'Enter') verify?.click();
+  });
+
+  root.querySelectorAll('.config-action').forEach(button => {
+    button.addEventListener('click', () => {
+      const title = button.querySelector('strong')?.textContent?.trim() || 'Configuration';
+      showToast('Interface', `${title} demo action.`);
+    });
   });
 })();

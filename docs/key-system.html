@@ -23,7 +23,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/styles.css">
   <link rel="stylesheet" href="/assets/css/content.css">
-  <link rel="stylesheet" href="/assets/css/key-system-page.css">
+  <link rel="stylesheet" href="/assets/css/key-system-page.css?v=fluent110">
 </head>
 <body>
 <header class="site-header">
@@ -45,7 +45,7 @@
       </div>
 
       <div class="key-demo-shell" data-key-demo>
-        <div class="key-demo-label"><strong>IN-GAME INTERFACE PREVIEW</strong><span>Interactive recreation of the current Alter Hub Key System UI.</span></div>
+        <div class="key-demo-label"><strong>IN-GAME INTERFACE PREVIEW</strong><span>Interactive source-matched recreation of the current Alter Hub Key System UI.</span></div>
 
         <div class="key-demo-stage">
           <div class="key-demo-scene" aria-hidden="true"></div>
@@ -54,9 +54,15 @@
             <header class="ah-demo-titlebar">
               <div class="ah-demo-app-title"><span>Alter Hub</span><span class="ah-demo-app-subtitle">Key System</span></div>
               <div class="window-actions">
-                <button class="window-action" id="demoMinimize" type="button" aria-label="Minimize demo window">−</button>
-                <button class="window-action window-maximize" id="demoMaximize" type="button" aria-label="Maximize demo window"><span></span></button>
-                <button class="window-action window-close" id="demoClose" type="button" aria-label="Close demo window">×</button>
+                <button class="window-action" id="demoMinimize" type="button" aria-label="Minimize demo window">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg>
+                </button>
+                <button class="window-action" id="demoMaximize" type="button" aria-label="Maximize demo window">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="5.5" width="13" height="13" rx="1"/></svg>
+                </button>
+                <button class="window-action" id="demoClose" type="button" aria-label="Close demo window">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+                </button>
               </div>
             </header>
 
@@ -75,32 +81,33 @@
               <main class="ah-demo-main">
                 <section class="demo-view active" data-demo-view="key">
                   <h2>Key System</h2>
+                  <div class="fluent-container">
+                    <div class="key-element-list">
+                      <div class="demo-card demo-info-card">
+                        <strong>Alter Hub Key System</strong>
+                        <p>Generate your key-system link, complete the checkpoints, then paste your ALTER_ key below.</p>
+                      </div>
 
-                  <div class="demo-card demo-info-card">
-                    <strong>Alter Hub Key System</strong>
-                    <p>Generate your key-system link, complete the checkpoints, then<br class="desktop-break"> paste your ALTER_ key below.</p>
+                      <button class="demo-card demo-action-row" id="demoCopyLink" type="button">
+                        <span class="demo-row-copy"><strong>Copy Key Link</strong><small>Generate or retrieve your Alter Hub key-system link.</small></span>
+                        <span class="demo-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span>
+                      </button>
+
+                      <div class="demo-card demo-enter-row">
+                        <strong>Enter Key</strong>
+                        <input class="demo-key-input" id="demoKeyInput" type="text" autocomplete="off" spellcheck="false" placeholder="ALTER_XXXXXXXXXXXXXX" aria-label="Demo key input">
+                      </div>
+
+                      <button class="demo-card demo-action-row" id="demoVerify" type="button">
+                        <span class="demo-row-copy"><strong>Verify Key</strong><small>Verify this key on your device.</small></span>
+                        <span class="demo-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span>
+                      </button>
+                    </div>
                   </div>
-
-                  <button class="demo-card demo-action-row" id="demoCopyLink" type="button">
-                    <span class="demo-row-copy"><strong>Copy Key Link</strong><small>Generate or retrieve your Alter Hub key-system link.</small></span>
-                    <span class="demo-chevron" aria-hidden="true">›</span>
-                  </button>
-
-                  <div class="demo-card demo-enter-row">
-                    <strong>Enter Key</strong>
-                    <input class="demo-key-input" id="demoKeyInput" type="text" autocomplete="off" spellcheck="false" placeholder="ALTER_XXXXXXXXXXXXXX" aria-label="Demo key input">
-                  </div>
-
-                  <button class="demo-card demo-action-row" id="demoVerify" type="button">
-                    <span class="demo-row-copy"><strong>Verify Key</strong><small>Verify this key on your device.</small></span>
-                    <span class="demo-chevron" aria-hidden="true">›</span>
-                  </button>
                 </section>
 
                 <section class="demo-view" data-demo-view="settings">
                   <h2>Settings</h2>
-                  <div class="demo-title-divider"></div>
-
                   <div class="settings-scroll" id="demoSettingsScroll">
                     <section class="settings-section">
                       <h3>Interface</h3>
@@ -108,15 +115,10 @@
                       <div class="demo-card demo-setting-row">
                         <div><strong>Theme</strong><small>Changes the interface theme.</small></div>
                         <div class="demo-dropdown" id="demoThemeDropdown">
-                          <button class="demo-dropdown-button" id="demoThemeButton" type="button" aria-haspopup="listbox" aria-expanded="false"><span id="demoThemeLabel">Dark</span><span class="dropdown-caret">⌄</span></button>
-                          <div class="demo-dropdown-menu" id="demoThemeMenu" role="listbox" aria-label="Interface theme">
-                            <button type="button" data-theme-value="dark" class="selected">Dark</button>
-                            <button type="button" data-theme-value="darker">Darker</button>
-                            <button type="button" data-theme-value="light">Light</button>
-                            <button type="button" data-theme-value="aqua">Aqua</button>
-                            <button type="button" data-theme-value="amethyst">Amethyst</button>
-                            <button type="button" data-theme-value="rose">Rose</button>
-                          </div>
+                          <button class="demo-dropdown-button" id="demoThemeButton" type="button" aria-haspopup="listbox" aria-expanded="false">
+                            <span id="demoThemeLabel">Dark</span>
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                          </button>
                         </div>
                       </div>
 
@@ -141,26 +143,36 @@
 
                       <div class="demo-card demo-setting-row compact-setting">
                         <div><strong>Config list</strong></div>
-                        <button class="demo-select-like" type="button"><span>--</span><span class="dropdown-caret">⌄</span></button>
+                        <button class="demo-select-like" type="button"><span>--</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
                       </div>
 
-                      <button class="demo-card demo-action-row config-action" type="button"><span class="demo-row-copy"><strong>Create config</strong></span><span class="demo-chevron">›</span></button>
-                      <button class="demo-card demo-action-row config-action" type="button"><span class="demo-row-copy"><strong>Load config</strong></span><span class="demo-chevron">›</span></button>
-                      <button class="demo-card demo-action-row config-action" type="button"><span class="demo-row-copy"><strong>Overwrite config</strong></span><span class="demo-chevron">›</span></button>
-                      <button class="demo-card demo-action-row config-action" type="button"><span class="demo-row-copy"><strong>Refresh list</strong></span><span class="demo-chevron">›</span></button>
-                      <button class="demo-card demo-action-row config-action autoload-action" type="button"><span class="demo-row-copy"><strong>Set as autoload</strong><small>Current autoload config: none</small></span><span class="demo-chevron">›</span></button>
+                      <button class="demo-card demo-action-row config-action" type="button"><span class="demo-row-copy"><strong>Create config</strong></span><span class="demo-chevron"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span></button>
+                      <button class="demo-card demo-action-row config-action" type="button"><span class="demo-row-copy"><strong>Load config</strong></span><span class="demo-chevron"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span></button>
+                      <button class="demo-card demo-action-row config-action" type="button"><span class="demo-row-copy"><strong>Overwrite config</strong></span><span class="demo-chevron"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span></button>
+                      <button class="demo-card demo-action-row config-action" type="button"><span class="demo-row-copy"><strong>Refresh list</strong></span><span class="demo-chevron"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span></button>
+                      <button class="demo-card demo-action-row config-action autoload-action" type="button"><span class="demo-row-copy"><strong>Set as autoload</strong><small>Current autoload config: none</small></span><span class="demo-chevron"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span></button>
                     </section>
                   </div>
                 </section>
               </main>
             </div>
+
+            <div class="demo-theme-popover" id="demoThemeMenu" role="listbox" aria-label="Interface theme">
+              <button type="button" data-theme-value="dark" class="selected">Dark</button>
+              <button type="button" data-theme-value="darker">Darker</button>
+              <button type="button" data-theme-value="light">Light</button>
+              <button type="button" data-theme-value="aqua">Aqua</button>
+              <button type="button" data-theme-value="amethyst">Amethyst</button>
+              <button type="button" data-theme-value="rose">Rose</button>
+            </div>
+
+            <div class="demo-toast" id="demoToast" role="status" aria-live="polite"><strong id="demoToastTitle">Alter Hub</strong><p id="demoToastText"></p></div>
           </section>
 
           <button class="demo-reopen" id="demoReopen" type="button">Open Alter Hub Key System</button>
-          <div class="demo-toast" id="demoToast" role="status" aria-live="polite"><strong id="demoToastTitle">Alter Hub</strong><p id="demoToastText"></p></div>
         </div>
 
-        <div class="demo-caption"><span><strong>Interactive code recreation of the current in-game interface.</strong> Use Key System and Settings to test it.</span><span>The preview is disconnected from the live verification API.</span></div>
+        <div class="demo-caption"><span><strong>Source-matched browser recreation of the Fluent interface used by Alter Hub.</strong> Use Key System and Settings to test it.</span><span>The preview is disconnected from the live verification API.</span></div>
       </div>
     </div>
   </section>
@@ -232,6 +244,6 @@
   <div class="container footer-bottom"><span>© 2026 Alter Hub. All rights reserved.</span><div><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="https://discord.gg/nzyb2QxYjn" target="_blank" rel="noopener noreferrer">Discord</a><a href="https://www.youtube.com/@alter-x9749" target="_blank" rel="noopener noreferrer">YouTube</a></div></div>
 </footer>
 <script src="/assets/js/script.js"></script>
-<script src="/assets/js/key-system-demo.js"></script>
+<script src="/assets/js/key-system-demo.js?v=fluent110"></script>
 </body>
 </html>
