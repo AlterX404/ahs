@@ -204,6 +204,15 @@
       -webkit-backdrop-filter: blur(18px);
     }
 
+    /* Make the crossed-out comparison price easier to read, especially on mobile.
+       Keep the strike thickness unchanged while slightly increasing the numerals. */
+    .starting-price-row del {
+      font-size: 19px;
+      text-decoration-thickness: 2.5px;
+      text-decoration-skip-ink: none;
+      font-variant-numeric: tabular-nums;
+    }
+
     @media (max-width: 720px) {
       main {
         background:
