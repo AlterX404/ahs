@@ -79,6 +79,145 @@
         transition: none;
       }
     }
+
+
+    /* ============================================================
+       HOMEPAGE CONTINUOUS BACKGROUND
+       Keep every major homepage section on one visual canvas so the
+       page fades naturally instead of switching between hard blocks.
+       ============================================================ */
+    body {
+      background: #050505;
+    }
+
+    main {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse 72% 12% at 50% 10%, rgba(150, 16, 28, 0.18) 0%, rgba(83, 8, 16, 0.08) 42%, transparent 76%),
+        radial-gradient(ellipse 68% 11% at 16% 30%, rgba(118, 12, 24, 0.11) 0%, transparent 72%),
+        radial-gradient(ellipse 68% 12% at 86% 49%, rgba(130, 12, 25, 0.10) 0%, transparent 74%),
+        radial-gradient(ellipse 78% 12% at 42% 69%, rgba(108, 10, 20, 0.095) 0%, transparent 74%),
+        radial-gradient(ellipse 72% 11% at 78% 87%, rgba(125, 12, 24, 0.09) 0%, transparent 73%),
+        linear-gradient(
+          180deg,
+          #050505 0%,
+          #070506 12%,
+          #090607 24%,
+          #070606 38%,
+          #080606 52%,
+          #060606 67%,
+          #080606 82%,
+          #050505 100%
+        );
+    }
+
+    main::before,
+    main::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      pointer-events: none;
+      filter: blur(70px);
+      opacity: 0.72;
+    }
+
+    main::before {
+      width: min(72vw, 980px);
+      height: min(72vw, 980px);
+      top: 14%;
+      right: -28%;
+      border-radius: 50%;
+      background: rgba(137, 12, 26, 0.08);
+    }
+
+    main::after {
+      width: min(68vw, 900px);
+      height: min(68vw, 900px);
+      top: 58%;
+      left: -30%;
+      border-radius: 50%;
+      background: rgba(112, 10, 22, 0.07);
+    }
+
+    /* The shared canvas provides the color. Sections keep their spacing,
+       cards and local effects, but no longer paint hard rectangular bands. */
+    .hero.section-dark,
+    .home-key-demo-section,
+    .pricing-section.section-dark,
+    #learn.section-alt,
+    #features.section-dark,
+    #games.section-alt,
+    #faq.section-alt,
+    #community.section-dark {
+      background: transparent !important;
+    }
+
+    /* Soft transition haze around section boundaries. It is deliberately
+       subtle so content stays crisp while the background flows underneath. */
+    .home-key-demo-section,
+    .pricing-section,
+    #learn,
+    #features,
+    #games,
+    #faq,
+    #community {
+      position: relative;
+    }
+
+    .home-key-demo-section::before,
+    .pricing-section::before,
+    #learn::before,
+    #features::before,
+    #games::before,
+    #faq::before,
+    #community::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      pointer-events: none;
+      left: 6%;
+      right: 6%;
+      top: -70px;
+      height: 140px;
+      background: radial-gradient(ellipse at center, rgba(120, 12, 24, 0.055) 0%, rgba(50, 8, 13, 0.025) 40%, transparent 76%);
+      filter: blur(18px);
+    }
+
+    /* Premium gets a little more warmth without becoming a separate block. */
+    .pricing-section::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      pointer-events: none;
+      inset: 4% 4% 2%;
+      border-radius: 48px;
+      background: radial-gradient(ellipse at 50% 42%, rgba(142, 15, 29, 0.07), transparent 68%);
+      filter: blur(30px);
+    }
+
+    /* Keep the fixed header visually connected to the same background. */
+    .site-header {
+      background: rgba(5, 5, 5, 0.82) !important;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    @media (max-width: 720px) {
+      main {
+        background:
+          radial-gradient(ellipse 100% 9% at 50% 10%, rgba(150, 16, 28, 0.15), transparent 76%),
+          radial-gradient(ellipse 100% 10% at 50% 48%, rgba(120, 12, 24, 0.08), transparent 76%),
+          radial-gradient(ellipse 100% 10% at 50% 82%, rgba(118, 12, 23, 0.075), transparent 76%),
+          linear-gradient(180deg, #050505 0%, #080606 28%, #060606 58%, #070606 80%, #050505 100%);
+      }
+
+      .pricing-section::after {
+        inset: 2% 0;
+        border-radius: 28px;
+      }
+    }
   </style>
 </link></link></meta></meta></meta></meta><link href="https://alterhub.online/" rel="canonical"/><meta content="index, follow" name="robots"/></head>
 <body>
