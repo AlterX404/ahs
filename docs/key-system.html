@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#050505">
+  <meta name="robots" content="index, follow">
+  <meta name="description" content="How Alter Hub temporary key sessions, checkpoints, expiration, and generated keys are intended to work.">
+  <link rel="canonical" href="https://alterhub.online/docs/key-system.html">
+  <meta property="og:title" content="Key System | Alter Hub">
+  <meta property="og:description" content="How Alter Hub temporary key sessions, checkpoints, expiration, and generated keys are intended to work.">
+  <meta property="og:image" content="https://alterhub.online/assets/images/AH_Banner.gif">
+  <meta property="og:url" content="https://alterhub.online/docs/key-system.html">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Key System | Alter Hub">
+  <meta name="twitter:description" content="How Alter Hub temporary key sessions, checkpoints, expiration, and generated keys are intended to work.">
+  <meta name="twitter:image" content="https://alterhub.online/assets/images/AH_Banner.gif">
+  <title>Key System | Alter Hub</title>
+  <link rel="icon" type="image/png" href="/assets/images/AH.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <link rel="stylesheet" href="/assets/css/content.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="container nav-wrap">
+    <a class="brand" href="/" aria-label="Alter Hub home">Alter<span>Hub</span></a>
+    <button class="menu-toggle" aria-label="Open navigation menu" aria-expanded="false" aria-controls="primary-navigation">☰</button>
+    <nav id="primary-navigation" class="nav-links" aria-label="Primary navigation"><a href="/">Home</a><a href="/games/">Games</a><a href="/docs/">Docs</a><a href="/changelog.html">Updates</a><a href="/#pricing">Pricing</a><a href="/about.html">About</a><a href="/contact.html">Support</a></nav>
+  </div>
+</header>
+<main>
+  <section class="content-hero">
+    <div class="container">
+      <div class="breadcrumbs"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/docs/">Docs</a> <span aria-hidden="true">/</span> <span>Key System</span></div>
+      <span class="eyebrow pill">ACCESS SYSTEM</span>
+      <h1>How the key system works</h1>
+      <p>Understand temporary sessions, checkpoint confirmation, expiration, and safe handling of generated keys without treating a verification screen as permanent content.</p>
+      <div class="editorial-meta"><span>Alter Hub documentation</span><span>Updated August 20, 2026</span></div>
+    </div>
+  </section>
+  <div class="container content-layout">
+    <div>
+<section class="article-card" id="session">
+  <h2>What a key session is</h2>
+  <p class="lead">A free key session is temporary. The server creates a session for the current device, tracks checkpoint progress, and generates a final key only after the required verification flow is completed.</p>
+  <p>The current Worker code uses expiring session records rather than treating every key link as permanent. That is why a copied key-session URL can stop working later even when the main website is still online.</p>
+</section>
+<section class="article-card" id="checkpoints">
+  <h2>How checkpoints work</h2>
+  <p>The key interface presents three verification stages. At each stage you choose one of the currently offered providers. Progress is advanced after the selected provider confirms completion and the user returns to Alter Hub.</p>
+  <p>Do not open several competing checkpoint sessions for the same step. The current flow can replace a previous provider choice when a new provider is selected, which is intended to prevent one session from being completed more than once.</p>
+</section>
+<section class="article-card" id="expiry">
+  <h2>Why sessions and keys expire</h2>
+  <p>Temporary sessions reduce the value of old shared links and make it possible to reject stale verification attempts. A completed key can also have its own validity period. If the page explicitly says the session or key has expired, generate a new access session instead of repeatedly refreshing the old result URL.</p>
+  <ul>
+    <li><strong>Session expired:</strong> start a new key session from the official access path.</li>
+    <li><strong>Invalid link:</strong> confirm that the URL was copied completely and that it came from the current flow.</li>
+    <li><strong>Checkpoint already used:</strong> return to the current session rather than retrying the same callback.</li>
+    <li><strong>Key expired:</strong> obtain a fresh key through the current access method.</li>
+  </ul>
+</section>
+<section class="article-card" id="privacy">
+  <h2>Keep the key private</h2>
+  <p>A generated key should be treated like a temporary credential. Do not post it in Discord, screenshots, videos, or issue reports. Support generally needs the error message and the step that failed, not the full key itself.</p>
+  <p>For more information about device and session data, read the <a href="/privacy.html">Privacy Policy</a>.</p>
+</section>
+</div>
+    <aside class="content-aside"><nav class="toc" aria-label="On this page"><strong>ON THIS PAGE</strong><a href="#session">Key sessions</a><a href="#checkpoints">Checkpoints</a><a href="#expiry">Expiry</a><a href="#privacy">Key privacy</a><div class="aside-note">Alter Hub documentation is maintained as the platform changes. If a screen differs from a guide, use the current interface and report the mismatch through Support.</div></nav></aside>
+  </div>
+</main>
+<footer class="footer">
+  <div class="container footer-top">
+    <div><a class="brand" href="/">Alter<span>Hub</span></a><p>Public documentation, support information, and access options for Alter Hub.</p></div>
+    <nav aria-label="Footer navigation"><a href="/games/">Games</a><a href="/docs/">Docs</a><a href="/changelog.html">Updates</a><a href="/about.html">About</a><a href="/contact.html">Support</a></nav>
+  </div>
+  <div class="container footer-bottom"><span>© 2026 Alter Hub. All rights reserved.</span><div><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="https://discord.gg/nzyb2QxYjn" target="_blank" rel="noopener noreferrer">Discord</a><a href="https://www.youtube.com/@alter-x9749" target="_blank" rel="noopener noreferrer">YouTube</a></div></div>
+</footer>
+<script src="/assets/js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /get-script.html
+Disallow: /script.lua
+
+Sitemap: https://alterhub.online/sitemap.xml
