@@ -2,199 +2,1015 @@
 
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<meta content="#030303" name="theme-color"/>
-<meta content="Choose recurring monthly or lifetime Alter Hub Premium access." name="description"/>
-<meta content="Alter Hub Premium" property="og:title"/>
-<meta content="Unlock premium features with recurring monthly or lifetime Alter Hub Premium access." property="og:description"/>
+<!-- Alter Hub Favicon -->
+<link href="/assets/images/AH.png" rel="icon" type="image/png"/>
+<link href="/assets/images/AH.png" rel="shortcut icon" type="image/png"/>
+<!-- Social / Discord / WhatsApp Preview -->
+<meta content="Alter Hub | Premium Roblox Utility Platform" property="og:title"/>
+<meta content="Alter Hub is a Roblox utility platform with a modern interface, powerful features, and game-specific utilities." property="og:description"/>
 <meta content="https://alterhub.online/assets/images/AH_Banner.gif" property="og:image"/>
-<meta content="https://alterhub.online/premium/" property="og:url"/>
+<meta content="https://alterhub.online" property="og:url"/>
 <meta content="website" property="og:type"/>
-<title>Premium Access | Alter Hub</title>
-<link href="../assets/images/AH.png" rel="icon" type="image/png"/>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<!-- Twitter / X Preview -->
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="Alter Hub | Premium Roblox Utility Platform" name="twitter:title"/>
+<meta content="Alter Hub is a Roblox utility platform with powerful utilities and a modern interface." name="twitter:description"/>
+<meta content="https://alterhub.online/assets/images/AH_Banner.gif" name="twitter:image"/>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="#050505" name="theme-color">
+<meta content="Alter Hub is a polished Roblox utility platform featuring a fast interface, simple access system, regular updates, and support for popular Roblox experiences." name="description">
+<title>Alter Hub | Premium Roblox Utility Platform</title>
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
-<script src="https://www.paypal.com/sdk/js?client-id=BAA_xc_bFzIU_CVMLm-rNFQ84VC1RJQ1DUoSxTb-uGuL0mvIGsz8gGP1G6H9npeJEdSm4GgQNKdZTnd8J4&amp;components=hosted-buttons&amp;disable-funding=venmo&amp;currency=USD"></script>
-<link href="../assets/css/plan-page.css?v=20260818-1" rel="stylesheet"/>
-<link href="https://alterhub.online/premium/" rel="canonical"/><meta content="index, follow" name="robots"/></head>
-<body data-tier="premium">
+<link href="assets/css/styles.css" rel="stylesheet"/>
+<link href="/assets/css/key-system-page.css?v=home-fluent112-mobilecenter" rel="stylesheet"/>
+<style>
+    /* Cursor-following hero tilt */
+    .hero {
+      perspective: 1100px;
+      overflow: hidden;
+    }
+
+    .hero-tilt {
+      width: 100%;
+      transform:
+        rotateX(var(--hero-rotate-x, 0deg))
+        rotateY(var(--hero-rotate-y, 0deg));
+      transform-style: preserve-3d;
+      transform-origin: center center;
+      transition: transform 0.12s ease-out;
+      will-change: transform;
+    }
+
+    .hero-tilt .pill {
+      display: inline-block;
+      transform: translateZ(10px);
+    }
+
+    .hero-tilt h1 {
+      transform: translateZ(24px);
+    }
+
+    .hero-tilt p {
+      transform: translateZ(14px);
+    }
+
+    .hero:not(.is-tracking) .hero-tilt {
+      transition: transform 0.5s ease;
+    }
+
+    @media (hover: none), (pointer: coarse) {
+      .hero-tilt,
+      .hero-tilt .pill,
+      .hero-tilt h1,
+      .hero-tilt p {
+        transform: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-tilt,
+      .hero-tilt .pill,
+      .hero-tilt h1,
+      .hero-tilt p {
+        transform: none;
+        transition: none;
+      }
+    }
+
+
+    /* ============================================================
+       HOMEPAGE CONTINUOUS BACKGROUND
+       Keep every major homepage section on one visual canvas so the
+       page fades naturally instead of switching between hard blocks.
+       ============================================================ */
+    body {
+      background: #050505;
+    }
+
+    main {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse 72% 12% at 50% 10%, rgba(150, 16, 28, 0.18) 0%, rgba(83, 8, 16, 0.08) 42%, transparent 76%),
+        radial-gradient(ellipse 68% 11% at 16% 30%, rgba(118, 12, 24, 0.11) 0%, transparent 72%),
+        radial-gradient(ellipse 68% 12% at 86% 49%, rgba(130, 12, 25, 0.10) 0%, transparent 74%),
+        radial-gradient(ellipse 78% 12% at 42% 69%, rgba(108, 10, 20, 0.095) 0%, transparent 74%),
+        radial-gradient(ellipse 72% 11% at 78% 87%, rgba(125, 12, 24, 0.09) 0%, transparent 73%),
+        linear-gradient(
+          180deg,
+          #050505 0%,
+          #070506 12%,
+          #090607 24%,
+          #070606 38%,
+          #080606 52%,
+          #060606 67%,
+          #080606 82%,
+          #050505 100%
+        );
+    }
+
+    main::before,
+    main::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      pointer-events: none;
+      filter: blur(70px);
+      opacity: 0.72;
+    }
+
+    main::before {
+      width: min(72vw, 980px);
+      height: min(72vw, 980px);
+      top: 14%;
+      right: -28%;
+      border-radius: 50%;
+      background: rgba(137, 12, 26, 0.08);
+    }
+
+    main::after {
+      width: min(68vw, 900px);
+      height: min(68vw, 900px);
+      top: 58%;
+      left: -30%;
+      border-radius: 50%;
+      background: rgba(112, 10, 22, 0.07);
+    }
+
+    /* The shared canvas provides the color. Sections keep their spacing,
+       cards and local effects, but no longer paint hard rectangular bands. */
+    .hero.section-dark,
+    .home-key-demo-section,
+    .pricing-section.section-dark,
+    #learn.section-alt,
+    #features.section-dark,
+    #games.section-alt,
+    #faq.section-alt,
+    #community.section-dark {
+      background: transparent !important;
+    }
+
+    /* Soft transition haze around section boundaries. It is deliberately
+       subtle so content stays crisp while the background flows underneath. */
+    .home-key-demo-section,
+    .pricing-section,
+    #learn,
+    #features,
+    #games,
+    #faq,
+    #community {
+      position: relative;
+    }
+
+    .home-key-demo-section::before,
+    .pricing-section::before,
+    #learn::before,
+    #features::before,
+    #games::before,
+    #faq::before,
+    #community::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      pointer-events: none;
+      left: 6%;
+      right: 6%;
+      top: -70px;
+      height: 140px;
+      background: radial-gradient(ellipse at center, rgba(120, 12, 24, 0.055) 0%, rgba(50, 8, 13, 0.025) 40%, transparent 76%);
+      filter: blur(18px);
+    }
+
+    /* Premium gets a little more warmth without becoming a separate block. */
+    .pricing-section::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      pointer-events: none;
+      inset: 4% 4% 2%;
+      border-radius: 48px;
+      background: radial-gradient(ellipse at 50% 42%, rgba(142, 15, 29, 0.07), transparent 68%);
+      filter: blur(30px);
+    }
+
+    /* Keep the fixed header visually connected to the same background. */
+    .site-header {
+      background: rgba(5, 5, 5, 0.82) !important;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    /* Keep the old comparison price readable under the strike.
+       A custom strike sits slightly above center so the tail of each 9 stays visible. */
+    .starting-price-row del {
+      position: relative;
+      display: inline-block;
+      font-size: 22px;
+      line-height: 1;
+      font-weight: 700;
+      text-decoration: none;
+      font-variant-numeric: tabular-nums;
+      font-feature-settings: "tnum" 1;
+      letter-spacing: -0.01em;
+    }
+
+    .starting-price-row del::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 43%;
+      height: 2.5px;
+      border-radius: 999px;
+      background: currentColor;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+
+    @media (max-width: 720px) {
+      main {
+        background:
+          radial-gradient(ellipse 100% 9% at 50% 10%, rgba(150, 16, 28, 0.15), transparent 76%),
+          radial-gradient(ellipse 100% 10% at 50% 48%, rgba(120, 12, 24, 0.08), transparent 76%),
+          radial-gradient(ellipse 100% 10% at 50% 82%, rgba(118, 12, 23, 0.075), transparent 76%),
+          linear-gradient(180deg, #050505 0%, #080606 28%, #060606 58%, #070606 80%, #050505 100%);
+      }
+
+      .pricing-section::after {
+        inset: 2% 0;
+        border-radius: 28px;
+      }
+    }
+  </style>
+</link></link></meta></meta></meta></meta><link href="https://alterhub.online/" rel="canonical"/><meta content="index, follow" name="robots"/>
+<style>
+/* Red strike-through line for old pricing */
+.old-price,
+.price-old {
+  text-decoration-color: #e11d2e !important;
+}
+.old-price::after,
+.price-old::after {
+  background: #e11d2e !important;
+  background-color: #e11d2e !important;
+}
+</style>
+
+</head>
+<body>
+<!-- NAVIGATION -->
 <header class="site-header">
-<div class="header-inner">
-<a aria-label="Alter Hub home" class="brand" href="../index.html">
-<span aria-hidden="true" class="brand-mark">A</span>
-<span>Alter <strong>Hub</strong></span>
+<div class="container nav-wrap">
+<a aria-label="Alter Hub home" class="brand" href="#home">
+        Alter<span>Hub</span>
 </a>
-<nav aria-label="Access tiers" class="plan-nav">
-<a data-nav-tier="keyless" href="../keyless/#monthly">Keyless</a>
-<a aria-current="page" data-nav-tier="premium" href="../premium/#monthly">Premium</a>
-<a data-nav-tier="premium-plus" href="../premium-plus/#monthly">Premium Plus</a>
-<a href="/docs/">Docs</a><a href="/contact.html">Support</a></nav>
-<div class="header-status">
-<span aria-hidden="true" class="status-dot"></span>
-<span>Store online</span>
-<a class="back-link" href="../index.html#pricing">Back to site</a>
-</div>
+<button aria-controls="primary-navigation" aria-expanded="false" aria-label="Open navigation menu" class="menu-toggle">
+        ☰
+      </button>
+<nav aria-label="Primary navigation" class="nav-links" id="primary-navigation"><a href="/">Home</a><a href="/games/">Games</a><a href="/docs/">Docs</a><a href="/changelog.html">Updates</a><a href="/#pricing">Pricing</a><a href="/about.html">About</a><a href="/contact.html">Support</a></nav>
 </div>
 </header>
-<main class="page-shell">
-<article class="plan-panel">
-<section class="plan-hero">
-<div class="hero-copy">
-<p class="eyebrow" data-plan-content="" id="hero-eyebrow">PREMIUM ACCESS · MONTHLY</p>
-<h1 data-plan-content="">
-<span id="hero-title-main">Unlock more.</span>
-<span id="hero-title-accent">Every month.</span>
+<main>
+<!-- HERO SECTION -->
+<section class="hero section-dark" id="home">
+<div aria-hidden="true" class="hero-glow"></div>
+<div class="container hero-content">
+<div class="hero-tilt">
+<span class="eyebrow pill">
+            PREMIUM ROBLOX UTILITY PLATFORM
+          </span>
+<h1>
+            ALTER
+            <br/>
+<span>HUB</span>
 </h1>
-<p class="hero-description" data-plan-content="" id="hero-description">
-            A monthly Premium subscription includes Keyless access, Alter Hub's premium-only features, Premium updates, and priority support. PayPal bills $7.99 automatically every month until you cancel.
-          </p>
+<p>Alter Hub is a Roblox utility platform with public documentation, supported-game notes, access options, release updates, and community support in one place.</p>
 </div>
-</section>
-<div aria-label="Selected plan highlights" class="feature-strip">
-<div class="feature-item">
-<span>01</span>
-<strong data-plan-content="" id="feature-one">Everything in Keyless</strong>
-</div>
-<div class="feature-item">
-<span>02</span>
-<strong data-plan-content="" id="feature-two">Monthly recurring access</strong>
-</div>
-<div class="feature-item">
-<span>03</span>
-<strong data-plan-content="" id="feature-three">Priority support</strong>
-</div>
-</div>
-<section class="content-section">
-<div class="section-heading">
-<span aria-hidden="true" class="section-icon">✓</span>
-<div>
-<p class="eyebrow">PREMIUM BENEFITS</p>
-<h2>What Premium Includes</h2>
-</div>
-</div>
-<ul class="benefit-list" id="benefit-list">
-<li>Everything included with Keyless access</li>
-<li>Alter Hub premium features and premium content</li>
-<li>Priority community support</li>
-<li>Regular Premium feature updates</li>
-<li>Early access to selected new Premium releases</li>
-</ul>
-</section>
-<section class="content-section">
-<div class="section-heading">
-<span aria-hidden="true" class="section-icon">↗</span>
-<div>
-<p class="eyebrow">QUICK SETUP</p>
-<h2>How to Activate Premium</h2>
-</div>
-</div>
-<ol class="steps-list" id="steps-list">
-<li><span class="step-number">1</span><p>Choose either the 30-day or lifetime Premium option.</p></li>
-<li><span class="step-number">2</span><p>Accept the store terms and continue with your purchase request.</p></li>
-<li><span class="step-number">3</span><p>After receiving your key, open Alter Hub and go to the Key System.</p></li>
-<li><span class="step-number">4</span><p>Enter your Premium key to activate every included feature.</p></li>
-</ol>
-</section>
-</article>
-<aside aria-label="Premium plan selection" class="checkout-panel">
-<div class="checkout-inner">
-<div class="checkout-heading">
-<div>
-<p class="eyebrow">CHOOSE YOUR ACCESS</p>
-<h2>Premium Duration</h2>
-</div>
-<span class="secure-badge">● OFFICIAL</span>
-</div>
-<div aria-label="Choose Premium duration" class="duration-list" role="radiogroup">
-<button aria-checked="true" class="duration-card is-selected" data-duration="monthly" role="radio" type="button">
-<span aria-hidden="true" class="duration-radio"></span>
-<span class="duration-content">
-<strong data-card-title="">Monthly Key</strong>
-<span data-card-description="">Complete Premium access billed automatically every month.</span>
-</span>
-<span class="duration-price">
-<del data-card-old-price="">$14.99</del>
-<strong data-card-price="">$7.99</strong>
-</span>
-</button>
-<button aria-checked="false" class="duration-card" data-duration="lifetime" role="radio" type="button">
-<span aria-hidden="true" class="duration-radio"></span>
-<span class="duration-content">
-<strong data-card-title="">Lifetime Key</strong>
-<span data-card-description="">Permanent Premium access and future Premium updates.</span>
-</span>
-<span class="duration-price">
-<del data-card-old-price="">$39.99</del>
-<strong data-card-price="">$24.99</strong>
-</span>
-</button>
-</div>
-<section aria-live="polite" class="selection-summary">
-<div class="summary-top">
-<span class="summary-tier" id="summary-tier">PREMIUM</span>
-<span class="summary-badge" id="summary-badge">POPULAR</span>
-</div>
-<h3 data-plan-content="" id="summary-title">Monthly Premium</h3>
-<p class="summary-description" data-plan-content="" id="summary-description">
-            The complete Premium experience with automatic monthly PayPal renewal until cancelled.
-          </p>
-<div class="summary-price-row" data-plan-content="">
-<del id="summary-old-price">$14.99</del>
-<strong id="summary-price">$7.99</strong>
-<span id="summary-discount">47% OFF</span>
-</div>
-<ul class="payment-details">
-<li><span>Access duration</span><strong id="detail-access">While subscribed</strong></li>
-<li><span>Billing</span><strong id="detail-billing">$7.99 every month</strong></li>
-<li><span>Renewal</span><strong id="detail-renewal">Automatic until cancelled</strong></li>
-</ul>
-</section>
-<label class="terms-row">
-<input id="terms-checkbox" type="checkbox"/>
-<span>I agree to the <a href="../terms.html" rel="noopener" target="_blank">Terms of Service</a><span id="terms-copy"> and authorize recurring monthly PayPal billing until I cancel.</span></span>
-</label>
-<div class="paypal-subscription-wrap" hidden="" id="paypal-subscription-wrap">
-<div class="paypal-subscription-heading">
-<span>MONTHLY SUBSCRIPTION</span>
-<strong>Secure checkout by PayPal</strong>
-</div>
-<div id="paypal-subscription-button"></div>
-</div>
-<a aria-disabled="true" class="purchase-button" id="purchase-button">
-<span id="purchase-button-label">Accept Terms to Subscribe</span>
-<span aria-hidden="true">→</span>
+<a class="btn btn-primary" href="get-script">
+          Get Loadstring
+          <span aria-hidden="true">→</span>
 </a>
-<p class="checkout-hint" id="checkout-hint">Accept the terms to continue with this purchase.</p>
-<div class="support-card">
-<span aria-hidden="true" class="support-icon">A</span>
-<div>
-<strong>Official Alter Hub purchase support</strong>
-<p><a href="mailto:support@alterhub.online">support@alterhub.online</a></p>
+<a class="btn btn-secondary" href="#pricing">
+            Get Premium
+          </a>
 </div>
+
+</section>
+<!-- KEY SYSTEM DEMO: first section after the Alter Hub hero -->
+<section class="home-key-demo-section" id="key-system-demo">
+  <div class="container">
+    <div class="key-demo-shell" data-key-demo="">
+<div class="key-demo-label"><strong>KEY SYSTEM DEMO</strong><a class="key-demo-learn-link" href="/docs/key-system.html">Learn more about the key system →</a></div>
+<div class="key-demo-stage">
+<div aria-hidden="true" class="key-demo-scene"></div>
+<section aria-label="Interactive Alter Hub Key System demo" class="ah-demo-window" data-theme="dark">
+<header class="ah-demo-titlebar">
+<div class="ah-demo-app-title"><span>Alter Hub</span><span class="ah-demo-app-subtitle">Key System</span></div>
+<div class="window-actions">
+<button aria-label="Minimize demo window" class="window-action" id="demoMinimize" type="button">
+<svg aria-hidden="true" viewbox="0 0 24 24"><path d="M5 12h14"></path></svg>
+</button>
+<button aria-label="Maximize demo window" class="window-action" id="demoMaximize" type="button">
+<svg aria-hidden="true" viewbox="0 0 24 24"><rect height="13" rx="1" width="13" x="5.5" y="5.5"></rect></svg>
+</button>
+<button aria-label="Close demo window" class="window-action" id="demoClose" type="button">
+<svg aria-hidden="true" viewbox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"></path></svg>
+</button>
 </div>
-<p class="checkout-note">
-          Monthly plans renew automatically through PayPal until cancelled. Lifetime purchases remain one-time and are confirmed through official Alter Hub support.
-        </p>
-<noscript>
-<p class="checkout-hint">JavaScript is required to switch durations and prepare your purchase request.</p>
-</noscript>
-</div>
+</header>
+<div class="ah-demo-body">
+<aside class="ah-demo-sidebar">
+<button class="demo-nav-button active" data-demo-tab="key" type="button">
+<svg aria-hidden="true" viewbox="0 0 24 24"><circle cx="7.5" cy="15.5" r="4.2"></circle><path d="M10.7 12.3 20 3m-3.2 3.2 2.3 2.3M14.4 8.6l2.3 2.3"></path></svg>
+<span>Key System</span>
+</button>
+<button class="demo-nav-button" data-demo-tab="settings" type="button">
+<svg aria-hidden="true" viewbox="0 0 24 24"><circle cx="12" cy="12" r="3.1"></circle><path d="M19 13.1v-2.2l-2-.7a7.3 7.3 0 0 0-.8-1.9l.9-1.9-1.6-1.6-1.9.9a7.3 7.3 0 0 0-1.9-.8L11 3H9l-.7 2a7.3 7.3 0 0 0-1.9.8l-1.9-.9-1.6 1.6.9 1.9a7.3 7.3 0 0 0-.8 1.9l-2 .7v2.2l2 .7a7.3 7.3 0 0 0 .8 1.9l-.9 1.9 1.6 1.6 1.9-.9a7.3 7.3 0 0 0 1.9.8l.7 2h2.2l.7-2a7.3 7.3 0 0 0 1.9-.8l1.9.9 1.6-1.6-.9-1.9a7.3 7.3 0 0 0 .8-1.9l1.8-.8Z"></path></svg>
+<span>Settings</span>
+</button>
 </aside>
-</main>
-<footer class="site-footer">
-<div class="footer-brand">
-<span aria-hidden="true" class="brand-mark">A</span>
-<span>© 2026 Alter Hub</span>
+<div class="ah-demo-main">
+<section class="demo-view active" data-demo-view="key">
+<h2>Key System</h2>
+<div class="fluent-container">
+<div class="key-element-list">
+<div class="demo-card demo-info-card">
+<strong>Alter Hub Key System</strong>
+<p>Generate your key-system link, complete the checkpoints, then paste your ALTER_ key below.</p>
 </div>
-<nav aria-label="Footer links">
-<a href="../index.html">Home</a>
-<a href="../terms.html">Terms</a>
-<a href="../privacy.html">Privacy</a>
-<a href="https://discord.gg/nzyb2QxYjn" rel="noopener noreferrer" target="_blank">Discord</a>
-</nav>
+<button class="demo-card demo-action-row" id="demoCopyLink" type="button">
+<span class="demo-row-copy"><strong>Copy Key Link</strong><small>Generate or retrieve your Alter Hub key-system link.</small></span>
+<span aria-hidden="true" class="demo-chevron"><svg viewbox="0 0 24 24"><path d="m9 18 6-6-6-6"></path></svg></span>
+</button>
+<div class="demo-card demo-enter-row">
+<strong>Enter Key</strong>
+<input aria-label="Demo key input" autocomplete="off" class="demo-key-input" id="demoKeyInput" placeholder="ALTER_XXXXXXXXXXXXXX" spellcheck="false" type="text"/>
+</div>
+<button class="demo-card demo-action-row" id="demoVerify" type="button">
+<span class="demo-row-copy"><strong>Verify Key</strong><small>Verify this key on your device.</small></span>
+<span aria-hidden="true" class="demo-chevron"><svg viewbox="0 0 24 24"><path d="m9 18 6-6-6-6"></path></svg></span>
+</button>
+</div>
+</div>
+</section>
+<section class="demo-view" data-demo-view="settings">
+<h2>Settings</h2>
+<div class="settings-scroll" id="demoSettingsScroll">
+<section class="settings-section">
+<h3>Interface</h3>
+<div class="demo-card demo-setting-row">
+<div><strong>Theme</strong><small>Changes the interface theme.</small></div>
+<div class="demo-dropdown" id="demoThemeDropdown">
+<button aria-expanded="false" aria-haspopup="listbox" class="demo-dropdown-button" id="demoThemeButton" type="button">
+<span id="demoThemeLabel">Dark</span>
+<svg aria-hidden="true" viewbox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg>
+</button>
+</div>
+</div>
+<div class="demo-card demo-setting-row">
+<div><strong>Transparency</strong><small>Makes the interface transparent.</small></div>
+<label class="demo-switch"><input aria-label="Toggle demo transparency" id="demoTransparency" type="checkbox"/><span></span></label>
+</div>
+<div class="demo-card demo-setting-row compact-setting">
+<div><strong>Minimize Bind</strong></div>
+<button class="demo-bind" type="button">R</button>
+</div>
+</section>
+<section class="settings-section config-section">
+<h3>Configuration</h3>
+<div class="demo-card demo-setting-row compact-setting">
+<div><strong>Config name</strong></div>
+<input aria-label="Config name" class="config-input" type="text"/>
+</div>
+<div class="demo-card demo-setting-row compact-setting">
+<div><strong>Config list</strong></div>
+<button class="demo-select-like" type="button"><span>--</span><svg aria-hidden="true" viewbox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg></button>
+</div>
+<button class="demo-card demo-action-row config-action" type="button"><span class="demo-row-copy"><strong>Create config</strong></span><span class="demo-chevron"><svg viewbox="0 0 24 24"><path d="m9 18 6-6-6-6"></path></svg></span></button>
+<button class="demo-card demo-action-row config-action" type="button"><span class="demo-row-copy"><strong>Load config</strong></span><span class="demo-chevron"><svg viewbox="0 0 24 24"><path d="m9 18 6-6-6-6"></path></svg></span></button>
+<button class="demo-card demo-action-row config-action" type="button"><span class="demo-row-copy"><strong>Overwrite config</strong></span><span class="demo-chevron"><svg viewbox="0 0 24 24"><path d="m9 18 6-6-6-6"></path></svg></span></button>
+<button class="demo-card demo-action-row config-action" type="button"><span class="demo-row-copy"><strong>Refresh list</strong></span><span class="demo-chevron"><svg viewbox="0 0 24 24"><path d="m9 18 6-6-6-6"></path></svg></span></button>
+<button class="demo-card demo-action-row config-action autoload-action" type="button"><span class="demo-row-copy"><strong>Set as autoload</strong><small>Current autoload config: none</small></span><span class="demo-chevron"><svg viewbox="0 0 24 24"><path d="m9 18 6-6-6-6"></path></svg></span></button>
+</section>
+</div>
+</section>
+</div>
+</div>
+<div aria-label="Interface theme" class="demo-theme-popover" id="demoThemeMenu" role="listbox">
+<button class="selected" data-theme-value="dark" type="button">Dark</button>
+<button data-theme-value="darker" type="button">Darker</button>
+<button data-theme-value="light" type="button">Light</button>
+<button data-theme-value="aqua" type="button">Aqua</button>
+<button data-theme-value="amethyst" type="button">Amethyst</button>
+<button data-theme-value="rose" type="button">Rose</button>
+</div>
+<div aria-live="polite" class="demo-toast" id="demoToast" role="status"><strong id="demoToastTitle">Alter Hub</strong><p id="demoToastText"></p></div>
+</section>
+<button class="demo-reopen" id="demoReopen" type="button">Open Alter Hub Key System</button>
+</div>
+<div class="demo-caption"><span><strong>Source-matched browser recreation of the Fluent interface used by Alter Hub.</strong> Use Key System and Settings to test it.</span><span>The preview is disconnected from the live verification API.</span></div>
+</div>
+  </div>
+</section>
+
+<!-- ACCESS PLANS -->
+<section class="section section-dark pricing-section" id="pricing">
+<div class="container">
+<div class="section-heading">
+<span class="eyebrow pill">
+            CHOOSE YOUR ACCESS
+          </span>
+<h2>
+            Three Ways to
+            <span>Unlock More</span>
+</h2>
+<p>
+            Choose the access tier that fits you, then select either an
+            automatically renewing monthly subscription or lifetime access.
+          </p>
+</div>
+<div class="pricing-grid pricing-grid-three">
+<article class="price-card access-card">
+<div class="access-card-top">
+<span class="plan-label">KEYLESS</span>
+<span class="tier-badge">ESSENTIAL</span>
+</div>
+<h3>Keyless</h3>
+<p class="plan-summary">
+              Skip the free key-system checkpoints while your access is
+              active. Premium-only features are not included.
+            </p>
+<div class="starting-price">
+<span class="starting-label">Starting from</span>
+<div class="starting-price-row">
+<del>$9.99</del>
+<strong>$5.99</strong>
+</div>
+<span class="period">per month</span>
+</div>
+<ul>
+<li>No key-system checkpoints</li>
+<li>Access across supported games</li>
+<li>Regular platform updates</li>
+<li>Monthly subscription or lifetime</li>
+</ul>
+<a class="btn btn-muted plan-button" href="keyless/#monthly">
+              Explore Keyless
+              <span aria-hidden="true">→</span>
+</a>
+</article>
+<article class="price-card access-card featured">
+<span class="best-value">★ MOST POPULAR</span>
+<div class="access-card-top">
+<span class="plan-label">PREMIUM</span>
+<span class="tier-badge">RECOMMENDED</span>
+</div>
+<h3>Premium</h3>
+<p class="plan-summary">
+              Get everything in Keyless plus Alter Hub's premium features,
+              priority support, and premium updates.
+            </p>
+<div class="starting-price">
+<span class="starting-label">Starting from</span>
+<div class="starting-price-row">
+<del>$14.99</del>
+<strong>$7.99</strong>
+</div>
+<span class="period">per month</span>
+</div>
+<ul>
+<li>Everything included in Keyless</li>
+<li>Premium platform features</li>
+<li>Priority community support</li>
+<li>Monthly subscription or lifetime</li>
+</ul>
+<a class="btn btn-primary plan-button" href="premium/#monthly">
+              Explore Premium
+              <span aria-hidden="true">→</span>
+</a>
+</article>
+<article class="price-card access-card">
+<div class="access-card-top">
+<span class="plan-label">PREMIUM PLUS</span>
+<span class="tier-badge">TOP TIER</span>
+</div>
+<h3>Premium Plus</h3>
+<p class="plan-summary">
+              Unlock the complete Alter Hub experience with exclusive Plus
+              benefits, earliest access, and top-priority support.
+            </p>
+<div class="starting-price">
+<span class="starting-label">Starting from</span>
+<div class="starting-price-row">
+<del>$19.99</del>
+<strong>$9.99</strong>
+</div>
+<span class="period">per month</span>
+</div>
+<ul>
+<li>Everything included in Premium</li>
+<li>Exclusive Premium Plus benefits</li>
+<li>Highest-priority support</li>
+<li>Monthly subscription or lifetime</li>
+</ul>
+<a class="btn btn-muted plan-button" href="premium-plus/#monthly">
+              Explore Premium Plus
+              <span aria-hidden="true">→</span>
+</a>
+</article>
+</div>
+</div>
+</section>
+<!-- DOCUMENTATION AND MORE INFO -->
+<section class="section section-alt" id="learn"><div class="container"><div class="section-heading"><span class="eyebrow pill">START WITH INFORMATION</span><h2>Learn before you <span>launch</span></h2><p>Use the public guides to check compatibility, understand access, and troubleshoot problems before opening a temporary verification screen.</p></div><div class="feature-grid"><article class="card"><div class="icon">📚</div><h3>Documentation</h3><p>Getting started, setup, key-system, troubleshooting, and FAQ guides maintained separately from the access flow.</p><a href="/docs/" style="display:inline-block;margin-top:18px;color:#b84a4a;font-size:13px">Open docs →</a><br><a href="/docs/key-system.html" style="display:inline-block;margin-top:8px;color:#b84a4a;font-size:13px">Read key-system guide →</a></article><article class="card"><div class="icon">🎮</div><h3>Supported games</h3><p>Browse the public compatibility directory and detailed support notes for selected experiences.</p><a href="/games/" style="display:inline-block;margin-top:18px;color:#b84a4a;font-size:13px">Browse games →</a></article><article class="card"><div class="icon">🧾</div><h3>Verified updates</h3><p>Read changes that actually shipped instead of relying on old screenshots or copied messages.</p><a href="/changelog.html" style="display:inline-block;margin-top:18px;color:#b84a4a;font-size:13px">Read changelog →</a></article></div></div></section>
+
+<!-- FEATURES SECTION -->
+<section class="section section-dark" id="features">
+<div class="container">
+<div class="section-heading">
+<div class="container hero-content">
+<div class="hero-tilt">
+<span class="eyebrow pill">
+                WHAT WE OFFER
+              </span>
+<h2>
+                Built for a Better
+                <span>Experience</span>
+</h2>
+<p>
+                A refined collection of platform features designed to make access,
+                navigation, customization, and community support feel simple.
+              </p>
+</div>
+</div>
+</div>
+<div class="feature-grid">
+<article class="card">
+<div aria-hidden="true" class="icon">
+              ⚡
+            </div>
+<h3>
+              Fast Performance
+            </h3>
+<p>
+              Lightweight components, responsive navigation, and optimized
+              loading help keep the platform quick and smooth.
+            </p>
+</article>
+<article class="card">
+<div aria-hidden="true" class="icon">
+              🔑
+            </div>
+<h3>
+              Improved Key System
+            </h3>
+<p>
+              A streamlined verification process with clear instructions,
+              faster access, and fewer unnecessary steps.
+            </p>
+</article>
+<article class="card">
+<div aria-hidden="true" class="icon">
+              🎨
+            </div>
+<h3>
+              Modern User Interface
+            </h3>
+<p>
+              A clean and responsive layout designed to remain easy to use on
+              desktop, tablet, and mobile devices.
+            </p>
+</article>
+<article class="card">
+<div aria-hidden="true" class="icon">
+              🔄
+            </div>
+<h3>
+              Regular Improvements
+            </h3>
+<p>
+              Frequent maintenance, interface refinements, compatibility work,
+              and quality-of-life updates.
+            </p>
+</article>
+<article class="card">
+<div aria-hidden="true" class="icon">
+              🎮
+            </div>
+<h3>
+              Multi-Game Support
+            </h3>
+<p>
+              Access information and platform support for a growing collection
+              of popular Roblox experiences.
+            </p>
+</article>
+<article class="card">
+<div aria-hidden="true" class="icon">
+              💬
+            </div>
+<h3>
+              Community Support
+            </h3>
+<p>
+              Get assistance, report problems, suggest improvements, and speak
+              with other members through the official community.
+            </p>
+</article>
+</div>
+</div>
+</section>
+<!-- SUPPORTED GAMES SECTION -->
+<section class="section section-alt" id="games">
+<div class="container">
+<div class="section-heading">
+<div class="container hero-content">
+<div class="hero-tilt">
+<span class="eyebrow pill">
+                GAME SUPPORT
+              </span>
+<h2>
+                Supported
+                <span>Games</span>
+</h2>
+<p>
+                Platform support is available for a growing selection of popular
+                Roblox experiences.
+              </p>
+</div>
+</div>
+</div>
+<div class="games-grid">
+<a aria-label="Read Demonfall support notes" href="/games/demonfall.html" style="display:block"><article class="game-card">
+<h3>
+              Demonfall 🌑
+            </h3>
+<span>
+              ACTIVE SUPPORT
+            </span>
+<span style="display:block;margin-top:12px;color:#b94c4c;font-size:11px;font-weight:700">Read support notes →</span></article></a>
+<a aria-label="Read Devas of Creation support notes" href="/games/devas-of-creation.html" style="display:block"><article class="game-card">
+<h3>
+              Devas of Creation ⚔️
+            </h3>
+<span>
+              REGULAR UPDATES
+            </span>
+<span style="display:block;margin-top:12px;color:#b94c4c;font-size:11px;font-weight:700">Read support notes →</span></article></a>
+<a aria-label="Read Blox Fruits support notes" href="/games/blox-fruits.html" style="display:block"><article class="game-card">
+<h3>
+              Blox Fruits 🍉
+            </h3>
+<span>
+              COMMUNITY FAVORITE
+            </span>
+<span style="display:block;margin-top:12px;color:#b94c4c;font-size:11px;font-weight:700">Read support notes →</span></article></a>
+<a aria-label="Read Jujutsu Infinite support history" href="/games/jujutsu-infinite.html" style="display:block"><article class="game-card">
+<h3>
+              Jujutsu Infinite 🧿
+            </h3>
+<span>
+              OPTIMIZED EXPERIENCE
+            </span>
+<span style="display:block;margin-top:12px;color:#b94c4c;font-size:11px;font-weight:700">Read support history →</span></article></a>
+<a aria-label="Read Haikyuu Legends support history" href="/games/haikyuu-legends.html" style="display:block"><article class="game-card">
+<h3>
+              Haikyuu Legends 🏐
+            </h3>
+<span>
+              FULLY COMPATIBLE
+            </span>
+<span style="display:block;margin-top:12px;color:#b94c4c;font-size:11px;font-weight:700">Read support history →</span></article></a>
+<a aria-label="Read Build a Boat for Treasure support history" href="/games/build-a-boat-for-treasure.html" style="display:block"><article class="game-card">
+<h3>
+              Build a Boat for Treasure ⛵💰
+            </h3>
+<span>
+              ACTIVELY MAINTAINED
+            </span>
+<span style="display:block;margin-top:12px;color:#b94c4c;font-size:11px;font-weight:700">Read support history →</span></article></a>
+<a aria-label="Read Criminality support history" href="/games/criminality.html" style="display:block"><article class="game-card">
+<h3>
+              Criminality 🕶️
+            </h3>
+<span>
+              LATEST VERSION
+            </span>
+<span style="display:block;margin-top:12px;color:#b94c4c;font-size:11px;font-weight:700">Read support history →</span></article></a>
+<a aria-label="Read Fisch support notes" href="/games/fisch.html" style="display:block"><article class="game-card">
+<h3>
+              Fisch 🐟
+            </h3>
+<span>
+              PERFORMANCE OPTIMIZED
+            </span>
+<span style="display:block;margin-top:12px;color:#b94c4c;font-size:11px;font-weight:700">Read support notes →</span></article></a>
+<a aria-label="Read Project Delta support history" href="/games/project-delta.html" style="display:block"><article class="game-card">
+<h3>
+              Project Delta 🎯
+            </h3>
+<span>
+              STABLE RELEASE
+            </span>
+<span style="display:block;margin-top:12px;color:#b94c4c;font-size:11px;font-weight:700">Read support history →</span></article></a>
+<article class="game-card">
+<h3>
+              Anime Kingdom 👑
+            </h3>
+<span>
+              FREQUENT IMPROVEMENTS
+            </span>
+</article>
+<a aria-label="Read Phantom Forces support notes" href="/games/phantom-forces.html" style="display:block"><article class="game-card">
+<h3>
+              Phantom Forces 🎖️
+            </h3>
+<span>
+              COMMUNITY SUPPORTED
+            </span>
+<span style="display:block;margin-top:12px;color:#b94c4c;font-size:11px;font-weight:700">Read support notes →</span></article></a>
+<a aria-label="Read Dead Rails support history" href="/games/dead-rails.html" style="display:block"><article class="game-card">
+<h3>
+              Dead Rails 🚂
+            </h3>
+<span>
+              REFINED EXPERIENCE
+            </span>
+<span style="display:block;margin-top:12px;color:#b94c4c;font-size:11px;font-weight:700">Read support history →</span></article></a>
+<article class="game-card">
+<h3>
+              Spiked 🏐
+            </h3>
+<span>
+              QUALITY UPDATES
+            </span>
+</article>
+<a aria-label="Read Blue Lock Rivals support history" href="/games/blue-lock-rivals.html" style="display:block"><article class="game-card">
+<h3>
+              Blue Lock Rivals ⚽
+            </h3>
+<span>
+              ACTIVELY SUPPORTED
+            </span>
+<span style="display:block;margin-top:12px;color:#b94c4c;font-size:11px;font-weight:700">Read support history →</span></article></a>
+<a aria-label="Read Beaks support history" href="/games/beaks.html" style="display:block"><article class="game-card">
+<h3>
+              Beaks 🐤
+            </h3>
+<span>
+              GROWING SUPPORT
+            </span>
+<span style="display:block;margin-top:12px;color:#b94c4c;font-size:11px;font-weight:700">Read support history →</span></article></a>
+</div>
+<p class="games-note">
+
+          More experiences are added regularly.
+
+          Suggest one through our
+
+          <a href="#community">
+            Discord community
+          </a>.
+
+           <a href="/games/">Open the full support directory →</a></p>
+</div>
+</section>
+<!-- FAQ SECTION -->
+<section class="section section-alt" id="faq">
+<div class="container faq-wrap">
+<div class="section-heading">
+<span class="eyebrow pill">
+            GOT QUESTIONS?
+          </span>
+<h2>
+            Frequently Asked
+            <span>Questions</span>
+</h2>
+</div>
+<div class="faq-list">
+<details>
+<summary>
+              What is Alter Hub?
+            </summary>
+<p>
+              Alter Hub is a Roblox utility platform with a modern interface,
+              streamlined access system, regular updates, community support,
+              and compatibility information for multiple experiences.
+            </p>
+</details>
+<details>
+<summary>
+              How do I get access?
+            </summary>
+<p>
+              Choose your preferred access plan and continue through the
+              official purchase or community support channel.
+            </p>
+</details>
+<details>
+<summary>
+              How does the key system work?
+            </summary>
+<p>
+              The key system provides a simple verification process. Follow
+              the instructions shown on the official access page to verify your
+              account and continue.
+            </p>
+</details>
+<details>
+<summary>
+              Which games are supported?
+            </summary>
+<p>
+              The currently supported experiences are displayed in the
+              Supported Games section above. More may be added through future
+              updates.
+            </p>
+</details>
+<details>
+<summary>
+              How frequently is Alter Hub updated?
+            </summary>
+<p>
+              Updates are released whenever interface improvements,
+              compatibility changes, maintenance work, or new platform
+              features are ready.
+            </p>
+</details>
+<details>
+<summary>
+              Can I save my settings?
+            </summary>
+<p>
+              Supported preferences and interface settings can be saved,
+              helping you return to your preferred layout more easily.
+            </p>
+</details>
+<details>
+<summary>
+              Does Alter Hub work on mobile?
+            </summary>
+<p>
+              The website interface is designed to work across desktop, tablet,
+              and mobile screen sizes. Availability of individual platform
+              functions may depend on the supported environment.
+            </p>
+</details>
+<details>
+<summary>
+              Where can I get support?
+            </summary>
+<p>
+              Join the official Discord community for announcements,
+              troubleshooting assistance, purchase support, and platform
+              updates.
+            </p>
+</details>
+<details>
+<summary>
+              What payment methods are accepted?
+            </summary>
+<p>
+              Available payment methods are listed through the official
+              purchase channel and may vary depending on your location.
+            </p>
+</details>
+</div>
+</div>
+</section>
+<!-- COMMUNITY SECTION -->
+<section class="section section-dark community-section" id="community">
+<div class="container">
+<div class="section-heading">
+<span class="eyebrow pill">
+            JOIN THE COMMUNITY
+          </span>
+<h2>
+            Stay
+            <span>Connected</span>
+</h2>
+<p>
+            Receive updates, ask questions, suggest improvements, and connect
+            with the Alter Hub community.
+          </p>
+</div>
+<div class="community-grid">
+<article class="community-card">
+<div aria-hidden="true" class="community-icon">
+              💬
+            </div>
+<h3>
+              Discord Server
+            </h3>
+<p>
+              Join for support, announcements, giveaways, community
+              discussions, compatibility news, and platform updates.
+            </p>
+<a class="btn btn-primary" href="https://discord.gg/nzyb2QxYjn" rel="noopener noreferrer" target="_blank">
+              Join Discord
+            </a>
+</article>
+<article class="community-card">
+<div aria-hidden="true" class="community-icon">
+              ▶️
+            </div>
+<h3>
+              YouTube Channel
+            </h3>
+<p>
+              Watch interface showcases, setup tutorials, update videos,
+              product previews, and development announcements.
+            </p>
+<a class="btn btn-secondary" href="https://www.youtube.com/@alter-x9749" rel="noopener noreferrer" target="_blank">
+              Watch on YouTube
+            </a>
+</article>
+</div>
+</div>
+</section>
+</main>
+<!-- FOOTER -->
+<footer class="footer">
+<div class="container footer-top">
+<div>
+<a class="brand" href="#home">
+          Alter<span>Hub</span>
+</a>
+<p>
+          A fast, modern, and community-focused Roblox utility platform.
+        </p>
+</div>
+<nav aria-label="Footer navigation"><a href="/games/">Games</a><a href="/docs/">Docs</a><a href="/changelog.html">Updates</a><a href="/about.html">About</a><a href="/contact.html">Support</a></nav>
+</div>
+<div class="container footer-bottom">
+<span>
+        © 2026 Alter Hub. All rights reserved.
+      </span>
+<div>
+<a href="/terms.html">Terms of Service</a>
+<a href="/privacy.html">Privacy Policy</a>
+<a href="https://discord.gg/nzyb2QxYjn" rel="noopener noreferrer" target="_blank">
+          Discord
+          
+        </a>
+<a href="https://www.youtube.com/@alter-x9749" rel="noopener noreferrer" target="_blank">
+          YouTube
+        </a>
+</div>
+</div>
 </footer>
-<script src="../assets/js/plan-page.js?v=20260821-premium-lifetime-1"></script>
+<script src="assets/js/script.js"></script>
+<script src="/assets/js/key-system-demo.js?v=home-fluent111"></script>
+<script>
+    (() => {
+      const hero = document.querySelector(".hero");
+      const heroTilt = document.querySelector(".hero-tilt");
+
+      if (!hero || !heroTilt) return;
+
+      const maximumRotation = 4;
+      let animationFrame = null;
+
+      const resetTilt = () => {
+        hero.classList.remove("is-tracking");
+        heroTilt.style.setProperty("--hero-rotate-x", "0deg");
+        heroTilt.style.setProperty("--hero-rotate-y", "0deg");
+      };
+
+      hero.addEventListener("pointermove", (event) => {
+        if (event.pointerType === "touch") return;
+
+        if (animationFrame) {
+          cancelAnimationFrame(animationFrame);
+        }
+
+        animationFrame = requestAnimationFrame(() => {
+          const bounds = hero.getBoundingClientRect();
+          const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+          const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+
+          const rotateY = x * maximumRotation * 2;
+          const rotateX = y * maximumRotation * -2;
+
+          hero.classList.add("is-tracking");
+          heroTilt.style.setProperty(
+            "--hero-rotate-x",
+            `${rotateX.toFixed(2)}deg`
+          );
+          heroTilt.style.setProperty(
+            "--hero-rotate-y",
+            `${rotateY.toFixed(2)}deg`
+          );
+        });
+      });
+
+      hero.addEventListener("pointerleave", resetTilt);
+      hero.addEventListener("pointercancel", resetTilt);
+    })();
+  </script>
 </body>
 </html>
