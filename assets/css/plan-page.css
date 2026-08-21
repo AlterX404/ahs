@@ -806,47 +806,6 @@ input:focus-visible {
   color: #a8a8ac;
 }
 
-/* Premium Lifetime uses PayPal's supplied Hosted Button markup directly. */
-.paypal-lifetime-static {
-  width: 100%;
-  min-height: 45px;
-}
-
-/* Keep the direct Hosted Button mounted at a real width while Monthly is selected. */
-.paypal-lifetime-static.is-offscreen {
-  position: fixed;
-  left: -10000px;
-  top: 0;
-  width: min(420px, calc(100vw - 32px));
-  visibility: hidden;
-  pointer-events: none;
-}
-
-.support-button {
-  color: inherit;
-  text-decoration: none;
-  cursor: pointer;
-  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
-}
-
-.support-button:hover {
-  border-color: #4c1717;
-  background: #100b0b;
-  transform: translateY(-1px);
-}
-
-.support-button > div {
-  min-width: 0;
-  flex: 1;
-}
-
-.support-arrow {
-  margin-left: auto;
-  color: #b14848;
-  font-size: 16px;
-  font-weight: 800;
-}
-
 .checkout-note {
   margin: 12px auto 0;
   max-width: 360px;
@@ -1036,5 +995,64 @@ input:focus-visible {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* Unified payment-page navigation and checkout support */
+.support-card-link {
+  color: inherit;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.support-card-link:hover {
+  border-color: #5d1717;
+  background: #110b0b;
+  transform: translateY(-1px);
+}
+
+.support-card-link > div {
+  min-width: 0;
+  flex: 1;
+}
+
+.support-arrow {
+  margin-left: auto;
+  color: #a94444;
+  font-size: 17px;
+  transition: transform 0.2s ease;
+}
+
+.support-card-link:hover .support-arrow {
+  transform: translateX(3px);
+}
+
+.paypal-premium-lifetime-checkout[hidden],
+#paypal-subscription-button[hidden] {
+  display: none !important;
+}
+
+.paypal-premium-lifetime-checkout {
+  width: 100%;
+  min-height: 45px;
+  transition: opacity 0.2s ease;
+}
+
+@media (max-width: 790px) {
+  .header-inner {
+    flex-wrap: wrap;
+    row-gap: 10px;
+    padding: 10px 0;
+  }
+
+  .plan-nav {
+    order: 3;
+    width: 100%;
+    display: flex;
+  }
+
+  .plan-nav a {
+    flex: 1 1 0;
+    text-align: center;
   }
 }

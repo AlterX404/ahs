@@ -199,11 +199,11 @@ const PAYPAL_LIFETIME_HOSTED_BUTTON_IDS = Object.freeze({
 });
 
 // Monthly subscriptions use the normal PayPal Buttons SDK in the page.
-// Lifetime purchases use PayPal Hosted Buttons inside an isolated iframe.
-// The iframe intentionally uses PayPal's generated Hosted Button code with
-// window.paypal so its separate client ID never conflicts with the monthly SDK.
+// Premium Lifetime uses PayPal's supplied Hosted Button markup directly in
+// premium/index.html. Other lifetime tiers retain the isolated Hosted Button
+// checkout so their separate SDK does not conflict with the monthly SDK.
 const PAYPAL_CLIENT_ID = "BAAwVHsGOQSMvQW5S6JMpJEMMbOTSeZuXZpkEF4ygqGKi0-4F5o6rj8MAeP5dENFSGaxDhSJcHSRyzzgVI";
-const PAYPAL_HOSTED_CLIENT_ID = "BAA_xc_bFzIU_CVMLm-rNFQ84VC1RJQ1DUoSxTb-uGuL0mvlGsz8gGP1G6H9npeJEdSm4GgQNKdZTnd8J4";
+const PAYPAL_HOSTED_CLIENT_ID = "BAA_xc_bFzIU_CVMLm-rNFQ84VC1RJQ1DUoSxTb-uGuL0mvIGsz8gGP1G6H9npeJEdSm4GgQNKdZTnd8J4";
 const PAYPAL_SDK_ID = "alter-hub-paypal-sdk";
 const PAYPAL_MONTHLY_NAMESPACE = "paypalMonthly";
 const PAYPAL_SDK_TIMEOUT_MS = 20000;
@@ -274,8 +274,8 @@ function loadPayPalSdk({ forceReload = false } = {}) {
       script.id = PAYPAL_SDK_ID;
       script.src = buildPayPalSdkUrl();
       script.async = true;
-      script.dataset.namespace = PAYPAL_MONTHLY_NAMESPACE;
       script.dataset.sdkIntegrationSource = "button-factory";
+      script.dataset.namespace = PAYPAL_MONTHLY_NAMESPACE;
     }
 
     script.addEventListener("load", handleLoad, { once: true });
@@ -385,8 +385,7 @@ const purchaseButton = document.querySelector("#purchase-button");
 const purchaseButtonLabel = document.querySelector("#purchase-button-label");
 const paypalSubscriptionWrap = document.querySelector("#paypal-subscription-wrap");
 const paypalSubscriptionButton = document.querySelector("#paypal-subscription-button");
-const paypalMonthlyCheckout = document.querySelector("#paypal-monthly-checkout");
-const paypalPremiumLifetimeStatic = document.querySelector("#paypal-premium-lifetime-static");
+const premiumLifetimeCheckout = document.querySelector("#paypal-premium-lifetime-checkout");
 const checkoutHint = document.querySelector("#checkout-hint");
 const animatedElements = Array.from(document.querySelectorAll("[data-plan-content]"));
 
@@ -464,6 +463,12 @@ function resetPayPalCheckout(mode = selectedDuration) {
   paypalHostedIframe = null;
 
   paypalSubscriptionButton.replaceChildren();
+  if (premiumLifetimeCheckout) {
+    premiumLifetimeCheckout.hidden = true;
+    premiumLifetimeCheckout.style.pointerEvents = "none";
+    premiumLifetimeCheckout.style.opacity = "0.55";
+    premiumLifetimeCheckout.setAttribute("aria-disabled", "true");
+  }
   paypalButtonRendered = false;
   paypalRenderStarted = false;
   paypalButtonActions = null;
@@ -656,18 +661,12 @@ async function renderPayPalSubscriptionButton() {
 }
 
 function setLifetimeHostedButtonEnabled(enabled) {
-  if (tierSlug === "premium" && paypalPremiumLifetimeStatic) {
-    paypalPremiumLifetimeStatic.style.pointerEvents = enabled ? "auto" : "none";
-    paypalPremiumLifetimeStatic.style.opacity = enabled ? "1" : "0.55";
-    paypalPremiumLifetimeStatic.setAttribute("aria-disabled", String(!enabled));
-    return;
-  }
+  const target = tierSlug === "premium" ? premiumLifetimeCheckout : paypalHostedIframe;
+  if (!target) return;
 
-  if (!paypalHostedIframe) return;
-
-  paypalHostedIframe.style.pointerEvents = enabled ? "auto" : "none";
-  paypalHostedIframe.style.opacity = enabled ? "1" : "0.55";
-  paypalHostedIframe.setAttribute("aria-disabled", String(!enabled));
+  target.style.pointerEvents = enabled ? "auto" : "none";
+  target.style.opacity = enabled ? "1" : "0.55";
+  target.setAttribute("aria-disabled", String(!enabled));
 }
 
 function handleHostedPayPalMessage(event) {
@@ -720,10 +719,7 @@ function handleHostedPayPalMessage(event) {
 window.addEventListener("message", handleHostedPayPalMessage);
 
 function renderPayPalHostedButton() {
-  if (tierSlug === "premium" && paypalPremiumLifetimeStatic) {
-    paypalHostedButtonRendered = true;
-    paypalHostedRenderStarted = false;
-    setLifetimeHostedButtonEnabled(Boolean(termsCheckbox?.checked));
+  if (tierSlug === "premium") {
     return;
   }
 
@@ -807,13 +803,12 @@ function updatePurchaseAvailability() {
     paypalSubscriptionWrap.hidden = false;
   }
 
-  if (paypalMonthlyCheckout) {
-    paypalMonthlyCheckout.hidden = !isMonthly;
+  if (paypalSubscriptionButton) {
+    paypalSubscriptionButton.hidden = tierSlug === "premium" && !isMonthly;
   }
 
-  if (paypalPremiumLifetimeStatic) {
-    paypalPremiumLifetimeStatic.classList.toggle("is-offscreen", isMonthly);
-    paypalPremiumLifetimeStatic.setAttribute("aria-hidden", String(isMonthly));
+  if (premiumLifetimeCheckout) {
+    premiumLifetimeCheckout.hidden = !(tierSlug === "premium" && !isMonthly);
   }
 
   if (isMonthly) {
@@ -836,8 +831,9 @@ function updatePurchaseAvailability() {
 
   checkoutHint.classList.toggle("is-ready", accepted);
 
-  // Premium Lifetime is rendered directly in premium/index.html using PayPal's
-  // exact HostedButtons snippet. No generated iframe or custom PayPal loader is used.
+  // Premium Lifetime is rendered directly from PayPal's supplied Hosted Button
+  // markup in premium/index.html. It is shown/disabled here the same way the
+  // Monthly checkout is shown/disabled, without rebuilding the PayPal button.
   setLifetimeHostedButtonEnabled(accepted);
 
   if (tierSlug !== "premium") {

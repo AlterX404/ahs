@@ -16,10 +16,8 @@
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
-<script 
-  src="https://www.paypal.com/sdk/js?client-id=BAA_xc_bFzIU_CVMLm-rNFQ84VC1RJQ1DUoSxTb-uGuL0mvIGsz8gGP1G6H9npeJEdSm4GgQNKdZTnd8J4&components=hosted-buttons&disable-funding=venmo&currency=USD">
-</script>
-<link href="../assets/css/plan-page.css?v=20260821-premium-exact-1" rel="stylesheet"/>
+<script src="https://www.paypal.com/sdk/js?client-id=BAA_xc_bFzIU_CVMLm-rNFQ84VC1RJQ1DUoSxTb-uGuL0mvIGsz8gGP1G6H9npeJEdSm4GgQNKdZTnd8J4&amp;components=hosted-buttons&amp;disable-funding=venmo&amp;currency=USD"></script>
+<link href="../assets/css/plan-page.css?v=20260821-payment-tabs-support-1" rel="stylesheet"/>
 <link href="https://alterhub.online/premium/" rel="canonical"/><meta content="index, follow" name="robots"/></head>
 <body data-tier="premium">
 <header class="site-header">
@@ -157,20 +155,18 @@
 <input id="terms-checkbox" type="checkbox"/>
 <span>I agree to the <a href="../terms.html" rel="noopener" target="_blank">Terms of Service</a><span id="terms-copy"> and authorize recurring monthly PayPal billing until I cancel.</span></span>
 </label>
-<div class="paypal-subscription-wrap" id="paypal-subscription-wrap">
+<div class="paypal-subscription-wrap" hidden="" id="paypal-subscription-wrap">
 <div class="paypal-subscription-heading">
 <span>MONTHLY SUBSCRIPTION</span>
 <strong>Secure checkout by PayPal</strong>
 </div>
-<div id="paypal-monthly-checkout">
 <div id="paypal-subscription-button"></div>
-</div>
-<div aria-hidden="true" class="paypal-lifetime-static is-offscreen" id="paypal-premium-lifetime-static">
+<div class="paypal-premium-lifetime-checkout" hidden id="paypal-premium-lifetime-checkout">
 <div id="paypal-container-HGZSXXKFJEK4N"></div>
 <script>
-  paypal.HostedButtons({
-    hostedButtonId: "HGZSXXKFJEK4N",
-  }).render("#paypal-container-HGZSXXKFJEK4N")
+paypal.HostedButtons({
+  hostedButtonId: "HGZSXXKFJEK4N",
+}).render("#paypal-container-HGZSXXKFJEK4N")
 </script>
 </div>
 </div>
@@ -179,10 +175,10 @@
 <span aria-hidden="true">→</span>
 </a>
 <p class="checkout-hint" id="checkout-hint">Accept the terms to continue with this purchase.</p>
-<a class="support-card support-button" href="../contact.html">
+<a class="support-card support-card-link" href="../contact.html">
 <span aria-hidden="true" class="support-icon">?</span>
 <div>
-<strong>Need help with your purchase?</strong>
+<strong>Need help with checkout?</strong>
 <p>Contact Alter Hub Support</p>
 </div>
 <span aria-hidden="true" class="support-arrow">→</span>
@@ -208,6 +204,6 @@
 <a href="https://discord.gg/nzyb2QxYjn" rel="noopener noreferrer" target="_blank">Discord</a>
 </nav>
 </footer>
-<script src="../assets/js/plan-page.js?v=20260821-premium-exact-1"></script>
+<script src="../assets/js/plan-page.js?v=20260821-payment-tabs-support-1"></script>
 </body>
 </html>
