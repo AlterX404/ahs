@@ -16,8 +16,7 @@
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
-<script src="https://www.paypal.com/sdk/js?client-id=BAA_xc_bFzIU_CVMLm-rNFQ84VC1RJQ1DUoSxTb-uGuL0mvIGsz8gGP1G6H9npeJEdSm4GgQNKdZTnd8J4&amp;components=hosted-buttons&amp;disable-funding=venmo&amp;currency=USD"></script>
-<link href="../assets/css/plan-page.css?v=20260821-payment-tabs-support-1" rel="stylesheet"/>
+<link href="../assets/css/plan-page.css?v=20260822-lifetime-compact-1" rel="stylesheet"/>
 <link href="https://alterhub.online/premium/" rel="canonical"/><meta content="index, follow" name="robots"/></head>
 <body data-tier="premium">
 <header class="site-header">
@@ -161,13 +160,16 @@
 <strong>Secure checkout by PayPal</strong>
 </div>
 <div id="paypal-subscription-button"></div>
-<div class="paypal-premium-lifetime-checkout" hidden id="paypal-premium-lifetime-checkout">
-<div id="paypal-container-HGZSXXKFJEK4N"></div>
-<script>
-paypal.HostedButtons({
-  hostedButtonId: "HGZSXXKFJEK4N",
-}).render("#paypal-container-HGZSXXKFJEK4N")
-</script>
+<div class="paypal-lifetime-checkout" hidden id="paypal-lifetime-checkout">
+<a class="paypal-lifetime-action paypal-lifetime-action-primary" data-lifetime-paypal-link href="https://www.paypal.com/ncp/payment/HGZSXXKFJEK4N" rel="noopener noreferrer" target="_blank">
+<span class="paypal-wordmark">PayPal</span>
+<span>Checkout</span>
+</a>
+<a class="paypal-lifetime-action paypal-lifetime-action-card" data-lifetime-paypal-link href="https://www.paypal.com/ncp/payment/HGZSXXKFJEK4N" rel="noopener noreferrer" target="_blank">
+<span class="card-icon" aria-hidden="true"></span>
+<span>Debit or Credit Card</span>
+</a>
+<p class="paypal-powered">Secure payment hosted by <strong>PayPal</strong></p>
 </div>
 </div>
 <a aria-disabled="true" class="purchase-button" id="purchase-button">
@@ -184,7 +186,7 @@ paypal.HostedButtons({
 <span aria-hidden="true" class="support-arrow">→</span>
 </a>
 <p class="checkout-note">
-          Monthly plans renew automatically through PayPal until cancelled. Lifetime purchases remain one-time and are confirmed through official Alter Hub support.
+          Monthly plans renew automatically through PayPal until cancelled. Lifetime purchases are one-time payments completed through the official PayPal checkout.
         </p>
 <noscript>
 <p class="checkout-hint">JavaScript is required to switch durations and prepare your purchase request.</p>
@@ -204,6 +206,6 @@ paypal.HostedButtons({
 <a href="https://discord.gg/nzyb2QxYjn" rel="noopener noreferrer" target="_blank">Discord</a>
 </nav>
 </footer>
-<script src="../assets/js/plan-page.js?v=20260821-payment-tabs-support-1"></script>
+<script src="../assets/js/plan-page.js?v=20260822-lifetime-compact-1"></script>
 </body>
 </html>

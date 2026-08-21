@@ -1027,15 +1027,9 @@ input:focus-visible {
   transform: translateX(3px);
 }
 
-.paypal-premium-lifetime-checkout[hidden],
-#paypal-subscription-button[hidden] {
+#paypal-subscription-button[hidden],
+.paypal-lifetime-checkout[hidden] {
   display: none !important;
-}
-
-.paypal-premium-lifetime-checkout {
-  width: 100%;
-  min-height: 45px;
-  transition: opacity 0.2s ease;
 }
 
 @media (max-width: 790px) {
@@ -1054,5 +1048,103 @@ input:focus-visible {
   .plan-nav a {
     flex: 1 1 0;
     text-align: center;
+  }
+}
+
+
+/* Compact lifetime PayPal checkout. The actual payment page remains hosted by PayPal. */
+.paypal-lifetime-checkout {
+  width: 100%;
+  display: grid;
+  gap: 10px;
+}
+
+.paypal-lifetime-checkout.is-disabled {
+  opacity: 0.48;
+}
+
+.paypal-lifetime-action {
+  width: 100%;
+  min-height: 56px;
+  padding: 0 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 0;
+  border-radius: 999px;
+  background: #2f3031;
+  color: #fff;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1;
+  box-sizing: border-box;
+  transition: transform 0.16s ease, background 0.16s ease, opacity 0.16s ease;
+}
+
+.paypal-lifetime-action:hover {
+  background: #252627;
+  transform: translateY(-1px);
+}
+
+.paypal-lifetime-checkout.is-disabled .paypal-lifetime-action {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.paypal-wordmark {
+  font-size: 22px;
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: -1px;
+}
+
+.paypal-lifetime-action-card {
+  font-size: 17px;
+}
+
+.card-icon {
+  position: relative;
+  width: 30px;
+  height: 21px;
+  flex: 0 0 auto;
+  border: 2px solid currentColor;
+  border-radius: 2px;
+}
+
+.card-icon::before {
+  content: "";
+  position: absolute;
+  left: -2px;
+  right: -2px;
+  top: 5px;
+  height: 2px;
+  background: currentColor;
+}
+
+.paypal-powered {
+  margin: 4px 0 0;
+  color: #8d8d92;
+  font-size: 10px;
+  font-style: italic;
+  text-align: center;
+}
+
+.paypal-powered strong {
+  color: #006fcf;
+  font-size: 14px;
+  font-style: italic;
+}
+
+@media (max-width: 540px) {
+  .paypal-lifetime-action {
+    min-height: 50px;
+    padding: 0 16px;
+    font-size: 16px;
+  }
+
+  .paypal-wordmark {
+    font-size: 20px;
   }
 }
