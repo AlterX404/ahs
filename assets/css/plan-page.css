@@ -806,6 +806,47 @@ input:focus-visible {
   color: #a8a8ac;
 }
 
+/* Premium Lifetime uses PayPal's supplied Hosted Button markup directly. */
+.paypal-lifetime-static {
+  width: 100%;
+  min-height: 45px;
+}
+
+/* Keep the direct Hosted Button mounted at a real width while Monthly is selected. */
+.paypal-lifetime-static.is-offscreen {
+  position: fixed;
+  left: -10000px;
+  top: 0;
+  width: min(420px, calc(100vw - 32px));
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.support-button {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.support-button:hover {
+  border-color: #4c1717;
+  background: #100b0b;
+  transform: translateY(-1px);
+}
+
+.support-button > div {
+  min-width: 0;
+  flex: 1;
+}
+
+.support-arrow {
+  margin-left: auto;
+  color: #b14848;
+  font-size: 16px;
+  font-weight: 800;
+}
+
 .checkout-note {
   margin: 12px auto 0;
   max-width: 360px;
