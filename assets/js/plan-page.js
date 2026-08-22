@@ -11,32 +11,32 @@ const PLAN_CATALOG = {
       "Community support for setup and activation"
     ],
     steps: [
-      "Choose either the recurring monthly or lifetime Keyless option.",
-      "Accept the store terms and subscribe securely through PayPal.",
+      "Choose either the 30-day or lifetime Keyless option.",
+      "Accept the store terms and continue through secure PayPal checkout.",
       "After receiving your key, open Alter Hub and go to the Key System.",
       "Enter the key once on the device you want to activate."
     ],
     monthly: {
       cardTitle: "Monthly Key",
-      cardDescription: "Keyless access billed automatically every month until cancelled.",
+      cardDescription: "A 30-day Keyless key with a one-time PayPal payment.",
       heroEyebrow: "KEYLESS ACCESS · MONTHLY",
       titleMain: "Skip the key system.",
-      titleAccent: "Month after month.",
-      description: "A monthly Keyless subscription removes the free key-system checkpoints while your PayPal subscription remains active. It renews automatically every month until cancelled and includes core Alter Hub access, but not Premium or Premium Plus features.",
+      titleAccent: "For the next 30 days.",
+      description: "A 30-day Keyless key removes the free key-system checkpoints after activation. It is a one-time PayPal purchase and includes core Alter Hub access, but not Premium or Premium Plus features.",
       features: [
         "No key checkpoints",
-        "Monthly recurring access",
+        "30-day access",
         "Core features only"
       ],
       summaryTitle: "Monthly Keyless",
-      summaryDescription: "Checkpoint-free Alter Hub access that renews automatically every month until cancelled.",
+      summaryDescription: "Checkpoint-free Alter Hub access for 30 days from first redemption with one secure PayPal payment.",
       oldPrice: "$9.99",
       price: "$5.99",
       discount: "40% OFF",
-      badge: "AUTO-RENEW",
-      access: "While subscribed",
-      billing: "$5.99 every month",
-      renewal: "Automatic until cancelled"
+      badge: "30 DAYS",
+      access: "30 days from first redemption",
+      billing: "$5.99 one-time",
+      renewal: "Not automatic"
     },
     lifetime: {
       cardTitle: "Lifetime Key",
@@ -191,96 +191,13 @@ const PAYPAL_MONTHLY_PLAN_IDS = Object.freeze({
   "premium-plus": "P-72H85729L5583625MNKBVQKY"
 });
 
-// Monthly subscriptions use the PayPal Buttons SDK.
-// Lifetime purchases use the official PayPal hosted payment links embedded
-// directly in each payment page, so their compact site styling stays consistent.
-const PAYPAL_CLIENT_ID = "BAAwVHsGOQSMvQW5S6JMpJEMMbOTSeZuXZpkEF4ygqGKi0-4F5o6rj8MAeP5dENFSGaxDhSJcHSRyzzgVI";
-const PAYPAL_SDK_ID = "alter-hub-paypal-sdk";
-const PAYPAL_MONTHLY_NAMESPACE = "paypalMonthly";
-const PAYPAL_SDK_TIMEOUT_MS = 20000;
+const ALTER_HUB_API_BASE =
+  "https://api.alterhub.online";
 
-let paypalSdkPromise = null;
+const ALTER_HUB_KEYLESS_PRODUCT =
+  "keyless_monthly";
 
-function paypalSdkReady() {
-  const paypalMonthly = window[PAYPAL_MONTHLY_NAMESPACE];
-  return Boolean(paypalMonthly && typeof paypalMonthly.Buttons === "function");
-}
-
-function buildPayPalSdkUrl() {
-  const params = new URLSearchParams({
-    "client-id": PAYPAL_CLIENT_ID,
-    components: "buttons",
-    vault: "true",
-    intent: "subscription",
-    currency: "USD"
-  });
-
-  return `https://www.paypal.com/sdk/js?${params.toString()}`;
-}
-
-function loadPayPalSdk({ forceReload = false } = {}) {
-  if (paypalSdkReady() && !forceReload) return Promise.resolve(window[PAYPAL_MONTHLY_NAMESPACE]);
-
-  if (forceReload) {
-    document.getElementById(PAYPAL_SDK_ID)?.remove();
-    paypalSdkPromise = null;
-  }
-
-  if (paypalSdkPromise) return paypalSdkPromise;
-
-  paypalSdkPromise = new Promise((resolve, reject) => {
-    let script = document.getElementById(PAYPAL_SDK_ID);
-    let settled = false;
-
-    const finish = (callback, value) => {
-      if (settled) return;
-      settled = true;
-      window.clearTimeout(timeoutId);
-      callback(value);
-    };
-
-    const handleLoad = () => {
-      if (paypalSdkReady()) {
-        finish(resolve, window[PAYPAL_MONTHLY_NAMESPACE]);
-      } else {
-        finish(reject, new Error("PayPal monthly SDK loaded but its namespace is unavailable."));
-      }
-    };
-
-    const handleError = () => {
-      finish(reject, new Error("PayPal SDK request was blocked or failed."));
-    };
-
-    const timeoutId = window.setTimeout(() => {
-      finish(reject, new Error("PayPal SDK timed out while loading."));
-    }, PAYPAL_SDK_TIMEOUT_MS);
-
-    const isNewScript = !script;
-
-    if (isNewScript) {
-      script = document.createElement("script");
-      script.id = PAYPAL_SDK_ID;
-      script.src = buildPayPalSdkUrl();
-      script.async = true;
-      script.dataset.sdkIntegrationSource = "button-factory";
-      script.dataset.namespace = PAYPAL_MONTHLY_NAMESPACE;
-    }
-
-    script.addEventListener("load", handleLoad, { once: true });
-    script.addEventListener("error", handleError, { once: true });
-
-    if (isNewScript) {
-      document.head.appendChild(script);
-    }
-
-    if (paypalSdkReady()) handleLoad();
-  }).catch((error) => {
-    paypalSdkPromise = null;
-    throw error;
-  });
-
-  return paypalSdkPromise;
-}
+let alterHubCheckoutStarting = false;
 
 const tierSlug = document.body.dataset.tier;
 const tier = PLAN_CATALOG[tierSlug] || PLAN_CATALOG.keyless;
@@ -291,8 +208,6 @@ const purchaseButton = document.querySelector("#purchase-button");
 const purchaseButtonLabel = document.querySelector("#purchase-button-label");
 const paypalSubscriptionWrap = document.querySelector("#paypal-subscription-wrap");
 const paypalSubscriptionButton = document.querySelector("#paypal-subscription-button");
-const paypalLifetimeCheckout = document.querySelector("#paypal-lifetime-checkout");
-const lifetimePayPalLinks = Array.from(document.querySelectorAll("[data-lifetime-paypal-link]"));
 const checkoutHint = document.querySelector("#checkout-hint");
 const animatedElements = Array.from(document.querySelectorAll("[data-plan-content]"));
 
@@ -300,7 +215,6 @@ let selectedDuration = durationFromHash();
 let paypalButtonRendered = false;
 let paypalRenderStarted = false;
 let paypalButtonActions = null;
-let checkoutRenderMode = null;
 
 function durationFromHash() {
   const hash = window.location.hash.slice(1).trim().toLowerCase();
@@ -360,81 +274,267 @@ function renderList(selector, items, numbered = false) {
   });
 }
 
-function resetPayPalCheckout(mode = selectedDuration) {
-  if (!paypalSubscriptionButton) return;
-
-  paypalSubscriptionButton.replaceChildren();
-  paypalButtonRendered = false;
-  paypalRenderStarted = false;
-  paypalButtonActions = null;
-  paypalSubscriptionButton.style.pointerEvents = "auto";
-  paypalSubscriptionButton.style.opacity = "1";
-  paypalSubscriptionButton.removeAttribute("aria-disabled");
-  checkoutRenderMode = mode;
+function isAlterHubWorkerCheckout() {
+  return (
+    tierSlug === "keyless" &&
+    selectedDuration === "monthly"
+  );
 }
 
-function setPayPalHeading(mode) {
-  const label = paypalSubscriptionWrap?.querySelector(
-    ".paypal-subscription-heading span"
-  );
-  const secureText = paypalSubscriptionWrap?.querySelector(
-    ".paypal-subscription-heading strong"
-  );
+function moneyLabel(
+  currency,
+  amount
+) {
+  const numeric =
+    Number(amount);
 
-  if (label) {
-    label.textContent =
-      mode === "monthly" ? "MONTHLY SUBSCRIPTION" : "LIFETIME PURCHASE";
+  if (!Number.isFinite(numeric)) {
+    return `${currency} ${amount}`;
   }
 
-  if (secureText) secureText.textContent = "Secure checkout by PayPal";
+  if (
+    String(currency).toUpperCase() ===
+    "USD"
+  ) {
+    return `$${numeric.toFixed(2)}`;
+  }
+
+  return (
+    `${String(currency).toUpperCase()} ` +
+    numeric.toFixed(2)
+  );
 }
 
-function showPayPalStatus(message, isError = false, allowRetry = false) {
-  if (!paypalSubscriptionButton) return;
+async function syncKeylessMonthlyCatalog() {
+  if (tierSlug !== "keyless") {
+    return;
+  }
 
-  paypalSubscriptionButton.replaceChildren();
-
-  const status = document.createElement("div");
-  status.className = `paypal-status${isError ? " is-error" : ""}`;
-
-  const text = document.createElement("p");
-  text.textContent = message;
-  status.appendChild(text);
-
-  if (allowRetry) {
-    const retryButton = document.createElement("button");
-    retryButton.type = "button";
-    retryButton.className = "paypal-retry-button";
-    retryButton.textContent = "Retry PayPal";
-    retryButton.addEventListener("click", async () => {
-      retryButton.disabled = true;
-      text.textContent = "Reloading PayPal checkout…";
-
-      resetPayPalCheckout(selectedDuration);
-
-      try {
-        if (selectedDuration === "monthly") {
-          await loadPayPalSdk({ forceReload: true });
-          await renderPayPalSubscriptionButton();
+  try {
+    const response =
+      await fetch(
+        `${ALTER_HUB_API_BASE}/api/paypal/catalog`,
+        {
+          method: "GET",
+          headers: {
+            "Accept": "application/json"
+          }
         }
-      } catch (error) {
-        console.error("PayPal retry failed:", error);
-        showPayPalStatus(
-          "PayPal checkout could not load. Check the browser console/network request for paypal.com/sdk/js.",
-          true,
-          true
-        );
-      }
-    });
-    status.appendChild(retryButton);
+      );
+
+    const data =
+      await response.json();
+
+    const product =
+      data?.products
+        ?.keyless_monthly;
+
+    if (
+      !response.ok ||
+      data.success !== true ||
+      !product
+    ) {
+      throw new Error(
+        data?.error ||
+        "PayPal catalog unavailable."
+      );
+    }
+
+    const amount =
+      Number(product.amount);
+
+    if (
+      !Number.isFinite(amount) ||
+      amount <= 0
+    ) {
+      throw new Error(
+        "Invalid Keyless monthly price."
+      );
+    }
+
+    const label =
+      moneyLabel(
+        product.currency,
+        product.amount
+      );
+
+    const monthly =
+      PLAN_CATALOG.keyless.monthly;
+
+    monthly.price =
+      label;
+
+    monthly.billing =
+      `${label} one-time`;
+
+    const oldPrice =
+      Number(
+        String(monthly.oldPrice)
+          .replace(
+            /[^0-9.]/g,
+            ""
+          )
+      );
+
+    if (
+      Number.isFinite(oldPrice) &&
+      oldPrice > amount
+    ) {
+      monthly.discount =
+        `${Math.round(
+          (1 - amount / oldPrice) *
+          100
+        )}% OFF`;
+    } else {
+      monthly.discount =
+        "SECURE PAYPAL";
+    }
+
+  } catch (error) {
+    console.error(
+      "Could not sync Alter Hub checkout catalog:",
+      error
+    );
+
+    if (checkoutHint) {
+      checkoutHint.textContent =
+        "Secure checkout pricing could not be loaded. Refresh the page before purchasing.";
+
+      checkoutHint.classList.remove(
+        "is-ready"
+      );
+    }
+  }
+}
+
+async function startAlterHubWorkerCheckout() {
+  if (
+    alterHubCheckoutStarting ||
+    !isAlterHubWorkerCheckout()
+  ) {
+    return;
   }
 
+  if (!termsCheckbox?.checked) {
+    termsCheckbox?.focus();
+    return;
+  }
+
+  alterHubCheckoutStarting = true;
+
+  if (purchaseButton) {
+    purchaseButton.setAttribute(
+      "aria-disabled",
+      "true"
+    );
+
+    purchaseButton.classList.add(
+      "is-loading"
+    );
+  }
+
+  if (purchaseButtonLabel) {
+    purchaseButtonLabel.textContent =
+      "Opening PayPal...";
+  }
+
+  if (checkoutHint) {
+    checkoutHint.textContent =
+      "Creating your secure Alter Hub PayPal checkout...";
+
+    checkoutHint.classList.add(
+      "is-ready"
+    );
+  }
+
+  try {
+    const response =
+      await fetch(
+        `${ALTER_HUB_API_BASE}/api/paypal/create-order`,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+            "Accept":
+              "application/json"
+          },
+
+          body: JSON.stringify({
+            product_id:
+              ALTER_HUB_KEYLESS_PRODUCT
+          })
+        }
+      );
+
+    const data =
+      await response.json();
+
+    if (
+      !response.ok ||
+      data.success !== true ||
+      !data.approval_url
+    ) {
+      throw new Error(
+        data.error ||
+        "Checkout could not be created."
+      );
+    }
+
+    window.location.assign(
+      data.approval_url
+    );
+
+  } catch (error) {
+    console.error(
+      "Alter Hub PayPal checkout error:",
+      error
+    );
+
+    if (checkoutHint) {
+      checkoutHint.textContent =
+        error.message ||
+        "PayPal checkout could not be started. Please try again.";
+
+      checkoutHint.classList.remove(
+        "is-ready"
+      );
+    }
+
+    alterHubCheckoutStarting = false;
+
+    updatePurchaseAvailability();
+  }
+}
+
+function lifetimePurchaseRequestUrl() {
+  const plan = currentPlan();
+  const subject = `Alter Hub ${plan.summaryTitle} purchase`;
+  const body = [
+    "Hello Alter Hub Support,",
+    "",
+    `I would like to purchase ${plan.summaryTitle} for ${plan.price}.`,
+    `Access duration: ${plan.access}.`,
+    "",
+    "Please send me the available payment instructions."
+  ].join("\n");
+
+  return `mailto:support@alterhub.online?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
+function showPayPalStatus(message, isError = false) {
+  if (!paypalSubscriptionButton) return;
+
+  paypalSubscriptionButton.replaceChildren();
+  const status = document.createElement("p");
+  status.className = `paypal-status${isError ? " is-error" : ""}`;
+  status.textContent = message;
   paypalSubscriptionButton.appendChild(status);
 }
 
 async function renderPayPalSubscriptionButton() {
   if (
-    selectedDuration !== "monthly" ||
     !paypalSubscriptionButton ||
     paypalButtonRendered ||
     paypalRenderStarted
@@ -449,19 +549,16 @@ async function renderPayPalSubscriptionButton() {
     return;
   }
 
+  if (!window.paypal || typeof window.paypal.Buttons !== "function") {
+    showPayPalStatus("PayPal could not be loaded. Please refresh the page.", true);
+    return;
+  }
+
   paypalRenderStarted = true;
   paypalSubscriptionButton.replaceChildren();
-  showPayPalStatus("Loading secure PayPal checkout…");
 
   try {
-    const paypalMonthly = await loadPayPalSdk();
-
-    // The user may have switched to Lifetime while the SDK was loading.
-    if (selectedDuration !== "monthly") return;
-
-    paypalSubscriptionButton.replaceChildren();
-
-    const buttons = paypalMonthly.Buttons({
+    const buttons = window.paypal.Buttons({
       style: {
         shape: "pill",
         color: "black",
@@ -521,7 +618,6 @@ async function renderPayPalSubscriptionButton() {
         console.error("PayPal subscription error:", error);
         showPayPalStatus(
           "PayPal could not start the subscription. Please refresh and try again.",
-          true,
           true
         );
       }
@@ -540,8 +636,7 @@ async function renderPayPalSubscriptionButton() {
   } catch (error) {
     console.error("Failed to render PayPal subscription button:", error);
     showPayPalStatus(
-      "PayPal checkout could not load. It may be blocked by the browser, an ad/content blocker, an in-app browser, or the current network.",
-      true,
+      "PayPal could not be loaded. Please refresh and try again.",
       true
     );
   } finally {
@@ -555,47 +650,93 @@ function updatePurchaseAvailability() {
   const accepted = termsCheckbox.checked;
   const isMonthly = selectedDuration === "monthly";
 
-  if (checkoutRenderMode !== selectedDuration) {
-    resetPayPalCheckout(selectedDuration);
-  }
-
-  setPayPalHeading(selectedDuration);
-
   if (termsCopy) {
-    termsCopy.textContent = isMonthly
-      ? " and authorize recurring monthly PayPal billing until I cancel."
-      : " and understand that lifetime access is a one-time purchase.";
+    if (isAlterHubWorkerCheckout()) {
+      termsCopy.textContent =
+        " and understand that this is a one-time purchase for a 30-day Keyless key.";
+    } else {
+      termsCopy.textContent = isMonthly
+        ? " and authorize recurring monthly PayPal billing until I cancel."
+        : " and understand that lifetime access is a one-time purchase.";
+    }
   }
 
-  // All plans now use PayPal directly, so the old mailto purchase button is
-  // kept hidden for both monthly and lifetime checkout.
-  purchaseButton.removeAttribute("href");
   purchaseButton.removeAttribute("target");
   purchaseButton.removeAttribute("rel");
-  purchaseButton.setAttribute("aria-disabled", "true");
-  purchaseButton.tabIndex = -1;
-  purchaseButton.hidden = true;
 
-  if (paypalSubscriptionWrap) {
-    paypalSubscriptionWrap.hidden = false;
+  if (
+    isMonthly &&
+    isAlterHubWorkerCheckout()
+  ) {
+    if (paypalSubscriptionWrap) {
+      paypalSubscriptionWrap.hidden =
+        true;
+    }
+
+    purchaseButton.hidden =
+      false;
+
+    purchaseButton.removeAttribute(
+      "href"
+    );
+
+    purchaseButton.setAttribute(
+      "aria-disabled",
+      String(
+        !accepted ||
+        alterHubCheckoutStarting
+      )
+    );
+
+    purchaseButton.tabIndex =
+      accepted &&
+      !alterHubCheckoutStarting
+        ? 0
+        : -1;
+
+    if (purchaseButtonLabel) {
+      purchaseButtonLabel.textContent =
+        alterHubCheckoutStarting
+          ? "Opening PayPal..."
+          : (
+              accepted
+                ? "Continue with PayPal"
+                : "Accept Terms to Purchase"
+            );
+    }
+
+    checkoutHint.classList.toggle(
+      "is-ready",
+      accepted &&
+      !alterHubCheckoutStarting
+    );
+
+    checkoutHint.textContent =
+      alterHubCheckoutStarting
+        ? "Creating your secure Alter Hub PayPal checkout..."
+        : (
+            accepted
+              ? "Ready. Continue to secure PayPal checkout. Your 30-day key is generated only after payment is confirmed."
+              : "Accept the terms to unlock secure PayPal checkout."
+          );
+
+    return;
   }
-
-  if (paypalSubscriptionButton) {
-    paypalSubscriptionButton.hidden = !isMonthly;
-  }
-
-  if (paypalLifetimeCheckout) {
-    paypalLifetimeCheckout.hidden = isMonthly;
-    paypalLifetimeCheckout.classList.toggle("is-disabled", !accepted);
-    paypalLifetimeCheckout.setAttribute("aria-disabled", String(!accepted));
-  }
-
-  lifetimePayPalLinks.forEach((link) => {
-    link.setAttribute("aria-disabled", String(!accepted));
-    link.tabIndex = accepted ? 0 : -1;
-  });
 
   if (isMonthly) {
+    purchaseButton.removeAttribute("href");
+    purchaseButton.setAttribute("aria-disabled", "true");
+    purchaseButton.tabIndex = -1;
+    purchaseButton.hidden = true;
+
+    if (purchaseButtonLabel) {
+      purchaseButtonLabel.textContent = "Accept Terms to Subscribe";
+    }
+
+    if (paypalSubscriptionWrap) {
+      paypalSubscriptionWrap.hidden = false;
+    }
+
     if (paypalButtonActions) {
       if (accepted) {
         paypalButtonActions.enable();
@@ -610,13 +751,32 @@ function updatePurchaseAvailability() {
       : "Accept the recurring billing terms to activate the PayPal Subscribe button.";
 
     void renderPayPalSubscriptionButton();
+
     return;
+  }
+
+  if (paypalSubscriptionWrap) {
+    paypalSubscriptionWrap.hidden = true;
+  }
+
+  purchaseButton.hidden = false;
+  purchaseButton.setAttribute("aria-disabled", String(!accepted));
+  purchaseButton.tabIndex = accepted ? 0 : -1;
+
+  if (purchaseButtonLabel) {
+    purchaseButtonLabel.textContent = "Continue with Lifetime Purchase";
   }
 
   checkoutHint.classList.toggle("is-ready", accepted);
   checkoutHint.textContent = accepted
-    ? "Choose PayPal or card checkout above to complete your one-time lifetime purchase."
-    : "Accept the terms to activate the PayPal lifetime purchase buttons.";
+    ? "Ready. Continue to receive the official lifetime payment instructions."
+    : "Accept the terms to continue with this lifetime purchase.";
+
+  if (accepted) {
+    purchaseButton.href = lifetimePurchaseRequestUrl();
+  } else {
+    purchaseButton.removeAttribute("href");
+  }
 }
 
 function restartAnimation() {
@@ -683,8 +843,6 @@ durationButtons.forEach((button) => {
     }
 
     selectedDuration = duration;
-    termsCheckbox.checked = false;
-    resetPayPalCheckout(duration);
     renderPlan({ animate: true, updateHistory: true, pushHistory: true });
   });
 });
@@ -695,46 +853,57 @@ if (termsCheckbox) {
 
 if (purchaseButton) {
   purchaseButton.addEventListener("click", (event) => {
-    if (purchaseButton.getAttribute("aria-disabled") === "true") {
+    if (
+      purchaseButton.getAttribute(
+        "aria-disabled"
+      ) === "true"
+    ) {
       event.preventDefault();
       termsCheckbox?.focus();
+      return;
+    }
+
+    if (isAlterHubWorkerCheckout()) {
+      event.preventDefault();
+      void startAlterHubWorkerCheckout();
     }
   });
 }
 
-
-lifetimePayPalLinks.forEach((link) => {
-  link.addEventListener("click", (event) => {
-    if (!termsCheckbox?.checked) {
-      event.preventDefault();
-      termsCheckbox?.focus();
-      checkoutHint?.classList.remove("is-ready");
-      if (checkoutHint) {
-        checkoutHint.textContent = "Accept the terms before continuing to PayPal.";
-      }
-    }
-  });
-});
-
 window.addEventListener("popstate", () => {
-  const nextDuration = durationFromHash();
-  if (nextDuration !== selectedDuration && tier[nextDuration]) {
-    selectedDuration = nextDuration;
-    if (termsCheckbox) termsCheckbox.checked = false;
-    resetPayPalCheckout(nextDuration);
-    renderPlan({ animate: true, updateHistory: false });
-  }
+  selectedDuration = durationFromHash();
+  renderPlan({ animate: true, updateHistory: false });
 });
 
-function initializePlanPage() {
+window.addEventListener("hashchange", () => {
+  const nextDuration = durationFromHash();
+  if (nextDuration === selectedDuration) return;
+  selectedDuration = nextDuration;
+  renderPlan({ animate: true, updateHistory: false });
+});
+
+async function initializePlanPage() {
+  await syncKeylessMonthlyCatalog();
+
   populateDurationCards();
   renderList("#benefit-list", tier.benefits);
   renderList("#steps-list", tier.steps, true);
-  renderPlan({ animate: false, updateHistory: true, pushHistory: false });
+  renderPlan({
+    animate: false,
+    updateHistory: true,
+    pushHistory: false
+  });
+}
+
+function bootPlanPage() {
+  void initializePlanPage();
 }
 
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initializePlanPage);
+  document.addEventListener(
+    "DOMContentLoaded",
+    bootPlanPage
+  );
 } else {
-  initializePlanPage();
+  bootPlanPage();
 }
