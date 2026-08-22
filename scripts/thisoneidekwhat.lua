@@ -1,11 +1,4 @@
--- Alter Hub imported PVP / Misc / Katana Config payload
--- Upload this ENTIRE file as-is and use its RAW URL in the main script.
--- Contains the Fluent compatibility adapter + imported VM.
 
--- ============================================================================
--- ALTER HUB: RAYFIELD -> FLUENT COMPATIBILITY LAYER
--- Keeps the original V5 VM callbacks untouched while Fluent renders the UI.
--- ============================================================================
 
 local function __AH_InstallFluentCompat(Rayfield)
     if type(Rayfield) ~= "table" then
@@ -276,9 +269,20 @@ local function __AH_InstallFluentCompat(Rayfield)
 
     function Rayfield:Notify(data)
         data = type(data) == "table" and data or {}
+
+        local title = tostring(data.Title or "Alter Hub")
+        local content = tostring(data.Content or "")
+        local combined = (title .. " " .. content):lower()
+
+        -- Suppress only the old Quasar Hub startup-loaded notification.
+        -- Other notifications continue to work normally.
+        if combined:find("quasar", 1, true) and combined:find("load", 1, true) then
+            return
+        end
+
         return Fluent:Notify({
-            Title = tostring(data.Title or "Alter Hub"),
-            Content = tostring(data.Content or ""),
+            Title = title,
+            Content = content,
             SubContent = data.SubContent and tostring(data.SubContent) or nil,
             Duration = data.Duration or 5
         })
