@@ -1,3 +1,21 @@
+            -- ================================================================
+            -- IMPORTED PVP / MISC / KATANA CONFIG MERGE
+            -- Reuse THIS script's Fluent library, Window and pre-created tabs.
+            -- ================================================================
+            getgenv().__AH_MergeFluent = Library
+            getgenv().__AH_MergeWindow = Window
+            getgenv().__AH_MergeTabs = {
+                [1] = Tabs.PvPTab,          -- imported Combat -> PVP
+                [2] = Tabs.MiscTab,         -- imported Misc
+                [4] = Tabs.KatanaConfigTab  -- imported Katana Config
+            }
+
+            (function(...)
+
+-- ============================================================================
+-- ALTER HUB: RAYFIELD -> FLUENT COMPATIBILITY LAYER
+-- Keeps the original V5 VM callbacks untouched while Fluent renders the UI.
+-- ============================================================================
 
 local function __AH_InstallFluentCompat(Rayfield)
     if type(Rayfield) ~= "table" then
@@ -3889,33 +3907,3 @@ return(function(U,J,O,e,n,N,F,E,f,h,L,Q,k,X,l,i,T,K,x,y,z,M,P,C)E,h,T,x,K,P,l,z,
             getgenv().__AH_MergeFluent = nil
             getgenv().__AH_MergeWindow = nil
             getgenv().__AH_MergeTabs = nil
-            -- ================================================================
-            -- END IMPORTED TAB MERGE
-            -- ================================================================
-
-            SaveManager:SetLibrary(Library)
-            InterfaceManager:SetLibrary(Library)
-        
-        
-            SaveManager:IgnoreThemeSettings()
-        
-            SaveManager:SetIgnoreIndexes({})
-            InterfaceManager:SetFolder("Alter Hub Demonfall")
-            SaveManager:SetFolder("Alter Hub")
-        
-            InterfaceManager:BuildInterfaceSection(Tabs.Settings)
-            SaveManager:BuildConfigSection(Tabs.Settings)
-        
-        
-            Window:SelectTab(1)
-            SaveManager:LoadAutoloadConfig()
-            Fluent:Notify({
-                Title = "Alter Hub",
-                Content = "Alter Hub has loaded successfully.",
-                Duration = 8
-            })
-
-            -- Function to get player names
-            -- Ensure the Tabs.PlayersTab is correctly accessed
-
-end
