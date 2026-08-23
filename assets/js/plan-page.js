@@ -199,8 +199,14 @@ const PAYPAL_SDK_ID = "alter-hub-paypal-sdk";
 const PAYPAL_MONTHLY_NAMESPACE = "paypalMonthly";
 const PAYPAL_SDK_TIMEOUT_MS = 20000;
 
-const KEYLESS_MONTHLY_SIMPLE_CHECKOUT_URL =
-  "https://api.alterhub.online/paypal/subscribe/keyless-monthly";
+const MONTHLY_SIMPLE_CHECKOUT_URLS = Object.freeze({
+  keyless:
+    "https://api.alterhub.online/paypal/subscribe/keyless-monthly",
+  premium:
+    "https://api.alterhub.online/paypal/subscribe/premium-monthly",
+  "premium-plus":
+    "https://api.alterhub.online/paypal/subscribe/premium-plus-monthly"
+});
 
 let paypalSdkPromise = null;
 
@@ -570,9 +576,13 @@ function updatePurchaseAvailability() {
       : " and understand that lifetime access is a one-time purchase.";
   }
 
-  // Keyless Monthly: one normal button -> Worker -> PayPal checkout.
+  // Every monthly tier uses one normal button -> Worker -> PayPal checkout.
   // The PayPal webhook runs only in the background after payment.
-  if (tierSlug === "keyless" && isMonthly) {
+  if (isMonthly) {
+    const simpleCheckoutUrl =
+      MONTHLY_SIMPLE_CHECKOUT_URLS[tierSlug] ||
+      "";
+
     if (paypalSubscriptionWrap) {
       paypalSubscriptionWrap.hidden = true;
     }
@@ -590,14 +600,28 @@ function updatePurchaseAvailability() {
     purchaseButton.removeAttribute("target");
     purchaseButton.removeAttribute("rel");
 
+    if (!simpleCheckoutUrl) {
+      purchaseButton.removeAttribute("href");
+      purchaseButton.setAttribute("aria-disabled", "true");
+      purchaseButton.tabIndex = -1;
+      setText("#purchase-button-label", "Monthly Checkout Unavailable");
+      checkoutHint.classList.remove("is-ready");
+      checkoutHint.textContent =
+        "This monthly PayPal checkout has not been configured.";
+      return;
+    }
+
     if (accepted) {
-      purchaseButton.href = KEYLESS_MONTHLY_SIMPLE_CHECKOUT_URL;
+      purchaseButton.href = simpleCheckoutUrl;
       purchaseButton.setAttribute("aria-disabled", "false");
       purchaseButton.tabIndex = 0;
-      setText("#purchase-button-label", "Subscribe with PayPal · $5.99/month");
+      setText(
+        "#purchase-button-label",
+        `Subscribe with PayPal · ${currentPlan().price}/month`
+      );
       checkoutHint.classList.add("is-ready");
       checkoutHint.textContent =
-        "Continue to PayPal to approve the recurring $5.99 monthly subscription.";
+        `Continue to PayPal to approve the recurring ${currentPlan().price} monthly subscription.`;
     } else {
       purchaseButton.removeAttribute("href");
       purchaseButton.setAttribute("aria-disabled", "true");
@@ -611,7 +635,7 @@ function updatePurchaseAvailability() {
     return;
   }
 
-  // All plans now use PayPal directly, so the old mailto purchase button is
+  // Lifetime purchases use PayPal directly, so the old mailto purchase button is
   // kept hidden for both monthly and lifetime checkout.
   purchaseButton.removeAttribute("href");
   purchaseButton.removeAttribute("target");
@@ -638,24 +662,6 @@ function updatePurchaseAvailability() {
     link.setAttribute("aria-disabled", String(!accepted));
     link.tabIndex = accepted ? 0 : -1;
   });
-
-  if (isMonthly) {
-    if (paypalButtonActions) {
-      if (accepted) {
-        paypalButtonActions.enable();
-      } else {
-        paypalButtonActions.disable();
-      }
-    }
-
-    checkoutHint.classList.toggle("is-ready", accepted);
-    checkoutHint.textContent = accepted
-      ? "Click the PayPal Subscribe button to start secure monthly billing."
-      : "Accept the recurring billing terms to activate the PayPal Subscribe button.";
-
-    void renderPayPalSubscriptionButton();
-    return;
-  }
 
   checkoutHint.classList.toggle("is-ready", accepted);
   checkoutHint.textContent = accepted
