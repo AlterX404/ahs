@@ -503,8 +503,13 @@ async function renderPayPalSubscriptionButton() {
           : "";
 
         if (checkoutHint) {
+          const keylessMessage =
+            tierSlug === "keyless"
+              ? " PayPal will bill this subscription every month until cancelled. After each successful payment, Alter Hub verifies it on the server, creates one fresh 30-day Keyless key, and emails the key to your PayPal email address."
+              : " Your access will be confirmed after payment verification.";
+
           checkoutHint.textContent =
-            `Subscription approved.${reference} Your access will be confirmed after payment verification.`;
+            `Subscription approved.${reference}${keylessMessage}`;
           checkoutHint.classList.add("is-ready");
         }
       },
