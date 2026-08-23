@@ -191,6 +191,10 @@ const PAYPAL_MONTHLY_PLAN_IDS = Object.freeze({
   "premium-plus": "P-72H85729L5583625MNKBVQKY"
 });
 
+// The Worker verifies the approved subscription directly with PayPal before
+// Alter Hub creates any key. Browser approval by itself is never trusted.
+const ALTER_HUB_API_BASE = "https://api.alterhub.online";
+
 // Monthly subscriptions use the PayPal Buttons SDK.
 // Lifetime purchases use the official PayPal hosted payment links embedded
 // directly in each payment page, so their compact site styling stays consistent.
@@ -432,6 +436,91 @@ function showPayPalStatus(message, isError = false, allowRetry = false) {
   paypalSubscriptionButton.appendChild(status);
 }
 
+
+function delay(ms) {
+  return new Promise((resolve) => window.setTimeout(resolve, ms));
+}
+
+async function finalizeKeylessMonthlySubscription(subscriptionId) {
+  const id = String(subscriptionId || "").trim();
+
+  if (!id) {
+    throw new Error("PayPal did not return a subscription ID.");
+  }
+
+  const maxAttempts = 20;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    const response = await fetch(
+      `${ALTER_HUB_API_BASE}/api/paypal/activate-subscription`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          subscription_id: id,
+          tier: "keyless"
+        })
+      }
+    );
+
+    let data = {};
+    try {
+      data = await response.json();
+    } catch {
+      data = {};
+    }
+
+    if (
+      response.ok &&
+      data.success === true &&
+      data.completed === true &&
+      data.result_url
+    ) {
+      showPayPalStatus("Payment confirmed. Your Keyless key is ready. Redirecting…");
+
+      if (checkoutHint) {
+        checkoutHint.textContent =
+          "Payment confirmed. Opening your Alter Hub key…";
+        checkoutHint.classList.add("is-ready");
+      }
+
+      window.location.assign(data.result_url);
+      return data;
+    }
+
+    if (
+      response.status === 202 &&
+      data.success === true &&
+      data.pending === true
+    ) {
+      showPayPalStatus(
+        `Subscription approved. Confirming the first payment and creating your key… (${attempt}/${maxAttempts})`
+      );
+
+      if (checkoutHint) {
+        checkoutHint.textContent =
+          "PayPal approved the subscription. Alter Hub is verifying the first payment server-side. Do not subscribe again.";
+        checkoutHint.classList.add("is-ready");
+      }
+
+      await delay(2000);
+      continue;
+    }
+
+    throw new Error(
+      data.error ||
+      "Alter Hub could not verify the PayPal subscription."
+    );
+  }
+
+  throw new Error(
+    "PayPal approved the subscription, but the first payment is still processing. Do not subscribe again. The webhook will finish your Keyless access as soon as PayPal confirms the charge."
+  );
+}
+
 async function renderPayPalSubscriptionButton() {
   if (
     selectedDuration !== "monthly" ||
@@ -497,20 +586,55 @@ async function renderPayPalSubscriptionButton() {
         });
       },
 
-      onApprove(data) {
-        const reference = data.subscriptionID
-          ? ` Reference: ${data.subscriptionID}.`
-          : "";
+      async onApprove(data) {
+        const subscriptionId =
+          String(data.subscriptionID || "").trim();
+
+        // Keyless Monthly uses the full Alter Hub server-verification flow.
+        // Premium tiers keep their current behavior until they are migrated.
+        if (tierSlug !== "keyless") {
+          const reference = subscriptionId
+            ? ` Reference: ${subscriptionId}.`
+            : "";
+
+          if (checkoutHint) {
+            checkoutHint.textContent =
+              `Subscription approved.${reference} Your access will be confirmed after payment verification.`;
+            checkoutHint.classList.add("is-ready");
+          }
+          return;
+        }
+
+        showPayPalStatus(
+          "Subscription approved. Verifying the first payment and creating your Keyless key…"
+        );
 
         if (checkoutHint) {
-          const keylessMessage =
-            tierSlug === "keyless"
-              ? " PayPal will bill this subscription every month until cancelled. After each successful payment, Alter Hub verifies it on the server, creates one fresh 30-day Keyless key, and emails the key to your PayPal email address."
-              : " Your access will be confirmed after payment verification.";
-
           checkoutHint.textContent =
-            `Subscription approved.${reference}${keylessMessage}`;
+            "Subscription approved. Alter Hub is checking PayPal directly before issuing your key.";
           checkoutHint.classList.add("is-ready");
+        }
+
+        try {
+          await finalizeKeylessMonthlySubscription(subscriptionId);
+        } catch (error) {
+          console.error(
+            "Alter Hub Keyless subscription fulfillment error:",
+            error
+          );
+
+          showPayPalStatus(
+            error?.message ||
+              "Your subscription was approved, but Alter Hub could not confirm the first payment yet.",
+            true
+          );
+
+          if (checkoutHint) {
+            checkoutHint.textContent =
+              error?.message ||
+              "Your subscription was approved, but the first payment is still being confirmed.";
+            checkoutHint.classList.remove("is-ready");
+          }
         }
       },
 
