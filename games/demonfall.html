@@ -90,7 +90,7 @@
   <p class="lead" id="demonfall-access-copy">These V3.5.0 features are temporarily available to Premium+ users. They automatically move to Premium when the countdown ends.</p>
   <div class="callout callout-neutral" id="demonfall-countdown-wrap" aria-live="polite">
     <p><strong>Premium release countdown:</strong> <span id="demonfall-premium-countdown">Calculating…</span></p>
-    <p style="margin-bottom:0;">Moves to Premium on <strong>August 25, 2026 at 8:18 AM IST</strong>.</p>
+    <p style="margin-bottom:0;">Moves to Premium on <strong id="demonfall-premium-end-local">August 25, 2026 at 8:18 AM (your local time)</strong>.</p>
   </div>
 
   <article class="release">
@@ -161,15 +161,30 @@
 <script src="/assets/js/script.js"></script>
 <script>
 (function () {
-  const premiumStart = new Date('2026-08-22T08:18:00+05:30').getTime();
-  const premiumEnd = new Date('2026-08-25T08:18:00+05:30').getTime();
+  // Use the visitor's own browser/device time zone.
+  const premiumStartDate = new Date(2026, 7, 22, 8, 18, 0);
+  const premiumEndDate = new Date(2026, 7, 25, 8, 18, 0);
+  const premiumStart = premiumStartDate.getTime();
+  const premiumEnd = premiumEndDate.getTime();
   const countdown = document.getElementById('demonfall-premium-countdown');
   const badge = document.getElementById('demonfall-access-badge');
   const title = document.getElementById('demonfall-access-title');
   const copy = document.getElementById('demonfall-access-copy');
   const wrap = document.getElementById('demonfall-countdown-wrap');
+  const endLocal = document.getElementById('demonfall-premium-end-local');
 
   if (!countdown || !badge || !title || !copy || !wrap) return;
+
+  const localEndText = premiumEndDate.toLocaleString(undefined, {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true
+  }) + ' (your local time)';
+
+  if (endLocal) endLocal.textContent = localEndText;
 
   function updateDemonfallAccess() {
     const now = Date.now();
@@ -178,7 +193,9 @@
       badge.textContent = 'PREMIUM';
       title.textContent = 'Demonfall V3.5.0 Premium Features';
       copy.textContent = 'The V3.5.0 feature set is now available to Premium users.';
-      wrap.innerHTML = '<p style="margin-bottom:0;"><strong>Premium access is live.</strong> The Premium+ early-access period ended on August 25, 2026 at 8:18 AM IST.</p>';
+      wrap.innerHTML = '<p style="margin-bottom:0;"><strong>Premium access is live.</strong> The Premium+ early-access period ended on <span id="demonfall-premium-ended-local"></span>.</p>';
+      const endedLocal = document.getElementById('demonfall-premium-ended-local');
+      if (endedLocal) endedLocal.textContent = localEndText;
       return;
     }
 
