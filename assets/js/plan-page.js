@@ -191,9 +191,9 @@ const PAYPAL_MONTHLY_PLAN_IDS = Object.freeze({
   "premium-plus": "P-72H85729L5583625MNKBVQKY"
 });
 
-// Monthly subscriptions use the PayPal Buttons SDK.
-// Lifetime purchases use the official PayPal hosted payment links embedded
-// directly in each payment page, so their compact site styling stays consistent.
+// Both monthly subscriptions and lifetime purchases use one normal
+// Alter Hub checkout button that sends the buyer to the Worker. The Worker
+// creates the PayPal checkout and PayPal webhooks fulfill paid keys securely.
 const PAYPAL_CLIENT_ID = "BAAwVHsGOQSMvQW5S6JMpJEMMbOTSeZuXZpkEF4ygqGKi0-4F5o6rj8MAeP5dENFSGaxDhSJcHSRyzzgVI";
 const PAYPAL_SDK_ID = "alter-hub-paypal-sdk";
 const PAYPAL_MONTHLY_NAMESPACE = "paypalMonthly";
@@ -206,6 +206,15 @@ const MONTHLY_SIMPLE_CHECKOUT_URLS = Object.freeze({
     "https://api.alterhub.online/paypal/subscribe/premium-monthly",
   "premium-plus":
     "https://api.alterhub.online/paypal/subscribe/premium-plus-monthly"
+});
+
+const LIFETIME_SIMPLE_CHECKOUT_URLS = Object.freeze({
+  keyless:
+    "https://api.alterhub.online/paypal/buy/keyless-lifetime",
+  premium:
+    "https://api.alterhub.online/paypal/buy/premium-lifetime",
+  "premium-plus":
+    "https://api.alterhub.online/paypal/buy/premium-plus-lifetime"
 });
 
 let paypalSdkPromise = null;
@@ -635,38 +644,60 @@ function updatePurchaseAvailability() {
     return;
   }
 
-  // Lifetime purchases use PayPal directly, so the old mailto purchase button is
-  // kept hidden for both monthly and lifetime checkout.
-  purchaseButton.removeAttribute("href");
-  purchaseButton.removeAttribute("target");
-  purchaseButton.removeAttribute("rel");
-  purchaseButton.setAttribute("aria-disabled", "true");
-  purchaseButton.tabIndex = -1;
-  purchaseButton.hidden = true;
+  // Lifetime uses the same single-button pattern as monthly. The difference is
+  // that the Worker creates a one-time PayPal order instead of a subscription.
+  const lifetimeCheckoutUrl =
+    LIFETIME_SIMPLE_CHECKOUT_URLS[tierSlug] ||
+    "";
 
   if (paypalSubscriptionWrap) {
-    paypalSubscriptionWrap.hidden = false;
+    paypalSubscriptionWrap.hidden = true;
   }
 
   if (paypalSubscriptionButton) {
-    paypalSubscriptionButton.hidden = !isMonthly;
+    paypalSubscriptionButton.hidden = true;
+    paypalSubscriptionButton.replaceChildren();
   }
 
   if (paypalLifetimeCheckout) {
-    paypalLifetimeCheckout.hidden = isMonthly;
-    paypalLifetimeCheckout.classList.toggle("is-disabled", !accepted);
-    paypalLifetimeCheckout.setAttribute("aria-disabled", String(!accepted));
+    paypalLifetimeCheckout.hidden = true;
   }
 
-  lifetimePayPalLinks.forEach((link) => {
-    link.setAttribute("aria-disabled", String(!accepted));
-    link.tabIndex = accepted ? 0 : -1;
-  });
+  purchaseButton.hidden = false;
+  purchaseButton.removeAttribute("target");
+  purchaseButton.removeAttribute("rel");
 
-  checkoutHint.classList.toggle("is-ready", accepted);
-  checkoutHint.textContent = accepted
-    ? "Choose PayPal or card checkout above to complete your one-time lifetime purchase."
-    : "Accept the terms to activate the PayPal lifetime purchase buttons.";
+  if (!lifetimeCheckoutUrl) {
+    purchaseButton.removeAttribute("href");
+    purchaseButton.setAttribute("aria-disabled", "true");
+    purchaseButton.tabIndex = -1;
+    setText("#purchase-button-label", "Lifetime Checkout Unavailable");
+    checkoutHint.classList.remove("is-ready");
+    checkoutHint.textContent =
+      "This lifetime PayPal checkout has not been configured.";
+    return;
+  }
+
+  if (accepted) {
+    purchaseButton.href = lifetimeCheckoutUrl;
+    purchaseButton.setAttribute("aria-disabled", "false");
+    purchaseButton.tabIndex = 0;
+    setText(
+      "#purchase-button-label",
+      `Buy Lifetime with PayPal · ${currentPlan().price}`
+    );
+    checkoutHint.classList.add("is-ready");
+    checkoutHint.textContent =
+      `Continue to PayPal for the one-time ${currentPlan().price} lifetime purchase.`;
+  } else {
+    purchaseButton.removeAttribute("href");
+    purchaseButton.setAttribute("aria-disabled", "true");
+    purchaseButton.tabIndex = -1;
+    setText("#purchase-button-label", "Accept Terms to Buy Lifetime");
+    checkoutHint.classList.remove("is-ready");
+    checkoutHint.textContent =
+      "Accept the terms to continue to the one-time PayPal checkout.";
+  }
 }
 
 function restartAnimation() {
