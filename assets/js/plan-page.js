@@ -185,6 +185,35 @@ const PLAN_CATALOG = {
   }
 };
 
+function applyBirthdaySalePricing() {
+  const sale = window.ALTER_BIRTHDAY_SALE;
+  if (!sale?.active || !sale.prices) return;
+
+  Object.entries(sale.prices).forEach(([tierKey, durationPrices]) => {
+    const tier = PLAN_CATALOG[tierKey];
+    if (!tier) return;
+
+    Object.entries(durationPrices).forEach(([duration, salePrice]) => {
+      const plan = tier[duration];
+      if (!plan) return;
+
+      const regularPrice = plan.price;
+      plan.oldPrice = regularPrice;
+      plan.price = salePrice;
+      plan.discount = "50% OFF";
+      plan.badge = "BIRTHDAY SALE";
+      plan.summaryDescription = `Birthday Week: 50% off. ${plan.summaryDescription}`;
+      plan.description = plan.description.replace(regularPrice, salePrice);
+      plan.billing =
+        duration === "monthly"
+          ? `${salePrice} every month`
+          : `${salePrice} one-time payment`;
+    });
+  });
+}
+
+applyBirthdaySalePricing();
+
 const PAYPAL_MONTHLY_PLAN_IDS = Object.freeze({
   keyless: "P-35C963541U1914902NKBVFZY",
   premium: "P-6M06813917127705RNKBVO2I",
