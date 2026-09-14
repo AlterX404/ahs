@@ -7,9 +7,9 @@
     start: "2026-09-15T00:30:00+05:30",
     end: "2026-09-22T00:30:00+05:30",
     prices: {
-      keyless: { lifetime: "$10.00" },
+      keyless: { lifetime: "$9.99" },
       premium: { lifetime: "$12.50" },
-      "premium-plus": { lifetime: "$20.00" }
+      "premium-plus": { lifetime: "$19.99" }
     },
     regularPrices: {
       keyless: { monthly: "$5.99", lifetime: "$19.99" },
