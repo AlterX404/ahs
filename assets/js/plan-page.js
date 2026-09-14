@@ -201,9 +201,9 @@ function applyBirthdaySalePricing() {
     plan.oldPrice = regularPrice;
     plan.price = salePrice;
     plan.discount = "50% OFF";
-    plan.badge = "3-DAY BIRTHDAY SALE";
-    plan.summaryDescription = `Birthday Sale: 50% off Lifetime for 3 days only. ${plan.summaryDescription}`;
-    plan.description = `${plan.description} Birthday Sale price: ${salePrice} for a limited 3-day period.`;
+    plan.badge = "7-DAY BIRTHDAY SALE";
+    plan.summaryDescription = `Birthday Sale: 50% off Lifetime for 7 days only. ${plan.summaryDescription}`;
+    plan.description = `${plan.description} Birthday Sale price: ${salePrice} for a limited 7-day period.`;
     plan.billing = `${salePrice} one-time payment`;
   });
 }

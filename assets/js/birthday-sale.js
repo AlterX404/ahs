@@ -2,10 +2,10 @@
 
 (() => {
   const sale = {
-    name: "Birthday 3-Day Lifetime Sale",
+    name: "Birthday 7-Day Lifetime Sale",
     discountPercent: 50,
     start: "2026-09-15T00:30:00+05:30",
-    end: "2026-09-18T00:30:00+05:30",
+    end: "2026-09-22T00:30:00+05:30",
     prices: {
       keyless: { lifetime: "$10.00" },
       premium: { lifetime: "$12.50" },
@@ -55,7 +55,7 @@
         if (label) label.textContent = `Monthly ${regular.monthly} · Lifetime sale`;
         if (oldPrice) oldPrice.textContent = regular.lifetime;
         if (currentPrice) currentPrice.textContent = salePrices.lifetime;
-        if (period) period.textContent = "Lifetime · 50% off · 3 days only";
+        if (period) period.textContent = "Lifetime · 50% off · 7 days only";
         if (planLink) planLink.href = `${tier}/#lifetime`;
         card.classList.add("birthday-sale-card");
       } else {
@@ -71,7 +71,7 @@
     const eyebrow = pricingSection.querySelector("[data-sale-pricing-eyebrow]");
     if (eyebrow) {
       eyebrow.textContent = sale.active
-        ? "BIRTHDAY SALE · 50% OFF LIFETIME · 3 DAYS ONLY"
+        ? "BIRTHDAY SALE · 50% OFF LIFETIME · 7 DAYS ONLY"
         : "CHOOSE YOUR ACCESS";
     }
   }
@@ -79,7 +79,7 @@
   function updateCheckoutSaleLabels() {
     document.querySelectorAll("[data-sale-checkout-eyebrow]").forEach((eyebrow) => {
       eyebrow.textContent = sale.active
-        ? "BIRTHDAY SALE · 50% OFF LIFETIME · 3 DAYS ONLY"
+        ? "BIRTHDAY SALE · 50% OFF LIFETIME · 7 DAYS ONLY"
         : "CHOOSE YOUR ACCESS";
     });
   }
@@ -121,7 +121,7 @@
         <div class="birthday-sale-confetti" aria-hidden="true"></div>
         <span class="birthday-sale-kicker">ALTER HUB BIRTHDAY SALE</span>
         <h2 id="birthday-sale-title">50% OFF <span>LIFETIME</span></h2>
-        <p class="birthday-sale-copy">For 3 days only, every Lifetime Keyless, Premium, and Premium Plus purchase is half price. Monthly plans stay at their normal prices.</p>
+        <p class="birthday-sale-copy">For 7 days only, every Lifetime Keyless, Premium, and Premium Plus purchase is half price. Monthly plans stay at their normal prices.</p>
         <div class="birthday-sale-countdown" aria-label="Birthday sale time remaining">
           <div><strong data-sale-days>00</strong><span>Days</span></div>
           <div><strong data-sale-hours>00</strong><span>Hours</span></div>
@@ -129,7 +129,7 @@
           <div><strong data-sale-seconds>00</strong><span>Seconds</span></div>
         </div>
         <button class="birthday-sale-cta" type="button">VIEW LIFETIME SALE <span aria-hidden="true">→</span></button>
-        <p class="birthday-sale-end">Ends September 18, 2026 at 12:30 AM IST</p>
+        <p class="birthday-sale-end">Ends September 22, 2026 at 12:30 AM IST</p>
       </div>
     `;
 
