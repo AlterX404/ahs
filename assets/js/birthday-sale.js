@@ -2,51 +2,24 @@
 
 (() => {
   const sale = {
-    name: "Birthday Week Sale",
+    name: "Birthday 3-Day Lifetime Sale",
     discountPercent: 50,
-    start: "2026-09-11T11:55:00+05:30",
-    end: "2026-09-18T11:55:00+05:30",
+    start: "2026-09-15T00:30:00+05:30",
+    end: "2026-09-18T00:30:00+05:30",
     prices: {
-      keyless: {
-        monthly: "$3.00",
-        lifetime: "$10.00"
-      },
-      premium: {
-        monthly: "$4.00",
-        lifetime: "$12.50"
-      },
-      "premium-plus": {
-        monthly: "$5.00",
-        lifetime: "$20.00"
-      }
+      keyless: { lifetime: "$10.00" },
+      premium: { lifetime: "$12.50" },
+      "premium-plus": { lifetime: "$20.00" }
     },
     regularPrices: {
-      keyless: {
-        monthly: "$5.99",
-        lifetime: "$19.99"
-      },
-      premium: {
-        monthly: "$7.99",
-        lifetime: "$24.99"
-      },
-      "premium-plus": {
-        monthly: "$9.99",
-        lifetime: "$39.99"
-      }
+      keyless: { monthly: "$5.99", lifetime: "$19.99" },
+      premium: { monthly: "$7.99", lifetime: "$24.99" },
+      "premium-plus": { monthly: "$9.99", lifetime: "$39.99" }
     },
     previousListPrices: {
-      keyless: {
-        monthly: "$9.99",
-        lifetime: "$29.99"
-      },
-      premium: {
-        monthly: "$14.99",
-        lifetime: "$39.99"
-      },
-      "premium-plus": {
-        monthly: "$19.99",
-        lifetime: "$59.99"
-      }
+      keyless: { monthly: "$9.99", lifetime: "$29.99" },
+      premium: { monthly: "$14.99", lifetime: "$39.99" },
+      "premium-plus": { monthly: "$19.99", lifetime: "$59.99" }
     }
   };
 
@@ -65,28 +38,32 @@
     const pricingSection = document.querySelector("#pricing");
     if (!pricingSection) return;
 
-    const cards = pricingSection.querySelectorAll("[data-sale-tier]");
-
-    cards.forEach((card) => {
+    pricingSection.querySelectorAll("[data-sale-tier]").forEach((card) => {
       const tier = card.dataset.saleTier;
+      const regular = sale.regularPrices[tier];
+      const salePrices = sale.prices[tier];
+      const previous = sale.previousListPrices[tier];
+      if (!regular || !salePrices || !previous) return;
+
       const oldPrice = card.querySelector("[data-sale-old-price]");
       const currentPrice = card.querySelector("[data-sale-price]");
       const label = card.querySelector("[data-sale-label]");
       const period = card.querySelector("[data-sale-period]");
-
-      if (!sale.prices[tier]) return;
+      const planLink = card.querySelector(".plan-button");
 
       if (sale.active) {
-        if (oldPrice) oldPrice.textContent = sale.regularPrices[tier].monthly;
-        if (currentPrice) currentPrice.textContent = sale.prices[tier].monthly;
-        if (label) label.textContent = "Birthday Week · 50% off";
-        if (period) period.textContent = "per month · 7 days only";
+        if (label) label.textContent = `Monthly ${regular.monthly} · Lifetime sale`;
+        if (oldPrice) oldPrice.textContent = regular.lifetime;
+        if (currentPrice) currentPrice.textContent = salePrices.lifetime;
+        if (period) period.textContent = "Lifetime · 50% off · 3 days only";
+        if (planLink) planLink.href = `${tier}/#lifetime`;
         card.classList.add("birthday-sale-card");
       } else {
-        if (oldPrice) oldPrice.textContent = sale.previousListPrices[tier].monthly;
-        if (currentPrice) currentPrice.textContent = sale.regularPrices[tier].monthly;
         if (label) label.textContent = "Starting from";
+        if (oldPrice) oldPrice.textContent = previous.monthly;
+        if (currentPrice) currentPrice.textContent = regular.monthly;
         if (period) period.textContent = "per month";
+        if (planLink) planLink.href = `${tier}/#monthly`;
         card.classList.remove("birthday-sale-card");
       }
     });
@@ -94,7 +71,7 @@
     const eyebrow = pricingSection.querySelector("[data-sale-pricing-eyebrow]");
     if (eyebrow) {
       eyebrow.textContent = sale.active
-        ? "BIRTHDAY WEEK · 50% OFF EVERYTHING"
+        ? "BIRTHDAY SALE · 50% OFF LIFETIME · 3 DAYS ONLY"
         : "CHOOSE YOUR ACCESS";
     }
   }
@@ -102,7 +79,7 @@
   function updateCheckoutSaleLabels() {
     document.querySelectorAll("[data-sale-checkout-eyebrow]").forEach((eyebrow) => {
       eyebrow.textContent = sale.active
-        ? "BIRTHDAY WEEK · 50% OFF"
+        ? "BIRTHDAY SALE · 50% OFF LIFETIME · 3 DAYS ONLY"
         : "CHOOSE YOUR ACCESS";
     });
   }
@@ -125,11 +102,11 @@
   function createPopup() {
     if (!sale.active) return;
 
-    const storageKey = "alterhub-birthday-sale-popup-2026";
+    const storageKey = "alterhub-birthday-lifetime-sale-2026-09-15";
     try {
       if (sessionStorage.getItem(storageKey) === "dismissed") return;
     } catch (error) {
-      // Storage can be unavailable in strict privacy modes. The popup can still run.
+      // Storage can be unavailable in strict privacy modes.
     }
 
     const overlay = document.createElement("div");
@@ -142,17 +119,17 @@
       <div class="birthday-sale-modal">
         <button class="birthday-sale-close" type="button" aria-label="Close birthday sale popup">×</button>
         <div class="birthday-sale-confetti" aria-hidden="true"></div>
-        <span class="birthday-sale-kicker">ALTER HUB BIRTHDAY WEEK</span>
-        <h2 id="birthday-sale-title">50% OFF <span>EVERYTHING</span></h2>
-        <p class="birthday-sale-copy">Seven days only. Every Keyless, Premium, and Premium Plus purchase is half price.</p>
+        <span class="birthday-sale-kicker">ALTER HUB BIRTHDAY SALE</span>
+        <h2 id="birthday-sale-title">50% OFF <span>LIFETIME</span></h2>
+        <p class="birthday-sale-copy">For 3 days only, every Lifetime Keyless, Premium, and Premium Plus purchase is half price. Monthly plans stay at their normal prices.</p>
         <div class="birthday-sale-countdown" aria-label="Birthday sale time remaining">
           <div><strong data-sale-days>00</strong><span>Days</span></div>
           <div><strong data-sale-hours>00</strong><span>Hours</span></div>
           <div><strong data-sale-minutes>00</strong><span>Minutes</span></div>
           <div><strong data-sale-seconds>00</strong><span>Seconds</span></div>
         </div>
-        <button class="birthday-sale-cta" type="button">SHOP 50% OFF <span aria-hidden="true">→</span></button>
-        <p class="birthday-sale-end">Ends September 18, 2026 at 11:55 AM IST</p>
+        <button class="birthday-sale-cta" type="button">VIEW LIFETIME SALE <span aria-hidden="true">→</span></button>
+        <p class="birthday-sale-end">Ends September 18, 2026 at 12:30 AM IST</p>
       </div>
     `;
 
@@ -178,8 +155,12 @@
     const tick = () => {
       const remaining = endTime - Date.now();
       if (remaining <= 0) {
+        sale.active = false;
+        updateHomePricing();
+        updateCheckoutSaleLabels();
         overlay.remove();
         if (timer) window.clearInterval(timer);
+        window.dispatchEvent(new CustomEvent("alterhub:birthday-sale-ended"));
         return;
       }
 
@@ -191,16 +172,17 @@
     };
 
     closeButton.addEventListener("click", dismiss);
-
     overlay.addEventListener("click", (event) => {
       if (event.target === overlay) dismiss();
     });
-
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape" && document.body.contains(overlay)) dismiss();
     });
 
     ctaButton.addEventListener("click", () => {
+      const lifetimeButton = document.querySelector('[data-duration="lifetime"]');
+      if (lifetimeButton) lifetimeButton.click();
+
       const target =
         document.querySelector("#pricing") ||
         document.querySelector(".checkout-panel") ||
@@ -217,14 +199,25 @@
     document.body.appendChild(overlay);
     tick();
     timer = window.setInterval(tick, 1000);
-
     window.setTimeout(() => overlay.classList.add("is-visible"), 40);
+  }
+
+  function scheduleExpiryRefresh() {
+    if (!sale.active) return;
+    const delay = Math.max(0, endTime - Date.now() + 150);
+    window.setTimeout(() => {
+      sale.active = false;
+      updateHomePricing();
+      updateCheckoutSaleLabels();
+      window.dispatchEvent(new CustomEvent("alterhub:birthday-sale-ended"));
+    }, delay);
   }
 
   function initializeSaleUi() {
     sale.active = isActive();
     updateHomePricing();
     updateCheckoutSaleLabels();
+    scheduleExpiryRefresh();
 
     if (sale.active) {
       window.setTimeout(createPopup, 450);

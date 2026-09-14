@@ -193,22 +193,18 @@ function applyBirthdaySalePricing() {
     const tier = PLAN_CATALOG[tierKey];
     if (!tier) return;
 
-    Object.entries(durationPrices).forEach(([duration, salePrice]) => {
-      const plan = tier[duration];
-      if (!plan) return;
+    const salePrice = durationPrices?.lifetime;
+    const plan = tier.lifetime;
+    if (!salePrice || !plan) return;
 
-      const regularPrice = plan.price;
-      plan.oldPrice = regularPrice;
-      plan.price = salePrice;
-      plan.discount = "50% OFF";
-      plan.badge = "BIRTHDAY SALE";
-      plan.summaryDescription = `Birthday Week: 50% off. ${plan.summaryDescription}`;
-      plan.description = plan.description.replace(regularPrice, salePrice);
-      plan.billing =
-        duration === "monthly"
-          ? `${salePrice} every month`
-          : `${salePrice} one-time payment`;
-    });
+    const regularPrice = plan.price;
+    plan.oldPrice = regularPrice;
+    plan.price = salePrice;
+    plan.discount = "50% OFF";
+    plan.badge = "3-DAY BIRTHDAY SALE";
+    plan.summaryDescription = `Birthday Sale: 50% off Lifetime for 3 days only. ${plan.summaryDescription}`;
+    plan.description = `${plan.description} Birthday Sale price: ${salePrice} for a limited 3-day period.`;
+    plan.billing = `${salePrice} one-time payment`;
   });
 }
 
@@ -848,3 +844,7 @@ if (document.readyState === "loading") {
 } else {
   initializePlanPage();
 }
+
+window.addEventListener("alterhub:birthday-sale-ended", () => {
+  window.location.reload();
+});
