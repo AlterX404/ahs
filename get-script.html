@@ -690,6 +690,86 @@
       }
     }
 
+
+
+    /* ADSTERRA */
+
+    .ad-slot {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 24px auto;
+      overflow: hidden;
+    }
+
+    .ad-slot::before {
+      content: "Advertisement";
+      margin-bottom: 7px;
+      color: #5f5f5f;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .ad-slot.ad-rectangle {
+      min-height: 276px;
+    }
+
+    .ad-slot.ad-leaderboard {
+      min-height: 116px;
+    }
+
+    .ad-slot.ad-mobile-banner {
+      min-height: 76px;
+      display: none;
+    }
+
+    .side-ad {
+      width: 160px;
+      min-height: 626px;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      position: fixed;
+      top: 120px;
+      left: calc(50% + 430px);
+      z-index: 20;
+      overflow: hidden;
+    }
+
+    .side-ad::before {
+      content: "Advertisement";
+      margin-bottom: 7px;
+      color: #5f5f5f;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    @media (min-width: 1200px) {
+      .side-ad {
+        display: flex;
+      }
+    }
+
+    @media (max-width: 759px) {
+      .ad-slot.ad-leaderboard {
+        display: none;
+      }
+
+      .ad-slot.ad-mobile-banner {
+        display: flex;
+      }
+
+      .ad-slot {
+        margin: 20px auto;
+      }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       *,
       *::before,
@@ -733,7 +813,11 @@
           <span>Access</span>
 </h1>
 <p>This is a temporary access task page, not an article or documentation page. Complete the listed steps to continue, or return to the public documentation if you need setup or support information.</p>
-<p style="max-width:760px;margin:18px auto 0;color:#8c8c8c;font-size:13px;text-align:center">Need help instead? Read the <a href="/docs/getting-started.html" style="color:#d45a5a">Getting Started guide</a> or <a href="/docs/troubleshooting.html" style="color:#d45a5a">Troubleshooting</a>. This page is intentionally ad-free.</p></div>
+<p style="max-width:760px;margin:18px auto 0;color:#8c8c8c;font-size:13px;text-align:center">Need help instead? Read the <a href="/docs/getting-started.html" style="color:#d45a5a">Getting Started guide</a> or <a href="/docs/troubleshooting.html" style="color:#d45a5a">Troubleshooting</a>.</p></div>
+
+<div class="ad-slot ad-leaderboard" aria-label="Top advertisement" data-ad-key="5ca9db4475da01935a98a11e45151c0c" data-ad-width="728" data-ad-height="90" data-ad-display="desktop"></div>
+
+<div class="ad-slot ad-mobile-banner" aria-label="Top mobile advertisement" data-ad-key="ac921f71aa5be1b091858921f796b4e2" data-ad-width="320" data-ad-height="50" data-ad-display="mobile"></div>
 
 <div class="tasks" id="tasks">
 <!-- STEP 1 -->
@@ -774,6 +858,9 @@
             →
           </span>
 </button>
+
+<div class="ad-slot ad-rectangle" aria-label="Inline advertisement" data-ad-key="687f9bf984adb7aa6526a7ede3d1de49" data-ad-width="300" data-ad-height="250" data-ad-display="all"></div>
+
 <!-- STEP 3 -->
 <button class="task" data-task="2" data-url="https://youtu.be/q7-vrAsgf28?si=cZnl9w-qx_Q9dOj3" type="button">
 <span aria-hidden="true" class="task-icon">
@@ -813,6 +900,9 @@
             →
           </span>
 </button>
+
+<div class="ad-slot ad-rectangle" aria-label="Inline advertisement" data-ad-key="c2a00c4dd904e5b5cc800b84c4745611" data-ad-width="300" data-ad-height="250" data-ad-display="all"></div>
+
 <!-- STEP 5 -->
 <button class="task" data-task="4" data-url="https://youtu.be/0FXGul4MisQ?si=12WJuYFd2MYjBTk0" type="button">
 <span aria-hidden="true" class="task-icon">
@@ -853,6 +943,8 @@
 </button>
 </div>
 
+<div class="ad-slot ad-rectangle" aria-label="Advertisement before unlock progress" data-ad-key="cfde3b064970f5aa070f1f82468e61f8" data-ad-width="300" data-ad-height="250" data-ad-display="all"></div>
+
 <section aria-label="Unlock progress" class="progress-section">
 <p aria-live="polite" class="progress-label" id="progress-label">
           Steps Completed 0/6
@@ -876,6 +968,8 @@
         </span>
 </button>
 
+<div class="ad-slot ad-leaderboard" aria-label="Advertisement before information" data-ad-key="b5ec075b4fe347ebcf7fc5fe33c4b73f" data-ad-width="728" data-ad-height="90" data-ad-display="desktop"></div>
+
 <div class="information">
 <strong>Important:</strong>
 
@@ -888,9 +982,91 @@
           Reset saved progress
         </button>
 </div>
+
+<div class="ad-slot ad-leaderboard" aria-label="Bottom advertisement" data-ad-key="22a86f4d46beeee6ee84bb61167aa3e9" data-ad-width="728" data-ad-height="90" data-ad-display="desktop"></div>
+
+<div class="ad-slot ad-mobile-banner" aria-label="Bottom mobile advertisement" data-ad-key="6ba9ead7c07c2157adaa34b8c0085f93" data-ad-width="320" data-ad-height="50" data-ad-display="mobile"></div>
+
 </div>
 </main>
+<aside class="side-ad" aria-label="Sidebar advertisement" data-ad-key="5e44863175d7f91cdfa7b4061ac293d4" data-ad-width="160" data-ad-height="600" data-ad-display="wide"></aside>
+
 <div aria-live="polite" class="toast" id="toast" role="status"></div>
+
+<script>
+  (() => {
+    const AD_HOST = "https://regrettablewageralways.com";
+    const slots = Array.from(document.querySelectorAll("[data-ad-key]"));
+
+    function shouldLoad(slot) {
+      const mode = slot.dataset.adDisplay || "all";
+      const width = window.innerWidth;
+
+      if (mode === "desktop") return width >= 760;
+      if (mode === "mobile") return width < 760;
+      if (mode === "wide") return width >= 1200;
+      return true;
+    }
+
+    function mount(slot) {
+      if (slot.dataset.adMounted === "true" || !shouldLoad(slot)) return;
+
+      const key = slot.dataset.adKey;
+      const width = Number(slot.dataset.adWidth);
+      const height = Number(slot.dataset.adHeight);
+      if (!key || !width || !height) return;
+
+      const frame = document.createElement("iframe");
+      frame.width = String(width);
+      frame.height = String(height);
+      frame.title = "Advertisement";
+      frame.scrolling = "no";
+      frame.setAttribute("frameborder", "0");
+      frame.setAttribute("aria-label", "Advertisement");
+      frame.style.border = "0";
+      frame.style.display = "block";
+      frame.style.maxWidth = "100%";
+      frame.style.overflow = "hidden";
+
+      const config = JSON.stringify({
+        key,
+        format: "iframe",
+        height,
+        width,
+        params: {}
+      });
+
+      frame.srcdoc = `<!doctype html><html><head><meta charset="utf-8"></head><body style="margin:0;overflow:hidden;background:transparent"><script>atOptions=${config};<\/script><script src="${AD_HOST}/${key}/invoke.js"><\/script></body></html>`;
+      slot.appendChild(frame);
+      slot.dataset.adMounted = "true";
+    }
+
+    function syncAds() {
+      slots.forEach((slot) => {
+        if (shouldLoad(slot)) {
+          mount(slot);
+          return;
+        }
+
+        if (slot.dataset.adMounted === "true") {
+          slot.replaceChildren();
+          delete slot.dataset.adMounted;
+        }
+      });
+    }
+
+    syncAds();
+
+    let resizeTimer;
+    window.addEventListener("resize", () => {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(syncAds, 180);
+    }, { passive: true });
+  })();
+</script>
+
+<script type="text/javascript" src="https://regrettablewageralways.com/3c/b6/6e/3cb66e10b6664867e3c2e208dba45c5c.js"></script>
+
 <script>
     (() => {
         const WAIT_SECONDS = 8;
