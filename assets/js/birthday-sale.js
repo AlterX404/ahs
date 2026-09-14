@@ -31,6 +31,73 @@
     return now >= startTime && now < endTime;
   };
 
+  function formatLocalSaleEnd() {
+    const endDate = new Date(endTime);
+
+    try {
+      return new Intl.DateTimeFormat(undefined, {
+        weekday: "short",
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+        timeZoneName: "short"
+      }).format(endDate);
+    } catch (error) {
+      return endDate.toLocaleString();
+    }
+  }
+
+  function setLocalEndLabel(node) {
+    if (!node) return;
+    node.textContent = `Ends ${formatLocalSaleEnd()} · Your local time`;
+  }
+
+  function updateLocalEndTimes() {
+    document.querySelectorAll("[data-sale-local-end]").forEach((node) => {
+      if (sale.active) {
+        setLocalEndLabel(node);
+        node.hidden = false;
+      } else {
+        node.hidden = true;
+      }
+    });
+
+    const pricingHeading = document.querySelector("#pricing .section-heading");
+    if (pricingHeading) {
+      let localEnd = pricingHeading.querySelector("[data-sale-local-end]");
+      if (sale.active) {
+        if (!localEnd) {
+          localEnd = document.createElement("p");
+          localEnd.className = "birthday-sale-local-end birthday-sale-local-end-home";
+          localEnd.dataset.saleLocalEnd = "";
+          pricingHeading.appendChild(localEnd);
+        }
+        setLocalEndLabel(localEnd);
+        localEnd.hidden = false;
+      } else if (localEnd) {
+        localEnd.remove();
+      }
+    }
+
+    document.querySelectorAll(".checkout-heading > div").forEach((heading) => {
+      let localEnd = heading.querySelector("[data-sale-local-end]");
+      if (sale.active) {
+        if (!localEnd) {
+          localEnd = document.createElement("p");
+          localEnd.className = "birthday-sale-local-end birthday-sale-local-end-checkout";
+          localEnd.dataset.saleLocalEnd = "";
+          heading.appendChild(localEnd);
+        }
+        setLocalEndLabel(localEnd);
+        localEnd.hidden = false;
+      } else if (localEnd) {
+        localEnd.remove();
+      }
+    });
+  }
+
   sale.active = isActive();
   window.ALTER_BIRTHDAY_SALE = sale;
 
@@ -129,7 +196,7 @@
           <div><strong data-sale-seconds>00</strong><span>Seconds</span></div>
         </div>
         <button class="birthday-sale-cta" type="button">VIEW LIFETIME SALE <span aria-hidden="true">→</span></button>
-        <p class="birthday-sale-end">Ends September 22, 2026 at 12:30 AM IST</p>
+        <p class="birthday-sale-end" data-sale-local-end></p>
       </div>
     `;
 
@@ -139,6 +206,8 @@
     const hourNode = overlay.querySelector("[data-sale-hours]");
     const minuteNode = overlay.querySelector("[data-sale-minutes]");
     const secondNode = overlay.querySelector("[data-sale-seconds]");
+    const popupEndNode = overlay.querySelector("[data-sale-local-end]");
+    setLocalEndLabel(popupEndNode);
 
     const dismiss = () => {
       overlay.classList.add("is-closing");
@@ -158,6 +227,7 @@
         sale.active = false;
         updateHomePricing();
         updateCheckoutSaleLabels();
+        updateLocalEndTimes();
         overlay.remove();
         if (timer) window.clearInterval(timer);
         window.dispatchEvent(new CustomEvent("alterhub:birthday-sale-ended"));
@@ -209,6 +279,7 @@
       sale.active = false;
       updateHomePricing();
       updateCheckoutSaleLabels();
+      updateLocalEndTimes();
       window.dispatchEvent(new CustomEvent("alterhub:birthday-sale-ended"));
     }, delay);
   }
@@ -217,6 +288,7 @@
     sale.active = isActive();
     updateHomePricing();
     updateCheckoutSaleLabels();
+    updateLocalEndTimes();
     scheduleExpiryRefresh();
 
     if (sale.active) {

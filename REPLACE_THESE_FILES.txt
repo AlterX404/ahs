@@ -1,25 +1,16 @@
-ALTER HUB - 3 DAY BIRTHDAY LIFETIME SALE
+Alter Hub 7-Day Lifetime Sale - Local End Time Update
 
-Sale window:
-Start: September 15, 2026 at 12:30 AM IST
-End:   September 18, 2026 at 12:30 AM IST
-
-50% OFF applies ONLY to Lifetime:
-Keyless Lifetime:      $19.99 -> $10.00
-Premium Lifetime:      $24.99 -> $12.50
-Premium Plus Lifetime: $39.99 -> $20.00
-
-Monthly stays normal:
-Keyless Monthly:      $5.99
-Premium Monthly:      $7.99
-Premium Plus Monthly: $9.99
-
-Replace files at these exact paths:
+Replace these files on your site:
 /index.html
 /keyless/index.html
 /premium/index.html
 /premium-plus/index.html
 /assets/js/birthday-sale.js
-/assets/js/plan-page.js
+/assets/css/birthday-sale.css
 
-The sale UI automatically turns off after the end time. The frontend display does not change the amount charged by your PayPal/Cloudflare Worker backend; keep the backend lifetime prices in sync with the same sale dates.
+Sale window is unchanged:
+Starts: 2026-09-15 12:30 AM IST
+Ends:   2026-09-22 12:30 AM IST
+
+The end date/time is now rendered using each visitor's browser locale/time zone.
+The sale still expires at the same absolute moment worldwide.

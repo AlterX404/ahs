@@ -204,6 +204,33 @@
   box-shadow: inset 0 1px rgba(255, 255, 255, 0.025), 0 0 34px rgba(169, 12, 28, 0.07);
 }
 
+.birthday-sale-local-end {
+  margin: 10px 0 0;
+  color: #8f888a;
+  font-size: 11px;
+  font-weight: 650;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+}
+
+.birthday-sale-local-end-home {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 14px;
+  padding: 7px 11px;
+  border: 1px solid rgba(218, 34, 53, 0.2);
+  border-radius: 999px;
+  background: rgba(169, 12, 28, 0.07);
+  color: #b8afb1;
+}
+
+.birthday-sale-local-end-checkout {
+  margin-top: 7px;
+  color: #9c9395;
+  font-size: 10px;
+}
+
 @media (max-width: 560px) {
   .birthday-sale-overlay {
     padding: 14px;
