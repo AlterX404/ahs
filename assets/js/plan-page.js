@@ -193,18 +193,29 @@ function applyBirthdaySalePricing() {
     const tier = PLAN_CATALOG[tierKey];
     if (!tier) return;
 
-    const salePrice = durationPrices?.lifetime;
-    const plan = tier.lifetime;
-    if (!salePrice || !plan) return;
+    ["monthly", "lifetime"].forEach((duration) => {
+      const salePrice = durationPrices?.[duration];
+      const plan = tier[duration];
+      if (!salePrice || !plan) return;
 
-    const regularPrice = plan.price;
-    plan.oldPrice = regularPrice;
-    plan.price = salePrice;
-    plan.discount = "50% OFF";
-    plan.badge = "7-DAY BIRTHDAY SALE";
-    plan.summaryDescription = `Birthday Sale: 50% off Lifetime for 7 days only. ${plan.summaryDescription}`;
-    plan.description = `${plan.description} Birthday Sale price: ${salePrice} for a limited 7-day period.`;
-    plan.billing = `${salePrice} one-time payment`;
+      const regularPrice = plan.price;
+      plan.oldPrice = regularPrice;
+      plan.price = salePrice;
+      plan.discount = "50% OFF";
+      plan.badge = "ALL PLANS · 50% OFF";
+
+      if (duration === "monthly") {
+        plan.summaryDescription = `Birthday Sale: all plans are 50% off for 7 days. This Monthly option is ${salePrice}/month, and Lifetime is also on sale. Subscriptions started during the sale renew at ${salePrice}/month until cancelled. ${plan.summaryDescription}`;
+        plan.description = `${plan.description} Birthday Sale: every Monthly and Lifetime plan is 50% off for 7 days. This Monthly option is ${salePrice}/month.`;
+        plan.cardDescription = `Birthday Sale: 50% off this Monthly option. Lifetime is also 50% off.`;
+        plan.billing = `${salePrice} every month`;
+      } else {
+        plan.summaryDescription = `Birthday Sale: all plans are 50% off for 7 days. This Lifetime option is ${salePrice}, and Monthly is also on sale. ${plan.summaryDescription}`;
+        plan.description = `${plan.description} Birthday Sale: every Monthly and Lifetime plan is 50% off for 7 days. This Lifetime option is ${salePrice}.`;
+        plan.cardDescription = `Birthday Sale: 50% off this Lifetime option. Monthly is also 50% off.`;
+        plan.billing = `${salePrice} one-time payment`;
+      }
+    });
   });
 }
 
@@ -370,9 +381,14 @@ function populateDurationCards() {
     const oldPrice = button.querySelector("[data-card-old-price]");
     const price = button.querySelector("[data-card-price]");
 
+    const birthdaySaleActive = Boolean(window.ALTER_BIRTHDAY_SALE?.active);
+
     if (title) title.textContent = plan.cardTitle;
     if (description) description.textContent = plan.cardDescription;
-    if (oldPrice) oldPrice.textContent = plan.oldPrice;
+    if (oldPrice) {
+      oldPrice.textContent = birthdaySaleActive ? plan.oldPrice : "";
+      oldPrice.hidden = !birthdaySaleActive;
+    }
     if (price) price.textContent = plan.price;
   });
 }
@@ -760,9 +776,27 @@ function renderPlan({ animate = true, updateHistory = true, pushHistory = false 
   setText("#summary-badge", plan.badge);
   setText("#summary-title", plan.summaryTitle);
   setText("#summary-description", plan.summaryDescription);
-  setText("#summary-old-price", plan.oldPrice);
+  const birthdaySaleActive = Boolean(window.ALTER_BIRTHDAY_SALE?.active);
+  const summaryOldPrice = document.querySelector("#summary-old-price");
+  const summaryDiscount = document.querySelector("#summary-discount");
+
+  if (birthdaySaleActive) {
+    setText("#summary-old-price", plan.oldPrice);
+    setText("#summary-discount", plan.discount);
+    if (summaryOldPrice) summaryOldPrice.hidden = false;
+    if (summaryDiscount) summaryDiscount.hidden = false;
+  } else {
+    if (summaryOldPrice) {
+      summaryOldPrice.textContent = "";
+      summaryOldPrice.hidden = true;
+    }
+    if (summaryDiscount) {
+      summaryDiscount.textContent = "";
+      summaryDiscount.hidden = true;
+    }
+  }
+
   setText("#summary-price", plan.price);
-  setText("#summary-discount", plan.discount);
   setText("#detail-access", plan.access);
   setText("#detail-billing", plan.billing);
   setText("#detail-renewal", plan.renewal);

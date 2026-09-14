@@ -273,3 +273,22 @@
     transition: none;
   }
 }
+
+
+/* Context copy shown only while the timed Birthday Sale is active. */
+.birthday-sale-message {
+  margin: 10px 0 0;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.birthday-sale-message-home {
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.birthday-sale-message-checkout {
+  max-width: 720px;
+}
