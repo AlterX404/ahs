@@ -32,7 +32,7 @@ const PLAN_CATALOG = {
       summaryDescription: "Checkpoint-free Alter Hub access that renews automatically every month until cancelled.",
       oldPrice: "$9.99",
       price: "$5.99",
-      discount: "40% OFF",
+
       badge: "AUTO-RENEW",
       access: "While subscribed",
       billing: "$5.99 every month",
@@ -54,7 +54,7 @@ const PLAN_CATALOG = {
       summaryDescription: "Permanent checkpoint-free access to Alter Hub's core experience with one payment.",
       oldPrice: "$29.99",
       price: "$19.99",
-      discount: "33% OFF",
+
       badge: "BEST VALUE",
       access: "Lifetime",
       billing: "One-time payment",
@@ -93,7 +93,7 @@ const PLAN_CATALOG = {
       summaryDescription: "The complete Premium experience with automatic monthly PayPal renewal until cancelled.",
       oldPrice: "$14.99",
       price: "$7.99",
-      discount: "47% OFF",
+
       badge: "POPULAR",
       access: "While subscribed",
       billing: "$7.99 every month",
@@ -115,7 +115,7 @@ const PLAN_CATALOG = {
       summaryDescription: "Permanent access to Keyless and Premium features, including future Premium updates.",
       oldPrice: "$39.99",
       price: "$24.99",
-      discount: "38% OFF",
+
       badge: "BEST VALUE",
       access: "Lifetime",
       billing: "One-time payment",
@@ -154,7 +154,7 @@ const PLAN_CATALOG = {
       summaryDescription: "Alter Hub's highest access tier with automatic monthly PayPal renewal until cancelled.",
       oldPrice: "$19.99",
       price: "$9.99",
-      discount: "50% OFF",
+
       badge: "TOP TIER",
       access: "While subscribed",
       billing: "$9.99 every month",
@@ -176,7 +176,7 @@ const PLAN_CATALOG = {
       summaryDescription: "Permanent access to Alter Hub's complete top-tier experience with one payment.",
       oldPrice: "$59.99",
       price: "$39.99",
-      discount: "33% OFF",
+
       badge: "ULTIMATE",
       access: "Lifetime",
       billing: "One-time payment",
@@ -184,42 +184,6 @@ const PLAN_CATALOG = {
     }
   }
 };
-
-function applyBirthdaySalePricing() {
-  const sale = window.ALTER_BIRTHDAY_SALE;
-  if (!sale?.active || !sale.prices) return;
-
-  Object.entries(sale.prices).forEach(([tierKey, durationPrices]) => {
-    const tier = PLAN_CATALOG[tierKey];
-    if (!tier) return;
-
-    ["monthly", "lifetime"].forEach((duration) => {
-      const salePrice = durationPrices?.[duration];
-      const plan = tier[duration];
-      if (!salePrice || !plan) return;
-
-      const regularPrice = plan.price;
-      plan.oldPrice = regularPrice;
-      plan.price = salePrice;
-      plan.discount = "50% OFF";
-      plan.badge = "ALL PLANS · 50% OFF";
-
-      if (duration === "monthly") {
-        plan.summaryDescription = `Birthday Sale: all plans are 50% off for 7 days. This Monthly option is ${salePrice}/month, and Lifetime is also on sale. Subscriptions started during the sale renew at ${salePrice}/month until cancelled. ${plan.summaryDescription}`;
-        plan.description = `${plan.description} Birthday Sale: every Monthly and Lifetime plan is 50% off for 7 days. This Monthly option is ${salePrice}/month.`;
-        plan.cardDescription = `Birthday Sale: 50% off this Monthly option. Lifetime is also 50% off.`;
-        plan.billing = `${salePrice} every month`;
-      } else {
-        plan.summaryDescription = `Birthday Sale: all plans are 50% off for 7 days. This Lifetime option is ${salePrice}, and Monthly is also on sale. ${plan.summaryDescription}`;
-        plan.description = `${plan.description} Birthday Sale: every Monthly and Lifetime plan is 50% off for 7 days. This Lifetime option is ${salePrice}.`;
-        plan.cardDescription = `Birthday Sale: 50% off this Lifetime option. Monthly is also 50% off.`;
-        plan.billing = `${salePrice} one-time payment`;
-      }
-    });
-  });
-}
-
-applyBirthdaySalePricing();
 
 const PAYPAL_MONTHLY_PLAN_IDS = Object.freeze({
   keyless: "P-35C963541U1914902NKBVFZY",
@@ -381,13 +345,12 @@ function populateDurationCards() {
     const oldPrice = button.querySelector("[data-card-old-price]");
     const price = button.querySelector("[data-card-price]");
 
-    const birthdaySaleActive = Boolean(window.ALTER_BIRTHDAY_SALE?.active);
 
     if (title) title.textContent = plan.cardTitle;
     if (description) description.textContent = plan.cardDescription;
     if (oldPrice) {
-      oldPrice.textContent = birthdaySaleActive ? plan.oldPrice : "";
-      oldPrice.hidden = !birthdaySaleActive;
+      oldPrice.textContent = plan.oldPrice;
+      oldPrice.hidden = false;
     }
     if (price) price.textContent = plan.price;
   });
@@ -776,25 +739,7 @@ function renderPlan({ animate = true, updateHistory = true, pushHistory = false 
   setText("#summary-badge", plan.badge);
   setText("#summary-title", plan.summaryTitle);
   setText("#summary-description", plan.summaryDescription);
-  const birthdaySaleActive = Boolean(window.ALTER_BIRTHDAY_SALE?.active);
-  const summaryOldPrice = document.querySelector("#summary-old-price");
-  const summaryDiscount = document.querySelector("#summary-discount");
-
-  if (birthdaySaleActive) {
-    setText("#summary-old-price", plan.oldPrice);
-    setText("#summary-discount", plan.discount);
-    if (summaryOldPrice) summaryOldPrice.hidden = false;
-    if (summaryDiscount) summaryDiscount.hidden = false;
-  } else {
-    if (summaryOldPrice) {
-      summaryOldPrice.textContent = "";
-      summaryOldPrice.hidden = true;
-    }
-    if (summaryDiscount) {
-      summaryDiscount.textContent = "";
-      summaryDiscount.hidden = true;
-    }
-  }
+  setText("#summary-old-price", plan.oldPrice);
 
   setText("#summary-price", plan.price);
   setText("#detail-access", plan.access);
@@ -879,6 +824,3 @@ if (document.readyState === "loading") {
   initializePlanPage();
 }
 
-window.addEventListener("alterhub:birthday-sale-ended", () => {
-  window.location.reload();
-});

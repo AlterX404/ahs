@@ -32,7 +32,7 @@ const PLAN_CATALOG = {
       summaryDescription: "Checkpoint-free Alter Hub access that renews automatically every month until cancelled.",
       oldPrice: "$9.99",
       price: "$5.99",
-      discount: "40% OFF",
+
       badge: "AUTO-RENEW",
       access: "While subscribed",
       billing: "$5.99 every month",
@@ -54,7 +54,7 @@ const PLAN_CATALOG = {
       summaryDescription: "Permanent checkpoint-free access to Alter Hub's core experience with one payment.",
       oldPrice: "$29.99",
       price: "$19.99",
-      discount: "33% OFF",
+
       badge: "BEST VALUE",
       access: "Lifetime",
       billing: "One-time payment",
@@ -93,7 +93,7 @@ const PLAN_CATALOG = {
       summaryDescription: "The complete Premium experience with automatic monthly PayPal renewal until cancelled.",
       oldPrice: "$14.99",
       price: "$7.99",
-      discount: "47% OFF",
+
       badge: "POPULAR",
       access: "While subscribed",
       billing: "$7.99 every month",
@@ -115,7 +115,7 @@ const PLAN_CATALOG = {
       summaryDescription: "Permanent access to Keyless and Premium features, including future Premium updates.",
       oldPrice: "$39.99",
       price: "$24.99",
-      discount: "38% OFF",
+
       badge: "BEST VALUE",
       access: "Lifetime",
       billing: "One-time payment",
@@ -154,7 +154,7 @@ const PLAN_CATALOG = {
       summaryDescription: "Alter Hub's highest access tier with automatic monthly PayPal renewal until cancelled.",
       oldPrice: "$19.99",
       price: "$9.99",
-      discount: "50% OFF",
+
       badge: "TOP TIER",
       access: "While subscribed",
       billing: "$9.99 every month",
@@ -176,7 +176,7 @@ const PLAN_CATALOG = {
       summaryDescription: "Permanent access to Alter Hub's complete top-tier experience with one payment.",
       oldPrice: "$59.99",
       price: "$39.99",
-      discount: "33% OFF",
+
       badge: "ULTIMATE",
       access: "Lifetime",
       billing: "One-time payment",
@@ -920,7 +920,6 @@ function renderPlan({ animate = true, updateHistory = true, pushHistory = false 
   setText("#summary-description", plan.summaryDescription);
   setText("#summary-old-price", plan.oldPrice);
   setText("#summary-price", plan.price);
-  setText("#summary-discount", plan.discount);
   setText("#detail-access", plan.access);
   setText("#detail-billing", plan.billing);
   setText("#detail-renewal", plan.renewal);

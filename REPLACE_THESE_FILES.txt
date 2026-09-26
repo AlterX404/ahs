@@ -1,16 +1,15 @@
-Alter Hub 7-Day Lifetime Sale - Local End Time Update
-
-Replace these files on your site:
+Replace:
 /index.html
 /keyless/index.html
 /premium/index.html
 /premium-plus/index.html
+/assets/js/plan-page.js
+/plan-page.js
+/README.txt
+/REPLACE_THESE_FILES.txt
+
+Delete from your existing website:
 /assets/js/birthday-sale.js
 /assets/css/birthday-sale.css
 
-Sale window is unchanged:
-Starts: 2026-09-15 12:30 AM IST
-Ends:   2026-09-22 12:30 AM IST
-
-The end date/time is now rendered using each visitor's browser locale/time zone.
-The sale still expires at the same absolute moment worldwide.
+The complete website ZIP already omits those deleted files.
